@@ -1,16 +1,6 @@
 import matplotlib.pyplot as plt
 
-data = [["." for i in range(10)] for i in range(10)]
-
-data[5][5] = ("P", 0)
-data[5][6] = ("H", 1)
-data[4][6] = ("P", 2)
-data[4][7] = ("P", 3)
-data[5][7] = ("H", 4)
-data[6][7] = ("P", 5)
-data[8][7] = ("H", 6)
-data[8][6] = ("H", 7)
-
+# Needs to become a class
 data_dict: dict[tuple | tuple[str, int]] = {}
 data_dict[(5, 5)] = ("P", 0)
 data_dict[(5, 6)] = ("H", 1)
@@ -21,16 +11,7 @@ data_dict[(6, 7)] = ("P", 5)
 data_dict[(6, 6)] = ("H", 6)
 data_dict[(6, 5)] = ("H", 7)
 
-def filter_points(data: list[list[str | tuple[str, int]]]) -> list[tuple[str, int]]:
-    result = []
-    for i, row in enumerate(data):
-        for j, point in enumerate(row):
-            if type(point) is tuple:
-                value = point + (i, j)
-                result.append(value)
-    result = sorted(result, key=lambda x: x[1])
-    return result
-
+# Needs to become another class
 def show_points(data: dict[tuple | tuple[str, int]]) -> None:
     # Filter the points out of the data
     # Polair
@@ -77,7 +58,6 @@ def options(y: int, x: int, data: dict[tuple | tuple[str, int]]) -> list[tuple[i
     return result
 
 def calculate_stability(data: list[list[str | tuple[str, int]]]) -> int:
-    filtered_list = filter_points(data)
     filtered_list = list(filter(lambda x: x[0] == "H", filtered_list))
     filtered_dict = {}
     score = 0
@@ -88,5 +68,4 @@ def calculate_stability(data: list[list[str | tuple[str, int]]]) -> int:
             if f"{option}" in filtered_dict and filtered_dict[f"{option}"] == "H":
                 print("ja")
 
-# show_points(data_dict)
 options(3, 5, data_dict)
