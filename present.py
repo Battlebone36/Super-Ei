@@ -7,8 +7,24 @@ class Protein:
     def __init__(self, sequence: str) -> None:
         sequence = sequence.upper()
         self.data: dict[tuple[int, int], tuple[str, int]] = {}
-        for i, char in enumerate(sequence):
-            self.data[(i, 0)] = (f"{char}", i)
+        # for i, char in enumerate(sequence):
+        #     self.data[(i, 0)] = (f"{char}", i)
+
+        # test data for a random protein
+        self.data[(0, 0)]  = ("P", 0)
+        self.data[(1, 0)]  = ("H", 1)
+        self.data[(1, 1)]  = ("H", 2)
+        self.data[(0, 1)]  = ("H", 3)
+        self.data[(0, 2)]  = ("H", 4)
+        self.data[(1, 2)]  = ("P", 5)
+        self.data[(2, 2)]  = ("P", 6)
+        self.data[(2, 1)]  = ("H", 0)
+        self.data[(2, 0)]  = ("P", 0)
+        self.data[(2, -1)] = ("H", 0)
+        self.data[(1, -1)] = ("P", 0)
+        self.data[(0, -1)] = ("P", 0)
+
+
         self.left_turn = [[0, -1], [1, 0]]
         self.right_turn = [[0, 1], [-1, 0]]
 
@@ -74,14 +90,22 @@ class Protein:
         for acid in self.data.items():
             if acid[1][0] == "H":
                 h_acids[acid[0]] = acid[1]
+        print(h_acids)
                 
-        # Loop throug the "H" acids and look to the neighbours
-        for acid in h_acids.items():
-            options = self.neighbours(acid[0])
-            for option in options:
-                print(self.h_bond(acid[0], option))
-
+        #Loop throug the "H" acids and look to the neighbours
         score = 0
+        for acid in h_acids.items():
+            friends = self.neighbours(acid[0])
+            for friend in friends:
+                
+                if friend in self.data and abs(acid[1][1] - self.data[friend][1]) == 1:
+                    continue
+                elif self.h_bond(acid[0], friend):
+                    score -= 1
+        score //= 2
+                    
+        print(score)
+        
 
         return 1
     
@@ -144,7 +168,7 @@ class Protein:
 
 
 protein1 = Protein("HHPHPC")
-# protein1.stability()
+protein1.stability()
 protein1.show_points()
 protein1.fold((2, 0), "left")
 protein1.fold((2, 2), "right")
