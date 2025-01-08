@@ -85,5 +85,5 @@ class Protein:
 
 protein1 = Protein("HHPHPC")
 protein1.stability()
-# protein1.show_points()
+protein1.show_points()
 
