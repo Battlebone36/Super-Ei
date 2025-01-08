@@ -27,8 +27,9 @@ To run the program, use the following command:
 python3 present.py
 ```
 
-## Structure
-- Structuur van de verschillende mappen in de repository
+## Repository structure
+The following list describes the main directories and files in the repository, and where to find them:
+* /directory: very short description of its content
 
 # Authors
 * Sydney Celie
