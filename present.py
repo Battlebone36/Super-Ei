@@ -8,6 +8,7 @@ class Protein:
             self.data[(i, 0)] = (f"{char}", i)
 
     def show_points(self) ->  None:
+        """Makes a plot of the protein"""
         # Filter the points out of the data
         # Polair
         x_p = [item[0][0] for item in self.data.items() if item[1][0] == "P"]
@@ -48,26 +49,39 @@ class Protein:
         plt.legend(in_plot)
         plt.show()
 
-    def options(self, x: int, y: int) -> None:
-        "Prints the the North, East, South and West coördinates"
+    def options(self, x: int, y: int) -> list[tuple[int, int]]:
+        "Prints the North, East, South and West coördinates of the one given"
         x_diff = [0, 1, 0, -1]
         y_diff = [1, 0, -1, 0]
         result = [(x_diff[i] + x, y_diff[i] + y) for i in range(4)]
-        print(result)
+        return result
+    
+    def h_bond(self, x: int, y: int, x_search: int, y_search: int) -> bool:
+        if (x_search, y_search) in self.data:
+            return self.data[(x_search, y_search)][0] == "H"
+        return False
+
+
+    def stability(self) -> int:
+        h_acids: dict[tuple[int, int], tuple[str, int]] = {}
+        for acid in self.data.items():
+            if acid[1][0] == "H":
+                h_acids[acid[0]] = acid[1]
+
+        for acid in h_acids.items():
+            options = self.options(acid[0][0], acid[0][1])
+            for option in options:
+                # print(self.h_bond(acid[0][0], acid[0][1], options[0], options[1]))
+                print(option)
+            # print(self.h_bond(acid[0][0], acid[0][1], options[1][0], options[1][1]))
+
+        score = 0
+
+        return 1
+
 
 
 protein1 = Protein("HHPHPC")
+# protein1.stability()
 protein1.show_points()
 
-
-# def calculate_stability(data: list[list[str | tuple[str, int]]]) -> int:
-#     filtered_list = list(filter(lambda x: x[0] == "H", filtered_list))
-#     filtered_dict = {}
-#     score = 0
-#     for value in filtered_list:
-#         filtered_dict[f"{value[2], value[3]}"] = value[0]
-#     for value in filtered_list:
-#         for option in options(value[2], value[3]):
-#             if f"{option}" in filtered_dict and filtered_dict[f"{option}"] == "H":
-#                 print("ja")
-#     return 1
