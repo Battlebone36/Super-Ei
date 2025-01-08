@@ -69,6 +69,7 @@ class Protein:
                 h_acids[acid[0]] = acid[1]
 
         for acid in h_acids.items():
+            print(acid)
             options = self.options(acid[0][0], acid[0][1])
             for option in options:
                 # print(self.h_bond(acid[0][0], acid[0][1], options[0], options[1]))
@@ -82,6 +83,6 @@ class Protein:
 
 
 protein1 = Protein("HHPHPC")
-# protein1.stability()
-protein1.show_points()
+protein1.stability()
+# protein1.show_points()
 
