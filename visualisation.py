@@ -13,7 +13,7 @@ class Visualise:
         x_h = [item[0][0] for item in data.items() if item[1][0] == "H"]
         y_h = [item[0][1] for item in data.items() if item[1][0] == "H"]
 
-        # Cystine        
+        # Cysteine        
         x_c = [item[0][0] for item in data.items() if item[1][0] == "C"]
         y_c = [item[0][1] for item in data.items() if item[1][0] == "C"]
 
@@ -32,7 +32,7 @@ class Visualise:
         if x_h:
             in_plot.append("Hydrofobe")
         if x_c:
-            in_plot.append("Cystine")
+            in_plot.append("Cysteine")
 
         # Make the plot with dots and line
         fig, ax = plt.subplots()

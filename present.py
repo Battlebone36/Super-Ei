@@ -42,7 +42,7 @@ class Protein:
     #     x_h = [item[0][0] for item in self.data.items() if item[1][0] == "H"]
     #     y_h = [item[0][1] for item in self.data.items() if item[1][0] == "H"]
 
-    #     # Cystine        
+    #     # Cysteine        
     #     x_c = [item[0][0] for item in self.data.items() if item[1][0] == "C"]
     #     y_c = [item[0][1] for item in self.data.items() if item[1][0] == "C"]
 
@@ -61,7 +61,7 @@ class Protein:
     #     if x_h:
     #         in_plot.append("Hydrofobe")
     #     if x_c:
-    #         in_plot.append("Cystine")
+    #         in_plot.append("Cysteine")
 
     #     # Make the plot with dots and line
     #     fig, ax = plt.subplots()
@@ -75,7 +75,7 @@ class Protein:
     #     plt.show()
 
     def neighbours(self, coord: tuple[int, int]) -> list[tuple[int, int]]:
-        "Prints the North, East, South and West coördinates of the one given"
+        """Prints the North, East, South and West coördinates of the one given."""
         x_diff = [0, 1, 0, -1]
         y_diff = [1, 0, -1, 0]
         result = [(x_diff[i] + coord[0], y_diff[i] + coord[1]) for i in range(4)]
@@ -88,6 +88,7 @@ class Protein:
 
 
     def stability(self) -> int:
+        """A function that calculates the stability of a protein"""
         # Filter out the "H" acids
         h_acids: dict[tuple[int, int], tuple[str, int]] = {}
         for acid in self.data.items():
@@ -106,15 +107,12 @@ class Protein:
                 elif self.h_bond(acid[0], friend):
                     score -= 1
         score //= 2
-                    
-        # print(score)
-        
 
         return score
     
     # Doesn't work yet but makes code cleaner
     def rotate_coord(pivot: tuple[int, int], coord: tuple[int, int], matrix) -> tuple[int, int]:
-        """Rotates the coordinate around a pivot with a matrix"""
+        """Rotates the coordinate around a pivot with a matrix."""
         rel_coord = (coord[0] - pivot[0], coord[1] - pivot[1])
         v_rel_coord = np.array(rel_coord)
         rel_rot_coord = matrix @ v_rel_coord
@@ -123,6 +121,7 @@ class Protein:
         return new_coord
 
     def fold(self, pivot: tuple[int, int], direction: str) -> bool:
+        """Folds a protein at a given pivot point in a certain direction: "left" or "right"."""
         # Raise an error if the coordinate is not in the dataset
         if pivot not in self.data:
             print("coordinate not in dataset")
