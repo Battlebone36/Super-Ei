@@ -57,7 +57,6 @@ class Protein:
 
 
 protein1 = Protein("HHPHPC")
-# protein1.options(5, 5)
 protein1.show_points()
 
 
