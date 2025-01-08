@@ -10,18 +10,19 @@ The goal is to fold the protein in such a way that the total stability, expresse
 
 # Installation and setup
 ## Requirements
-- Installation for backend matplotlib(?)
+### Library
+The following command installs the necessary components for Tkinter on Python 3, enabling the development of graphical user interfaces (GUIs) in Python on your system. 
 ```
 sudo apt-get install python3-tk
 ```
-
-- Packages die geinstalleerd moeten worden
+### Packages
+The requirements.txt file contains all necessary packages to run the code successfully. These can be easily installed via pip using the following instruction:
 ```
 pip install -r requirements.txt
 ```
 
 ## Usage of the program
-- De manier waarop het programma gebruikt moet worden
+To run the program, use the following command:
 ```
 python3 present.py
 ```
