@@ -51,32 +51,31 @@ class Protein:
         plt.legend(in_plot)
         plt.show()
 
-    def options(self, x: int, y: int) -> list[tuple[int, int]]:
+    def neighbours(self, coord: tuple[int, int]) -> list[tuple[int, int]]:
         "Prints the North, East, South and West coördinates of the one given"
         x_diff = [0, 1, 0, -1]
         y_diff = [1, 0, -1, 0]
-        result = [(x_diff[i] + x, y_diff[i] + y) for i in range(4)]
+        result = [(x_diff[i] + coord[0], y_diff[i] + coord[1]) for i in range(4)]
         return result
     
-    def h_bond(self, x: int, y: int, x_search: int, y_search: int) -> bool:
-        if (x_search, y_search) in self.data:
-            return self.data[(x_search, y_search)][0] == "H"
+    def h_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
+        if coord1 in self.data and coord2 in self.data:
+            return self.data[coord1][0] == "H" and self.data[coord2][0] == "H"
         return False
 
 
     def stability(self) -> int:
+        # Filter out the "H" acids
         h_acids: dict[tuple[int, int], tuple[str, int]] = {}
         for acid in self.data.items():
             if acid[1][0] == "H":
                 h_acids[acid[0]] = acid[1]
-
+                
+        # Loop throug the "H" acids and look to the neighbours
         for acid in h_acids.items():
-            print(acid)
-            options = self.options(acid[0][0], acid[0][1])
+            options = self.neighbours(acid[0])
             for option in options:
-                # print(self.h_bond(acid[0][0], acid[0][1], options[0], options[1]))
-                print(option)
-            # print(self.h_bond(acid[0][0], acid[0][1], options[1][0], options[1][1]))
+                print(self.h_bond(acid[0], option))
 
         score = 0
 
