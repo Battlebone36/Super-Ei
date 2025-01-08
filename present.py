@@ -92,12 +92,19 @@ class Protein:
         print(h_acids)
                 
         #Loop throug the "H" acids and look to the neighbours
+        score = 0
         for acid in h_acids.items():
             friends = self.neighbours(acid[0])
             for friend in friends:
-                print(self.h_bond(acid[0], friend))
-
-        score = 0
+                
+                if friend in self.data and abs(acid[1][1] - self.data[friend][1]) == 1:
+                    continue
+                elif self.h_bond(acid[0], friend):
+                    score -= 1
+        score //= 2
+                    
+        print(score)
+        
 
         return 1
 
@@ -109,6 +116,6 @@ class Protein:
 
 
 protein1 = Protein("HHPHPC")
-# protein1.stability()
+protein1.stability()
 protein1.show_points()
 
