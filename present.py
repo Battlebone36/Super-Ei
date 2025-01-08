@@ -107,10 +107,10 @@ class Protein:
                     score -= 1
         score //= 2
                     
-        print(score)
+        # print(score)
         
 
-        return 1
+        return score
     
     # Doesn't work yet but makes code cleaner
     def rotate_coord(pivot: tuple[int, int], coord: tuple[int, int], matrix) -> tuple[int, int]:
