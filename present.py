@@ -27,6 +27,9 @@ class Protein:
 
         self.left_turn = [[0, -1], [1, 0]]
         self.right_turn = [[0, 1], [-1, 0]]
+    
+    def give_data(self) -> dict[tuple[int, int], tuple[str, int]]:
+        return self.data
 
     def show_points(self) ->  None:
         """Makes a plot of the protein"""
