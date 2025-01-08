@@ -6,6 +6,8 @@ class Protein:
         self.data: dict[tuple[int, int], tuple[str, int]] = {}
         for i, char in enumerate(sequence):
             self.data[(i, 0)] = (f"{char}", i)
+        self.left_turn = [[0, -1], [1, 0]]
+        self.right_turn = [[0, 1], [-1, 0]]
 
     def show_points(self) ->  None:
         """Makes a plot of the protein"""
