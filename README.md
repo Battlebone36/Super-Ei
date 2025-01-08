@@ -4,6 +4,9 @@
 # Installation and setup
 ## Requirements
 - Packages die geinstalleerd moeten worden
+```
+pip install -r requirements.txt
+```
 
 ## Usage of the program
 - De manier waarop het programma gebruikt moet worden
