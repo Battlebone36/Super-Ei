@@ -1,6 +1,4 @@
 import matplotlib.pyplot as plt
-import matplotlib
-matplotlib.use('Qt5Agg')
 
 class Protein:
     
@@ -86,5 +84,5 @@ class Protein:
 
 protein1 = Protein("HHPHPC")
 protein1.stability()
-# protein1.show_points()
+protein1.show_points()
 
