@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 class Protein:
     
     def __init__(self, sequence: str) -> None:
+        sequence = sequence.upper()
         self.data: dict[tuple[int, int], tuple[str, int]] = {}
         # for i, char in enumerate(sequence):
         #     self.data[(i, 0)] = (f"{char}", i)
@@ -45,7 +46,9 @@ class Protein:
         y_l = [item[0][1] for item in self.data.items()]
 
         # Borders for plot and legend
+        borders = [min(x_l), max(x_l), min(y_l), max(y_l)]
         x_min, x_max, y_min, y_max = min(x_l), max(x_l), min(y_l), max(y_l)
+
         in_plot = []
         if x_l:
             in_plot.append("Bond")
@@ -62,8 +65,8 @@ class Protein:
         ax.plot(x_p, y_p, "bo", markersize= 20)
         ax.plot(x_h, y_h, "ro", markersize= 20)
         ax.plot(x_c, y_c, "go", markersize= 20)
-        plt.xlim(x_min - 1, x_max + 1)
-        plt.ylim(y_min - 1, y_max + 1)
+        plt.xlim(min(borders) - 1, max(borders) + 1)
+        plt.ylim(min(borders) - 1, max(borders) + 1)
         plt.legend(in_plot)
         plt.show()
 
@@ -98,9 +101,14 @@ class Protein:
 
         return 1
 
+    # def fold(self, pivot: tuple[int, int], direction: str) -> None:
+    #     if direction == "right":
+
+
+
 
 
 protein1 = Protein("HHPHPC")
-protein1.stability()
+# protein1.stability()
 protein1.show_points()
 
