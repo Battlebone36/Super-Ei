@@ -88,7 +88,7 @@ class Protein:
 
 
     def stability(self) -> int:
-        """A function that calculates the stability of a protein"""
+        """A function that calculates the stability of a protein."""
         # Filter out the "H" acids
         h_acids: dict[tuple[int, int], tuple[str, int]] = {}
         for acid in self.data.items():
@@ -96,7 +96,7 @@ class Protein:
                 h_acids[acid[0]] = acid[1]
         print(h_acids)
                 
-        #Loop throug the "H" acids and look to the neighbours
+        # Loop through the "H" acids and look to the neighbours
         score = 0
         for acid in h_acids.items():
             friends = self.neighbours(acid[0])

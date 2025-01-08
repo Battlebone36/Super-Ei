@@ -3,9 +3,9 @@ from present import Protein
 
 class Visualise:
     def show_points(self, data: dict[tuple[int, int], tuple[str, int]]) ->  None:
-        """Makes a plot of the protein"""
+        """Makes a plot of the protein."""
         # Filter the points out of the data
-        # Polair
+        # Polar
         x_p = [item[0][0] for item in data.items() if item[1][0] == "P"]
         y_p = [item[0][1] for item in data.items() if item[1][0] == "P"]
 
@@ -28,7 +28,7 @@ class Visualise:
         if x_l:
             in_plot.append("Bond")
         if x_p:
-            in_plot.append("Polair")
+            in_plot.append("Polar")
         if x_h:
             in_plot.append("Hydrofobe")
         if x_c:
