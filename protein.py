@@ -87,7 +87,7 @@ class Protein:
         return score
     
     # Doesn't work yet but makes code cleaner
-    def rotate_coord(coord: tuple[int, int], pivot: tuple[int, int],  matrix) -> tuple[int, int]:
+    def rotate_coord(self, coord: tuple[int, int], pivot: tuple[int, int],  matrix) -> tuple[int, int]:
         """
         Rotates the coordinate around a pivot with a rotation matrix.
 
@@ -108,54 +108,38 @@ class Protein:
 
     def fold(self, pivot: tuple[int, int], direction: str) -> bool:
         """Folds a protein at a given pivot point in a certain direction: "left" or "right"."""
-        # Raise an error if the coordinate is not in the dataset
+        # Raise an error if the coordinate is not in the dataset.
         if pivot not in self.data:
             print("coordinate not in dataset")
             raise(IndexError)
         
-        # Make the command case insensitive and define the rotation matrix
+        # Make the command case insensitive and define the rotation matrix.
         direction = direction.lower()
         if direction == "right":
             rot_matrix = np.array(self.right_turn)
         elif direction == "left":
             rot_matrix = np.array(self.left_turn)
         
-        # Store the points that need to be rotated
+        # Store the points that are following in the sequence.
+        # These are following in the sequence
         points_to_rot: dict[tuple[int, int], tuple[str, int]] = {}
         for acid in self.data.items():
             if acid[1][1] > self.data[pivot][1]:
                 points_to_rot[acid[0]] = acid[1]
         
-        # The function above rotate_coord doesn't work yet
-        # Check if the rotation doesn't clash with the existing folding
+        # Check if the rotation doesn't clash with the existing folding.
         for acid in points_to_rot:
-            rel_coord = (acid[0] - pivot[0], acid[1] - pivot[1])
-            v_rel_coord = np.array(rel_coord)
-            rel_rot_coord = rot_matrix @ v_rel_coord
-            rel_new_coord = tuple(rel_rot_coord)
-            new_coord = (rel_new_coord[0] + pivot[0], rel_new_coord[1] + pivot[1])
+            new_coord = self.rotate_coord(acid, pivot, rot_matrix)
             if new_coord in self.data:
                 return False
         
         # Rotate every point
         for acid in points_to_rot:
-            rel_coord = (acid[0] - pivot[0], acid[1] - pivot[1])
-            v_rel_coord = np.array(rel_coord)
-            rel_rot_coord = rot_matrix @ v_rel_coord
-            rel_new_coord = tuple(rel_rot_coord)
-            new_coord = (rel_new_coord[0] + pivot[0], rel_new_coord[1] + pivot[1])
+            new_coord = self.rotate_coord(acid, pivot, rot_matrix)
             old_point = self.data.pop(acid)
             self.data[new_coord] = old_point
         return True
 
 
 
-
-
-
-
-
 protein1 = Protein("HHPHPC")
-print(protein1.rotate_coord((2, 0), (0, 0), "left"))
-# protein1.fold((2, 0), "left")
-# protein1.fold((2, 2), "right")
