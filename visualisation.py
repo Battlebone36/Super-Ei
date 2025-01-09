@@ -3,6 +3,7 @@ from protein import Protein
 
 class Visualise:
     def filter_data(data: dict[tuple[int, int], tuple[str, int]], amino: str = None) -> tuple[list[int], list[int]]:
+        """"Filters the coordinates of amino acids from a dataset, optionally filtering by type."""
         if amino is None:
             x = [item[0][0] for item in data.items()]
             y = [item[0][1] for item in data.items()]
@@ -39,6 +40,19 @@ class Visualise:
         ax.plot(x_p, y_p, "bo", markersize= 20)
         ax.plot(x_h, y_h, "ro", markersize= 20)
         ax.plot(x_c, y_c, "go", markersize= 20)
+
+        # Mark non-sequential bonds
+        for acid in data.items():
+            friends = protein.neighbours(acid[0])
+            for friend in friends:
+                if friend in data and abs(acid[1][1] - data[friend][1]) != 1:
+                    if protein.h_bond(acid[0], friend):
+                        ax.plot([acid[0][0], friend[0]], [acid[0][1], friend[1]], "r", linewidth=2, linestyle="dotted")
+                    elif protein.hc_bond(acid[0], friend):
+                        ax.plot([acid[0][0], friend[0]], [acid[0][1], friend[1]], "b", linewidth=2, linestyle="dotted")
+                    elif protein.c_bond(acid[0], friend):
+                        ax.plot([acid[0][0], friend[0]], [acid[0][1], friend[1]], "g", linewidth=3.5, linestyle="dotted")
+
         plt.xlim(min(borders) - 1, max(borders) + 1)
         plt.ylim(min(borders) - 1, max(borders) + 1)
         plt.legend(in_plot)
