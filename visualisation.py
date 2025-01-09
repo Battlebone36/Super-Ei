@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from proteine import Proteine
+from protein import Proteine
 
 class Visualise:
     def filter_data(data: dict[tuple[int, int], tuple[str, int]], amino: str = None) -> tuple[list[int], list[int]]:
