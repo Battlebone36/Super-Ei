@@ -1,4 +1,4 @@
-from protein import Protein
+from code.classes.protein import Protein
 import random
 
 def random_fold(protein: Protein) -> Protein:
