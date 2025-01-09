@@ -21,11 +21,11 @@ class Protein:
         self.data[(0, 2)]  = ("H", 4)
         self.data[(1, 2)]  = ("P", 5)
         self.data[(2, 2)]  = ("P", 6)
-        self.data[(2, 1)]  = ("H", 0)
-        self.data[(2, 0)]  = ("P", 0)
-        self.data[(2, -1)] = ("H", 0)
-        self.data[(1, -1)] = ("P", 0)
-        self.data[(0, -1)] = ("P", 0)
+        # self.data[(2, 1)]  = ("H", 0)
+        # self.data[(2, 0)]  = ("P", 0)
+        # self.data[(2, -1)] = ("H", 0)
+        # self.data[(1, -1)] = ("P", 0)
+        # self.data[(0, -1)] = ("P", 0)
 
 
         self.left_turn = [[0, -1], [1, 0]]
@@ -144,5 +144,6 @@ class Protein:
 
 
 protein1 = Protein("HHPHPC")
-protein1.fold((2, 0), "left")
-protein1.fold((2, 2), "right")
+print(protein1.rotate_coord((2, 0), (0, 0), "left"))
+# protein1.fold((2, 0), "left")
+# protein1.fold((2, 2), "right")
