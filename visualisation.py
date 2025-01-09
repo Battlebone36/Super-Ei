@@ -46,3 +46,5 @@ class Visualise:
 
 protein_vis = Protein("H")
 Visualise.visualise_protein(protein_vis)
+protein_vis.fold((0,2), "left")
+Visualise.visualise_protein(protein_vis)
