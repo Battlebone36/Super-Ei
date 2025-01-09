@@ -136,8 +136,8 @@ class Protein:
         # Rotate every point
         for acid in points_to_rot:
             new_coord = self.rotate_coord(acid, pivot, rot_matrix)
-            old_point = self.data.pop(acid)
-            self.data[new_coord] = old_point
+            store_value = self.data.pop(acid)
+            self.data[new_coord] = store_value
         return True
 
 
