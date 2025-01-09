@@ -3,9 +3,9 @@
 Grote taken
 - Fold functie rotate_coord afmaken - Bryan
 - Alle functies updaten voor Cysteine - Ronan
-- Bij de visualistie waterstofbruggen tonen en de stabiliteit
+- Bij de visualistie waterstofbruggen tonen en de stabiliteit - Sydney
 - Output maken op de manier die zij willen: CSV file
-- Comments doorlopen - Sydney
+- Comments doorlopen
 - functie maken die kijkt of een fold mogelijk is
 - algoritme maken dat random fold
 
