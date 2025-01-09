@@ -1,25 +1,24 @@
 import matplotlib.pyplot as plt
-from present import Protein
+from proteine import Proteine
 
 class Visualise:
-    def show_points(self, data: dict[tuple[int, int], tuple[str, int]]) ->  None:
+    def filter_data(data: dict[tuple[int, int], tuple[str, int]], amino: str = None) -> tuple[list[int], list[int]]:
+        if amino is None:
+            x = [item[0][0] for item in data.items()]
+            y = [item[0][1] for item in data.items()]
+        else:
+            x = [item[0][0] for item in data.items() if item[1][0] == amino]
+            y = [item[0][1] for item in data.items() if item[1][0] == amino]
+        return (x, y)
+
+    def visualise_protein(protein: Proteine) ->  None:
         """Makes a plot of the protein."""
         # Filter the points out of the data
-        # Polar
-        x_p = [item[0][0] for item in data.items() if item[1][0] == "P"]
-        y_p = [item[0][1] for item in data.items() if item[1][0] == "P"]
-
-        # Hydrofobe
-        x_h = [item[0][0] for item in data.items() if item[1][0] == "H"]
-        y_h = [item[0][1] for item in data.items() if item[1][0] == "H"]
-
-        # Cysteine        
-        x_c = [item[0][0] for item in data.items() if item[1][0] == "C"]
-        y_c = [item[0][1] for item in data.items() if item[1][0] == "C"]
-
-        # Covalent bonds
-        x_l = [item[0][0] for item in data.items()]
-        y_l = [item[0][1] for item in data.items()]
+        data: dict[tuple[int, int], tuple[str, int]] = protein.give_data()
+        x_p, y_p = Visualise.filter_data(data, "P")
+        x_h, y_h = Visualise.filter_data(data, "H")
+        x_c, y_c = Visualise.filter_data(data, "C")
+        x_l, y_l = Visualise.filter_data(data)
 
         # Borders for plot and legend
         borders = [min(x_l), max(x_l), min(y_l), max(y_l)]
@@ -44,3 +43,6 @@ class Visualise:
         plt.ylim(min(borders) - 1, max(borders) + 1)
         plt.legend(in_plot)
         plt.show()
+
+protein_vis = Proteine("H")
+Visualise.visualise_protein(protein_vis)
