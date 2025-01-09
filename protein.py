@@ -10,22 +10,22 @@ class Protein:
         """
         sequence = sequence.upper()
         self.data: dict[tuple[int, int], tuple[str, int]] = {}
-        # for i, char in enumerate(sequence):
-        #     self.data[(i, 0)] = (f"{char}", i)
+        for i, char in enumerate(sequence):
+            self.data[(i, 0)] = (f"{char}", i)
 
         # test data for a random protein
-        self.data[(0, 0)]  = ("P", 0)
-        self.data[(1, 0)]  = ("C", 1)
-        self.data[(1, 1)]  = ("H", 2)
-        self.data[(0, 1)]  = ("H", 3)
-        self.data[(0, 2)]  = ("H", 4)
-        self.data[(1, 2)]  = ("P", 5)
-        self.data[(2, 2)]  = ("P", 6)
-        self.data[(2, 1)]  = ("H", 7)
-        self.data[(2, 0)]  = ("C", 8)
-        self.data[(2, -1)] = ("H", 9)
-        self.data[(1, -1)] = ("C", 10)
-        self.data[(0, -1)] = ("P", 11)
+        # self.data[(0, 0)]  = ("P", 0)
+        # self.data[(1, 0)]  = ("C", 1)
+        # self.data[(1, 1)]  = ("H", 2)
+        # self.data[(0, 1)]  = ("H", 3)
+        # self.data[(0, 2)]  = ("H", 4)
+        # self.data[(1, 2)]  = ("P", 5)
+        # self.data[(2, 2)]  = ("P", 6)
+        # self.data[(2, 1)]  = ("H", 7)
+        # self.data[(2, 0)]  = ("C", 8)
+        # self.data[(2, -1)] = ("H", 9)
+        # self.data[(1, -1)] = ("C", 10)
+        # self.data[(0, -1)] = ("P", 11)
 
 
         self.left_turn = [[0, -1], [1, 0]]
@@ -86,6 +86,9 @@ class Protein:
         score //= 2
         return score
     
+    
+
+    
     # Doesn't work yet but makes code cleaner
     def rotate_coord(self, coord: tuple[int, int], pivot: tuple[int, int],  matrix) -> tuple[int, int]:
         """
@@ -105,41 +108,58 @@ class Protein:
         rel_new_coord = tuple(rel_rot_coord)
         new_coord = (rel_new_coord[0] + pivot[0], rel_new_coord[1] + pivot[1])
         return new_coord
-
-    def fold(self, pivot: tuple[int, int], direction: str) -> bool:
-        """Folds a protein at a given pivot point in a certain direction: "left" or "right"."""
-        # Raise an error if the coordinate is not in the dataset.
-        if pivot not in self.data:
-            print("coordinate not in dataset")
-            raise(IndexError)
-        
-        # Make the command case insensitive and define the rotation matrix.
-        direction = direction.lower()
-        if direction == "right":
-            rot_matrix = np.array(self.right_turn)
-        elif direction == "left":
-            rot_matrix = np.array(self.left_turn)
-        
-        # Store the points that are following in the sequence.
+    
+    def is_foldable(self, pivot: tuple[int, int],  matrix) -> tuple[bool, dict[tuple[int, int], tuple[str, int]]] | bool:
+        # Store the points that are following in the sequence
         # These are following in the sequence
         points_to_rot: dict[tuple[int, int], tuple[str, int]] = {}
         for acid in self.data.items():
             if acid[1][1] > self.data[pivot][1]:
                 points_to_rot[acid[0]] = acid[1]
         
-        # Check if the rotation doesn't clash with the existing folding.
+        # Check if the rotation doesn't clash with the existing folding
         for acid in points_to_rot:
-            new_coord = self.rotate_coord(acid, pivot, rot_matrix)
+            new_coord = self.rotate_coord(acid, pivot, matrix)
             if new_coord in self.data:
                 return False
+        return (True, points_to_rot)
+
+    def fold(self, pivot: tuple[int, int], direction: str) -> bool:
+        """Folds a protein at a given pivot point in a certain direction: "left" or "right"."""
+        # Raise an error if the coordinate is not in the dataset
+        if pivot not in self.data:
+            print("coordinate not in dataset")
+            raise(IndexError)
+        
+        # Make the command case insensitive and define the rotation matrix
+        direction = direction.lower()
+        if direction == "right":
+            rot_matrix = np.array(self.right_turn)
+        elif direction == "left":
+            rot_matrix = np.array(self.left_turn)
+        
+        # # Store the points that are following in the sequence
+        # # These are following in the sequence
+        # points_to_rot: dict[tuple[int, int], tuple[str, int]] = {}
+        # for acid in self.data.items():
+        #     if acid[1][1] > self.data[pivot][1]:
+        #         points_to_rot[acid[0]] = acid[1]
+        
+        # # Check if the rotation doesn't clash with the existing folding
+        # for acid in points_to_rot:
+        #     new_coord = self.rotate_coord(acid, pivot, rot_matrix)
+        #     if new_coord in self.data:
+        #         return False
         
         # Rotate every point
-        for acid in points_to_rot:
-            new_coord = self.rotate_coord(acid, pivot, rot_matrix)
-            store_value = self.data.pop(acid)
-            self.data[new_coord] = store_value
-        return True
-
-
+        if (info := self.is_foldable(pivot, rot_matrix)):
+            points_to_rot = info[1]
+            for acid in points_to_rot:
+                new_coord = self.rotate_coord(acid, pivot, rot_matrix)
+                store_value = self.data.pop(acid)
+                self.data[new_coord] = store_value
+            return True
+        else:
+            return False
 
 protein1 = Protein("HHPHPC")

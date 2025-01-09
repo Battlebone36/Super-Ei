@@ -7,7 +7,9 @@ Grote taken
 - Output maken op de manier die zij willen: CSV file - Ronan
 - Comments doorlopen
 - functie maken die kijkt of een fold mogelijk is
-- algoritme maken dat random fold
+- algoritme maken dat random fold - Bryan
+- output algoritme opslaan
+- output algoritme visualiseren
 
 Kleine taken:
 
