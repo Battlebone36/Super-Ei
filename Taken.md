@@ -5,8 +5,8 @@ Grote taken
 
 - Bij de visualistie waterstofbruggen tonen en de stabiliteit - Sydney
 - Comments doorlopen
-- functie maken die kijkt of een fold mogelijk is
-- algoritme maken dat random fold
+- functie maken die kijkt of een fold mogelijk is - Bryan
+- algoritme maken dat random fold - Bryan
 
 Kleine taken:
 
