@@ -21,11 +21,11 @@ class Protein:
         self.data[(0, 2)]  = ("H", 4)
         self.data[(1, 2)]  = ("P", 5)
         self.data[(2, 2)]  = ("P", 6)
-        # self.data[(2, 1)]  = ("H", 7)
-        # self.data[(2, 0)]  = ("C", 8)
-        # self.data[(2, -1)] = ("H", 9)
-        # self.data[(1, -1)] = ("C", 10)
-        # self.data[(0, -1)] = ("P", 11)
+        self.data[(2, 1)]  = ("H", 7)
+        self.data[(2, 0)]  = ("C", 8)
+        self.data[(2, -1)] = ("H", 9)
+        self.data[(1, -1)] = ("C", 10)
+        self.data[(0, -1)] = ("P", 11)
 
 
         self.left_turn = [[0, -1], [1, 0]]
