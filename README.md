@@ -22,14 +22,19 @@ pip install -r requirements.txt
 ```
 
 ## Usage of the program
+[Needs to be changed to the actual run commands]: #
 To run the program, use the following command:
 ```
-python3 present.py
+python3 -m code.visualisation.visualisation
 ```
 
 ## Repository structure
 The following list describes the main directories and files in the repository, and where to find them:
-* /directory: very short description of its content
+* **/code**: contains all the code for this project
+    * **/code/algorithms**: contains the code for the algorithms
+    * **/code/classes**: contains the needed classes for this case
+    * **/code/visualisation**: contains the code for the visualisation
+* **/static**:
 
 # Authors
 * Sydney Celie
