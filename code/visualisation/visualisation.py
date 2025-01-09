@@ -53,6 +53,11 @@ class Visualise:
                     elif protein.c_bond(acid[0], friend):
                         ax.plot([acid[0][0], friend[0]], [acid[0][1], friend[1]], "g", linewidth=3.5, linestyle="dotted")
 
+        # Stability score displayed in plot
+        stability = protein.stability()
+        ax.text(min(borders), max(borders), f"Stability score: {stability}", fontsize=14, fontweight="bold")
+
+        # Show the plot
         plt.xlim(min(borders) - 1, max(borders) + 1)
         plt.ylim(min(borders) - 1, max(borders) + 1)
         plt.legend(in_plot)
