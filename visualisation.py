@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from protein import Proteine
+from protein import Protein
 
 class Visualise:
     def filter_data(data: dict[tuple[int, int], tuple[str, int]], amino: str = None) -> tuple[list[int], list[int]]:
@@ -11,7 +11,7 @@ class Visualise:
             y = [item[0][1] for item in data.items() if item[1][0] == amino]
         return (x, y)
 
-    def visualise_protein(protein: Proteine) ->  None:
+    def visualise_protein(protein: Protein) ->  None:
         """Makes a plot of the protein."""
         # Filter the points out of the data
         data: dict[tuple[int, int], tuple[str, int]] = protein.give_data()
@@ -44,5 +44,5 @@ class Visualise:
         plt.legend(in_plot)
         plt.show()
 
-protein_vis = Proteine("H")
+protein_vis = Protein("H")
 Visualise.visualise_protein(protein_vis)
