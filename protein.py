@@ -16,7 +16,6 @@ class Protein:
         # test data for a random protein
         self.data[(0, 0)]  = ("P", 0)
         self.data[(1, 0)]  = ("C", 1)
-        self.data[(1, 1)]  = ("H", 2)
         self.data[(0, 1)]  = ("H", 3)
         self.data[(0, 2)]  = ("H", 4)
         self.data[(1, 2)]  = ("P", 5)
@@ -26,10 +25,12 @@ class Protein:
         self.data[(2, -1)] = ("H", 9)
         self.data[(1, -1)] = ("C", 10)
         self.data[(0, -1)] = ("P", 11)
+        self.data[(1, 1)]  = ("H", 2)
 
 
         self.left_turn = [[0, -1], [1, 0]]
         self.right_turn = [[0, 1], [-1, 0]]
+        self.data = dict(sorted(self.data.items(), key=lambda item: item[1][1]))
     
     def give_data(self) -> dict[tuple[int, int], tuple[str, int]]:
         return self.data
@@ -45,18 +46,29 @@ class Protein:
         """
         Returns if the coordinates are in the protein dataset and
         if they have a bond that makes the protein stronger.
+        For H and H.
         """
         if coord1 in self.data and coord2 in self.data:
             return self.data[coord1][0] == "H" and self.data[coord2][0] == "H"
         return False
 
     def hc_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
+        """
+        Returns if the coordinates are in the protein dataset and
+        if they have a bond that makes the protein stronger.
+        For C and H or H and C
+        """
         if coord1 in self.data and coord2 in self.data:
             return ((self.data[coord1][0] == "C" and self.data[coord2][0] == "H") or
                     (self.data[coord1][0] == "H" and self.data[coord2][0] == "C"))
         return False
     
     def c_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
+        """
+        Returns if the coordinates are in the protein dataset and
+        if they have a bond that makes the protein stronger.
+        For C and C.
+        """
         if coord1 in self.data and coord2 in self.data:
             return self.data[coord1][0] == "C" and self.data[coord2][0] == "C"
         return False
@@ -146,9 +158,50 @@ class Protein:
             new_coord = (rel_new_coord[0] + pivot[0], rel_new_coord[1] + pivot[1])
             old_point = self.data.pop(acid)
             self.data[new_coord] = old_point
+        self.data = dict(sorted(self.data.items(), key=lambda item: item[1][1]))
         return True
 
+    def check_direction(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> int:
+        """
+        Function to check in what direction the protein moves
+        """
+        # if the x coordinate is the same look at the y coordinate
+        if coord2[0] == coord1[0]:
+                if coord2[1] - coord1[1] == 1:
+                    return 2
+                else:
+                    return -2
+        # else the y coordinates are the same thus look at the x coordinate
+        else:
+            if coord2[0] - coord1[0] == 1:
+                return 1
+            else:
+                return -1 
+        
+                
 
+    def output(self) -> str:
+        """
+        Put the final configuration into the correct data input for the check50
+        """
+        fold_commands = "amino, fold\n"
+        previous_amino = (0, 0)
+        for amino in self.data:
+            # add the first amino from (0, 0)
+            if amino == (0, 0):
+                fold_commands += f"{self.data[amino][0]},"
+                continue
+            
+            direction = self.check_direction(amino, previous_amino)
+            
+            fold_commands += f"{direction}\n{self.data[amino][0]},"
+
+            previous_amino = amino
+
+        fold_commands += f"0\nscore,{self.stability()}"
+        # print(fold_commands)
+        return fold_commands
+            
 
 
 
@@ -156,5 +209,6 @@ class Protein:
 
 
 protein1 = Protein("HHPHPC")
+protein1.output()
 protein1.fold((2, 0), "left")
 protein1.fold((2, 2), "right")
