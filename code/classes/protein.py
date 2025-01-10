@@ -8,7 +8,7 @@ class Protein:
         The character with its order are stored in a dictionary where the keys are the coordinates.
         """
         sequence = sequence.upper()
-        self.data: dict[tuple[int, int], tuple[str, int]] = {}
+        self.data: dict[tuple[int, int, int], tuple[str, int]] = {}
         self.load_data(sequence, command)
         self.left_turn = np.array([[0, -1], [1, 0]], dtype=int)
         self.right_turn = np.array([[0, 1], [-1, 0]], dtype=int)
@@ -32,31 +32,32 @@ class Protein:
             return
         command.lower()
         if command == "manual" or command == "manuel":
-            self.data[(0, 0)] = ("P", 0)
-            self.data[(1, 0)] = ("C", 1)
-            self.data[(1, 1)] = ("H", 2)
-            self.data[(0, 1)] = ("H", 3)
-            self.data[(0, 2)] = ("H", 4)
-            self.data[(1, 2)] = ("P", 5)
-            self.data[(2, 2)] = ("P", 6)
-            self.data[(2, 1)] = ("H", 7)
-            self.data[(2, 0)] = ("C", 8)
-            self.data[(2, -1)] = ("H", 9)
-            self.data[(1, -1)] = ("C", 10)
-            self.data[(0, -1)] = ("P", 11)
+            self.data[(0, 0, 0)] = ("P", 0)
+            self.data[(1, 0, 0)] = ("C", 1)
+            self.data[(1, 1, 0)] = ("H", 2)
+            self.data[(0, 1, 0)] = ("H", 3)
+            self.data[(0, 2, 0)] = ("H", 4)
+            self.data[(1, 2, 0)] = ("P", 5)
+            self.data[(2, 2, 0)] = ("P", 6)
+            self.data[(2, 1, 0)] = ("H", 7)
+            self.data[(2, 0, 0)] = ("C", 8)
+            self.data[(2, -1, 0)] = ("H", 9)
+            self.data[(1, -1, 0)] = ("C", 10)
+            self.data[(1, -1, 1)] = ("P", 11)
             self.data = dict(sorted(self.data.items(), key=lambda item: item[1][1]))
 
-    def give_data(self) -> dict[tuple[int, int], tuple[str, int]]:
+    def give_data(self) -> dict[tuple[int, int, int], tuple[str, int]]:
         return self.data
 
-    def neighbours(self, coord: tuple[int, int]) -> list[tuple[int, int]]:
+    def neighbours(self, coord: tuple[int, int, int]) -> list[tuple[int, int, int]]:
         """Returns the North, East, South and West coördinates of the one given."""
-        x_diff = [0, 1, 0, -1]
-        y_diff = [1, 0, -1, 0]
-        result = [(x_diff[i] + coord[0], y_diff[i] + coord[1]) for i in range(4)]
+        x_diff = [0, 1, 0, 0, -1, 0]
+        y_diff = [1, 0, 0, -1, 0, 0]
+        z_diff = [0, 0, 1, 0, 0 , -1]
+        result = [(x_diff[i] + coord[0], y_diff[i] + coord[1], z_diff[i] + coord[2]) for i in range(6)]
         return result
 
-    def type_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> int:
+    def type_bond(self, coord1: tuple[int, int, int], coord2: tuple[int, int, int]) -> int:
         """
         Gives back the stability of the bond that could be formed between the two amino acids.
 
@@ -78,8 +79,8 @@ class Protein:
 
     def stability(self) -> int:
         """A function that calculates the stability of a protein and returns it in an integer."""
-        # Filter out the "H" acids
-        h_acids: dict[tuple[int, int], tuple[str, int]] = {}
+        # Filter out the "H" and "C" acids
+        h_acids: dict[tuple[int, int, int], tuple[str, int]] = {}
         for acid in self.data.items():
             if acid[1][0] == "H" or acid[1][0] == "C":
                 h_acids[acid[0]] = acid[1]
@@ -96,7 +97,7 @@ class Protein:
         score //= 2
         return score
 
-    def rotate_coord(self, coord: tuple[int, int], pivot: tuple[int, int],  matrix) -> tuple[int, int]:
+    def rotate_coord(self, coord: tuple[int, int, int], pivot: tuple[int, int],  matrix) -> tuple[int, int]:
         """
         Rotates the coordinate around a pivot with a rotation matrix.
 
@@ -115,10 +116,10 @@ class Protein:
         new_coord = (rel_new_coord[0] + pivot[0], rel_new_coord[1] + pivot[1])
         return new_coord
 
-    def is_foldable(self, pivot: tuple[int, int], matrix) -> bool:
+    def is_foldable(self, pivot: tuple[int, int, int], matrix) -> bool:
         # Store the points that are following in the sequence
         # These are following in the sequence
-        points_to_rot: dict[tuple[int, int], tuple[str, int]] = {}
+        points_to_rot: dict[tuple[int, int, int], tuple[str, int]] = {}
         
         for coord, amino in self.data.items():
             if amino[1] > self.data[pivot][1]:
@@ -131,7 +132,7 @@ class Protein:
                 return False
         return True
 
-    def fold(self, pivot: tuple[int, int], direction: str) -> bool:
+    def fold(self, pivot: tuple[int, int, int], direction: str) -> bool:
         """Folds a protein at a given pivot point in a certain direction: "left" or "right"."""
         # Raise an error if the coordinate is not in the dataset
         if pivot not in self.data:
@@ -148,7 +149,7 @@ class Protein:
         # Rotate every point
         if self.is_foldable(pivot, rot_matrix):
             # Store points that must be rotated
-            points_to_rot: dict[tuple[int, int], tuple[str, int]] = {}
+            points_to_rot: dict[tuple[int, int, int], tuple[str, int]] = {}
         
             for coord, amino in self.data.items():
                 if amino[1] > self.data[pivot][1]:
@@ -163,31 +164,36 @@ class Protein:
         else:
             return False
 
-    def check_direction(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> int:
+    def check_direction(self, coord1: tuple[int, int, int], coord2: tuple[int, int, int]) -> int:
         """
         Function to check in what direction the protein moves
         """
         # If the x coordinate is the same look at the y coordinate
-        if coord2[0] == coord1[0]:
+        if coord2[0] == coord1[0] and coord2[2] == coord1[2]:
             if coord2[1] - coord1[1] == 1:
-                return 2
-            else:
                 return -2
-        # Else the y coordinates are the same thus look at the x coordinate
-        else:
-            if coord2[0] - coord1[0] == 1:
-                return 1
             else:
+                return 2
+        # Else the y coordinates are the same thus look at the x coordinate
+        elif coord2[1] == coord1[1] and coord2[2] == coord1[2]:
+            if coord2[0] - coord1[0] == 1:
                 return -1
+            else:
+                return 1
+        else:
+            if coord2[2] - coord1[2] == 1:
+                return -3
+            else:
+                return 3
 
     def output(self) -> str:
         """
         Put the final configuration into the correct data input for the check50
         """
         fold_commands = [["amino", "fold"]]
-        previous_amino = (0, 0)
+        previous_amino = (0, 0, 0)
         for amino in self.data:
-            if amino == (0, 0):
+            if amino == (0, 0, 0):
                 amino_char = f"{self.data[amino][0]}"
                 continue
 
