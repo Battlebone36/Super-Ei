@@ -25,18 +25,18 @@ class Protein:
             return
         command.lower()
         if command == "manual" or command == "manuel":
-            self.data[(0, 0)] = ("P", 0)
-            self.data[(1, 0)] = ("C", 1)
-            self.data[(1, 1)] = ("H", 2)
-            self.data[(0, 1)] = ("H", 3)
-            self.data[(0, 2)] = ("H", 4)
-            self.data[(1, 2)] = ("P", 5)
-            self.data[(2, 2)] = ("P", 6)
-            self.data[(2, 1)] = ("H", 7)
-            self.data[(2, 0)] = ("C", 8)
-            self.data[(2, -1)] = ("H", 9)
-            self.data[(1, -1)] = ("C", 10)
-            self.data[(0, -1)] = ("P", 11)
+            self.data[(0, 0, 0)] = ("P", 0)
+            self.data[(1, 0, 0)] = ("C", 1)
+            self.data[(1, 1, 0)] = ("H", 2)
+            self.data[(0, 1, 0)] = ("H", 3)
+            self.data[(0, 2, 0)] = ("H", 4)
+            self.data[(1, 2, 0)] = ("P", 5)
+            self.data[(2, 2, 0)] = ("P", 6)
+            self.data[(2, 1, 0)] = ("H", 7)
+            self.data[(2, 0, 0)] = ("C", 8)
+            self.data[(2, -1, 0)] = ("H", 9)
+            self.data[(1, -1, 0)] = ("C", 10)
+            self.data[(0, -1, 0)] = ("P", 11)
             self.data = dict(sorted(self.data.items(), key=lambda item: item[1][1]))
 
     def give_data(self) -> dict[tuple[int, int, int], tuple[str, int]]:
@@ -44,9 +44,10 @@ class Protein:
 
     def neighbours(self, coord: tuple[int, int, int]) -> list[tuple[int, int, int]]:
         """Returns the North, East, South and West coördinates of the one given."""
-        x_diff = [0, 1, 0, -1]
-        y_diff = [1, 0, -1, 0]
-        result = [(x_diff[i] + coord[0], y_diff[i] + coord[1]) for i in range(4)]
+        x_diff = [0, 1, 0, 0, -1, 0]
+        y_diff = [1, 0, 0, -1, 0, 0]
+        z_diff = [0, 0, 1, 0, 0 , -1]
+        result = [(x_diff[i] + coord[0], y_diff[i] + coord[1], z_diff[i] + coord[2]) for i in range(6)]
         return result
 
     def type_bond(self, coord1: tuple[int, int, int], coord2: tuple[int, int, int]) -> int:
@@ -71,7 +72,7 @@ class Protein:
 
     def stability(self) -> int:
         """A function that calculates the stability of a protein and returns it in an integer."""
-        # Filter out the "H" acids
+        # Filter out the "H" and "C" acids
         h_acids: dict[tuple[int, int, int], tuple[str, int]] = {}
         for acid in self.data.items():
             if acid[1][0] == "H" or acid[1][0] == "C":
@@ -156,31 +157,36 @@ class Protein:
         else:
             return False
 
-    def check_direction(self, coord1: tuple[int, int, int], coord2: tuple[int, int]) -> int:
+    def check_direction(self, coord1: tuple[int, int, int], coord2: tuple[int, int, int]) -> int:
         """
         Function to check in what direction the protein moves
         """
         # If the x coordinate is the same look at the y coordinate
-        if coord2[0] == coord1[0]:
+        if coord2[0] == coord1[0] and coord2[2] == coord1[2]:
             if coord2[1] - coord1[1] == 1:
                 return 2
             else:
                 return -2
         # Else the y coordinates are the same thus look at the x coordinate
-        else:
+        elif coord2[1] == coord1[1] and coord2[2] == coord1[2]:
             if coord2[0] - coord1[0] == 1:
                 return 1
             else:
                 return -1
+        else:
+            if coord2[2] - coord1[2] == 1:
+                return 3
+            else:
+                return -3
 
     def output(self) -> str:
         """
         Put the final configuration into the correct data input for the check50
         """
         fold_commands = [["amino", "fold"]]
-        previous_amino = (0, 0)
+        previous_amino = (0, 0, 0)
         for amino in self.data:
-            if amino == (0, 0):
+            if amino == (0, 0, 0):
                 amino_char = f"{self.data[amino][0]}"
                 continue
 
