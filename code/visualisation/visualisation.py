@@ -36,10 +36,10 @@ class Visualise:
 
         # Make the plot with dots and line
         fig, ax = plt.subplots()
-        ax.plot(x_l, y_l, c = "black", alpha= 0.8, linewidth= 5)
-        ax.plot(x_p, y_p, "bo", markersize= 20)
-        ax.plot(x_h, y_h, "ro", markersize= 20)
-        ax.plot(x_c, y_c, "go", markersize= 20)
+        ax.plot(x_l, y_l, c = "black", alpha= 0.8, linewidth= 3)
+        ax.plot(x_p, y_p, "bo", markersize= 12)
+        ax.plot(x_h, y_h, "ro", markersize= 12)
+        ax.plot(x_c, y_c, "go", markersize= 12)
 
         # Mark non-sequential bonds
         line_info = {-1: ("r", 2), -5: ("g", 3,5)}
@@ -51,11 +51,15 @@ class Visualise:
                     if score < 0:
                         ax.plot([acid[0][0], friend[0]], [acid[0][1], friend[1]], line_info[score][0], linewidth=line_info[score][1], linestyle="dotted")
 
-        # Stability score displayed in plot
-        stability = protein.stability()
-        ax.text(min(borders), max(borders), f"Stability score: {stability}", fontsize=14, fontweight="bold")
+        # Specific plot settings
+        ax.set_aspect("equal", adjustable="box")
+        ax.grid(True)
+        ax.set_xticklabels([])
+        ax.set_yticklabels([])
 
-        # Show the plot
+        # Show plot
+        stability = protein.stability()
+        plt.title(f"Stability score: {stability}", fontsize=17, fontweight="bold")
         plt.xlim(min(borders) - 1, max(borders) + 1)
         plt.ylim(min(borders) - 1, max(borders) + 1)
         plt.legend(in_plot)
