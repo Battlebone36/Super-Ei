@@ -102,7 +102,6 @@ class Protein:
             return self.data[coord1][0] == "C" and self.data[coord2][0] == "C"
         return False
 
-    # TODO: AANPASSEN
     def stability(self) -> int:
         """A function that calculates the stability of a protein and returns it in an integer."""
         # Filter out the "H" acids
@@ -240,13 +239,4 @@ class Protein:
             
 
 protein1 = Protein("CHPHHPHC")
-print(protein1.give_data())
-print(protein1.stability())
-protein1.fold((4, 0), "left")
-print(protein1.give_data())
-print(protein1.stability())
-protein1.fold((3, 0), "left")
-print(protein1.give_data())
-print(protein1.stability())
 
-# print(protein1.type_bond((5, 0), (5, 0)))
