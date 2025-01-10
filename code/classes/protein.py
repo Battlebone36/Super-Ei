@@ -13,6 +13,13 @@ class Protein:
         self.left_turn = np.array([[0, -1], [1, 0]], dtype=int)
         self.right_turn = np.array([[0, 1], [-1, 0]], dtype=int)
 
+        self.x_neg = np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]])
+        self.x_pos = np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]])
+        self.y_neg = np.array([[0, 0, 1], [0, 1, 0], [-1, 0, 0]])
+        self.y_pos = np.array([[0, 0, -1], [0, 1, 0], [1, 0, 0]])
+        self.z_neg = np.array([[0, 1, 0], [-1, 0, 0], [0, 0, -1]])
+        self.z_pos = np.array([[0, -1, 0], [1, 0, 0], [0, 0, -1]])
+
     def load_data(self, sequence: str, command=None) -> None:
         """
         Load data into the protein library.
@@ -196,8 +203,3 @@ class Protein:
 
 
 protein1 = Protein("CHPHHPHC")
-# print(protein1.give_data())
-# protein1.fold((4, 0), "left")
-# protein1.fold((3, 0), "left")
-# print(protein1.give_data())
-
