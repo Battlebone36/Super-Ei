@@ -10,8 +10,8 @@ class Protein:
         """
         sequence = sequence.upper()
         self.data: dict[tuple[int, int], tuple[str, int]] = {}
-        for i, char in enumerate(sequence):
-            self.data[(i, 0)] = (f"{char}", i)
+        # for i, char in enumerate(sequence):
+        #     self.data[(i, 0)] = (f"{char}", i)
 
         # test data for a random protein
         self.data[(0, 0)]  = ("P", 0)
