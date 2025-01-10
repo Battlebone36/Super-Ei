@@ -5,7 +5,7 @@ Grote taken
 
 - Bij de visualistie waterstofbruggen tonen en de stabiliteit - Sydney
 - Comments doorlopen
-- algoritme maken dat random fold - Bryan
+- algoritme maken dat random fold - Sydney
 - output algoritme opslaan
 - output algoritme visualiseren
 - bij __init__ een aparte functie maken die met een string de dictionary vult - Bryan
