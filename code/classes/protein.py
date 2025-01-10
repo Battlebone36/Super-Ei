@@ -15,6 +15,11 @@ class Protein:
         self.right_turn = [[0, 1], [-1, 0]]
     
     def load_data(self, sequence: str, command = None) -> None:
+        """
+        Load data into the protein library.
+        If the command "manual" is not given the string is implemented in the data.
+        Otherwise a folded protein is implemented in the data.
+        """
         if command == "manual":
             self.data[(0, 0)]  = ("P", 0)
             self.data[(1, 0)]  = ("C", 1)
