@@ -133,18 +133,26 @@ class Protein:
         return True
 
     def fold(self, pivot: tuple[int, int, int], direction: str) -> bool:
-        """Folds a protein at a given pivot point in a certain direction: "left" or "right"."""
+        """Folds a protein at a given pivot point in a certain direction: "{axis} {direction}"."""
         # Raise an error if the coordinate is not in the dataset
         if pivot not in self.data:
             print("coordinate not in dataset")
             raise IndexError
 
-        # Make the command case insensitive and define the rotation matrix
+        # Make the command case insensitive and define the rotation matrix otherwise return false
         direction = direction.lower()
-        if direction == "right":
-            rot_matrix = self.right_turn
-        elif direction == "left":
-            rot_matrix = self.left_turn
+        direction_data = {
+            "x pos": self.x_pos,
+            "x neg": self.x_neg,
+            "y pos": self.y_pos,
+            "y neg": self.y_neg,
+            "z pos": self.z_pos,
+            "z neg": self.z_neg
+        }
+        if direction in direction_data:
+            rot_matrix = direction_data[direction]
+        else:
+            return False
 
         # Rotate every point
         if self.is_foldable(pivot, rot_matrix):
@@ -209,5 +217,7 @@ class Protein:
 
 
 protein1 = Protein("CHPHHPHC")
-# print(protein1.give_data())
-# print(protein1.is_foldable(()))
+print(protein1.give_data())
+# print(protein1.is_foldable((2, 0, 0), protein1.y_pos))
+print(protein1.fold((2, 0, 0), "y pos"))
+print(protein1.give_data())
