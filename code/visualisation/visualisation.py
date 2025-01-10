@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from code.classes.protein import Protein
 
+
 class Visualise:
     def filter_data(data: dict[tuple[int, int], tuple[str, int]], amino: str = None) -> tuple[list[int], list[int]]:
         """"Filters the coordinates of amino acids from a dataset, optionally filtering by type."""
@@ -12,7 +13,7 @@ class Visualise:
             y = [item[0][1] for item in data.items() if item[1][0] == amino]
         return (x, y)
 
-    def visualise_protein(protein: Protein) ->  None:
+    def visualise_protein(protein: Protein) -> None:
         """Makes a plot of the protein."""
         # Filter the points out of the data
         data: dict[tuple[int, int], tuple[str, int]] = protein.give_data()
@@ -36,13 +37,20 @@ class Visualise:
 
         # Make the plot with dots and line
         fig, ax = plt.subplots()
+<<<<<<< HEAD
         ax.plot(x_l, y_l, c = "black", alpha= 0.8, linewidth= 3)
         ax.plot(x_p, y_p, "bo", markersize= 12)
         ax.plot(x_h, y_h, "ro", markersize= 12)
         ax.plot(x_c, y_c, "go", markersize= 12)
+=======
+        ax.plot(x_l, y_l, c="black", alpha=0.8, linewidth=5)
+        ax.plot(x_p, y_p, "bo", markersize=20)
+        ax.plot(x_h, y_h, "ro", markersize=20)
+        ax.plot(x_c, y_c, "go", markersize=20)
+>>>>>>> 2195c57c8bb7adcbd16f321c9edaa596a8d98431
 
         # Mark non-sequential bonds
-        line_info = {-1: ("r", 2), -5: ("g", 3,5)}
+        line_info = {-1: ("r", 2), -5: ("g", 3.5)}
         for acid in data.items():
             friends = protein.neighbours(acid[0])
             for friend in friends:
