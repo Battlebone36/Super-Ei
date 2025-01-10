@@ -209,5 +209,5 @@ class Protein:
 
 
 protein1 = Protein("CHPHHPHC")
-print(protein1.give_data())
+# print(protein1.give_data())
 # print(protein1.is_foldable(()))
