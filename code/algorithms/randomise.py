@@ -17,7 +17,7 @@ def random_fold(protein: Protein, attempts: int) -> Protein:
     for attempt in range(attempts):
         copy_protein = Protein(sequence)
 
-        # Loop over the acids in the protein
+        # Loop over the amino acids in the protein
         for i in range(1, len(copy_protein.data) - 1):
             current_coord = None
             for coord, (amino, index) in copy_protein.data.items():
