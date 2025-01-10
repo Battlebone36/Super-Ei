@@ -32,6 +32,28 @@ class Protein:
         self.right_turn = [[0, 1], [-1, 0]]
         self.data = dict(sorted(self.data.items(), key=lambda item: item[1][1]))
     
+    def load_data(self, sequence: str, command = None) -> None:
+        if command == "manual":
+            self.data[(0, 0)]  = ("P", 0)
+            self.data[(1, 0)]  = ("C", 1)
+            self.data[(1, 1)]  = ("H", 2)
+            self.data[(0, 1)]  = ("H", 3)
+            self.data[(0, 2)]  = ("H", 4)
+            self.data[(1, 2)]  = ("P", 5)
+            self.data[(2, 2)]  = ("P", 6)
+            self.data[(2, 1)]  = ("H", 7)
+            self.data[(2, 0)]  = ("C", 8)
+            self.data[(2, -1)] = ("H", 9)
+            self.data[(1, -1)] = ("C", 10)
+            self.data[(0, -1)] = ("P", 11)
+        else:
+            for i, char in enumerate(sequence):
+                self.data[(i, 0)] = (f"{char}", i)
+
+
+
+    
+    
     def give_data(self) -> dict[tuple[int, int], tuple[str, int]]:
         return self.data
 
