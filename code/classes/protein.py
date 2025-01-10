@@ -20,7 +20,12 @@ class Protein:
         If the command "manual" is not given the string is implemented in the data.
         Otherwise a folded protein is implemented in the data.
         """
-        if command == "manual":
+        if command is None:
+            for i, char in enumerate(sequence):
+                self.data[(i, 0)] = (f"{char}", i)
+            return
+        command.lower()
+        if command == "manual" or command == "manuel":
             self.data[(0, 0)]  = ("P", 0)
             self.data[(1, 0)]  = ("C", 1)
             self.data[(1, 1)]  = ("H", 2)
@@ -34,10 +39,7 @@ class Protein:
             self.data[(1, -1)] = ("C", 10)
             self.data[(0, -1)] = ("P", 11)
             self.data = dict(sorted(self.data.items(), key=lambda item: item[1][1]))
-        else:
-            for i, char in enumerate(sequence):
-                self.data[(i, 0)] = (f"{char}", i)
-    
+        
     def give_data(self) -> dict[tuple[int, int], tuple[str, int]]:
         return self.data
 
@@ -48,6 +50,27 @@ class Protein:
         result = [(x_diff[i] + coord[0], y_diff[i] + coord[1]) for i in range(4)]
         return result
     
+    def type_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> int:
+        """
+        Gives back the stability of the bond that could be formed between the two amino acids.
+
+        Options:
+        - Two "H" amino acids -> -1
+        - A "H" with a "C" amino acid -> -1
+        - Two "C" acids -> -5
+        - Other options -> 0
+        """
+        if coord1 in self.data and coord2 in self.data:
+            type_aminos = set()
+            type_aminos.add(self.data[coord1][0])
+            type_aminos.add(self.data[coord2][0])
+            if type_aminos == {"H"} or type_aminos == {"C", "H"}:
+                return -1
+            elif type_aminos =={"C"}:
+                return -5
+        return 0
+
+
     def h_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
         """
         Returns if the coordinates are in the protein dataset and
@@ -78,7 +101,7 @@ class Protein:
         if coord1 in self.data and coord2 in self.data:
             return self.data[coord1][0] == "C" and self.data[coord2][0] == "C"
         return False
-
+    # TODO: AANPASSEN
     def stability(self) -> int:
         """A function that calculates the stability of a protein and returns it in an integer."""
         # Filter out the "H" acids
@@ -103,11 +126,8 @@ class Protein:
                     score -= 5
         score //= 2
         return score
-    
-    
 
-    
-    # Doesn't work yet but makes code cleaner
+
     def rotate_coord(self, coord: tuple[int, int], pivot: tuple[int, int],  matrix) -> tuple[int, int]:
         """
         Rotates the coordinate around a pivot with a rotation matrix.
@@ -222,4 +242,6 @@ class Protein:
         return fold_commands
             
 
-protein1 = Protein("HHPHPC", "manual")
+protein1 = Protein("HHPHPC")
+print(protein1.give_data())
+print(protein1.type_bond((5, 0), (5, 0)))

@@ -42,6 +42,7 @@ class Visualise:
         ax.plot(x_c, y_c, "go", markersize= 20)
 
         # Mark non-sequential bonds
+        # TODO: BRYAN AANPASSEN
         for acid in data.items():
             friends = protein.neighbours(acid[0])
             for friend in friends:
