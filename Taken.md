@@ -1,27 +1,20 @@
 # Taken die nog volbracht moeten worden
 
-Grote taken
+## Grote taken
 - Comments doorlopen
-- 3D
+- 3D alles nakijken
 - algoritmes
+- Zelfde afstand tussen punten in plot
 
-Kleine taken:
 
-3D taken:
+## 3D taken:
 Protein:
-- __init__ - Ronan, Bryan
-- give_data
-- neighbours
-- rotate_coord
-- is_foldable
-- fold
 - check_direction
 
-Visualise:
-- plot... - Sydney
+## Kleine taken:
 
 
-DONE:
+## DONE:
 - Present file nieuwe naam - Bryan
 - Fold functie rotate_coord afmaken - Bryan
 - Alle functies updaten voor Cysteine - Ronan
@@ -33,5 +26,13 @@ DONE:
 - output algoritme visualiseren - Sydney
 - Vierkante grid - Sydney, Ronan
 - Bij de visualistie waterstofbruggen tonen en de stabiliteit - Sydney
-
 - algoritme maken dat random fold - Sydney
+
+3D:
+- rotate_coord
+- is_foldable
+- fold
+- give_data
+- neighbours
+- __init__ - Ronan, Bryan
+- plot... - Sydney
