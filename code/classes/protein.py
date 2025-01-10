@@ -217,7 +217,3 @@ class Protein:
 
 
 protein1 = Protein("CHPHHPHC")
-print(protein1.give_data())
-# print(protein1.is_foldable((2, 0, 0), protein1.y_pos))
-print(protein1.fold((2, 0, 0), "y pos"))
-print(protein1.give_data())
