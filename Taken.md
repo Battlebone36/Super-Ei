@@ -8,7 +8,8 @@ Grote taken
 - algoritme maken dat random fold - Sydney
 - output algoritme opslaan
 - output algoritme visualiseren
-- bij __init__ een aparte functie maken die met een string de dictionary vult - Bryan
+- Vierkante grid
+
 
 Kleine taken:
 
@@ -28,3 +29,4 @@ DONE:
 - Alle functies updaten voor Cysteine - Ronan
 - Output maken op de manier die zij willen: CSV file - Ronan
 - functie maken die kijkt of een fold mogelijk is - Bryan
+- bij __init__ een aparte functie maken die met een string de dictionary vult - Bryan

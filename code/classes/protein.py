@@ -171,20 +171,7 @@ class Protein:
             rot_matrix = self.right_turn
         elif direction == "left":
             rot_matrix = self.left_turn
-        
-        # # Store the points that are following in the sequence
-        # # These are following in the sequence
-        # points_to_rot: dict[tuple[int, int], tuple[str, int]] = {}
-        # for acid in self.data.items():
-        #     if acid[1][1] > self.data[pivot][1]:
-        #         points_to_rot[acid[0]] = acid[1]
-        
-        # # Check if the rotation doesn't clash with the existing folding
-        # for acid in points_to_rot:
-        #     new_coord = self.rotate_coord(acid, pivot, rot_matrix)
-        #     if new_coord in self.data:
-        #         return False
-        
+
         # Rotate every point
         if (info := self.is_foldable(pivot, rot_matrix)):
             points_to_rot = info[1]
@@ -200,13 +187,13 @@ class Protein:
         """
         Function to check in what direction the protein moves
         """
-        # if the x coordinate is the same look at the y coordinate
+        # If the x coordinate is the same look at the y coordinate
         if coord2[0] == coord1[0]:
                 if coord2[1] - coord1[1] == 1:
                     return 2
                 else:
                     return -2
-        # else the y coordinates are the same thus look at the x coordinate
+        # Else the y coordinates are the same thus look at the x coordinate
         else:
             if coord2[0] - coord1[0] == 1:
                 return 1
@@ -221,7 +208,7 @@ class Protein:
         fold_commands = "amino, fold\n"
         previous_amino = (0, 0)
         for amino in self.data:
-            # add the first amino from (0, 0)
+            # Add the first amino from (0, 0)
             if amino == (0, 0):
                 fold_commands += f"{self.data[amino][0]},"
                 continue
@@ -233,7 +220,6 @@ class Protein:
             previous_amino = amino
 
         fold_commands += f"0\nscore,{self.stability()}"
-        # print(fold_commands)
         return fold_commands
             
 
