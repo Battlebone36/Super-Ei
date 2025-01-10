@@ -2,66 +2,66 @@ import matplotlib.pyplot as plt
 from code.classes.protein import Protein
 
 
-class Visualise:
-    def filter_data(data: dict[tuple[int, int], tuple[str, int]], amino: str = None) -> tuple[list[int], list[int]]:
-        """"Filters the coordinates of amino acids from a dataset, optionally filtering by type."""
-        if amino is None:
-            x = [item[0][0] for item in data.items()]
-            y = [item[0][1] for item in data.items()]
-        else:
-            x = [item[0][0] for item in data.items() if item[1][0] == amino]
-            y = [item[0][1] for item in data.items() if item[1][0] == amino]
-        return (x, y)
+# class Visualise:
+def filter_data(data: dict[tuple[int, int], tuple[str, int]], amino: str | None = None) -> tuple[list[int], list[int]]:
+    """"Filters the coordinates of amino acids from a dataset, optionally filtering by type."""
+    if amino is None:
+        x = [item[0][0] for item in data.items()]
+        y = [item[0][1] for item in data.items()]
+    else:
+        x = [item[0][0] for item in data.items() if item[1][0] == amino]
+        y = [item[0][1] for item in data.items() if item[1][0] == amino]
+    return (x, y)
 
-    def visualise_protein(protein: Protein) -> None:
-        """Makes a plot of the protein."""
-        # Filter the points out of the data
-        data: dict[tuple[int, int], tuple[str, int]] = protein.give_data()
-        x_p, y_p = Visualise.filter_data(data, "P")
-        x_h, y_h = Visualise.filter_data(data, "H")
-        x_c, y_c = Visualise.filter_data(data, "C")
-        x_l, y_l = Visualise.filter_data(data)
+def visualise_protein(protein: Protein) -> None:
+    """Makes a plot of the protein."""
+    # Filter the points out of the data
+    data: dict[tuple[int, int], tuple[str, int]] = protein.give_data()
+    x_p, y_p = filter_data(data, "P")
+    x_h, y_h = filter_data(data, "H")
+    x_c, y_c = filter_data(data, "C")
+    x_l, y_l = filter_data(data)
 
-        # Borders for plot and legend
-        borders = [min(x_l), max(x_l), min(y_l), max(y_l)]
+    # Borders for plot and legend
+    borders = [min(x_l), max(x_l), min(y_l), max(y_l)]
 
-        in_plot = []
-        if x_l:
-            in_plot.append("Bond")
-        if x_p:
-            in_plot.append("Polar")
-        if x_h:
-            in_plot.append("Hydrofobe")
-        if x_c:
-            in_plot.append("Cysteine")
+    in_plot = []
+    if x_l:
+        in_plot.append("Bond")
+    if x_p:
+        in_plot.append("Polar")
+    if x_h:
+        in_plot.append("Hydrofobe")
+    if x_c:
+        in_plot.append("Cysteine")
 
-        # Make the plot with dots and line
-        fig, ax = plt.subplots()
-        ax.plot(x_l, y_l, c = "black", alpha=0.8, linewidth=3)
-        ax.plot(x_p, y_p, "bo", markersize=12)
-        ax.plot(x_h, y_h, "ro", markersize=12)
-        ax.plot(x_c, y_c, "go", markersize=12)
+    # Make the plot with dots and line
+    fig, ax = plt.subplots()
+    ax.plot(x_l, y_l, c = "black", alpha=0.8, linewidth=3)
+    ax.plot(x_p, y_p, "bo", markersize=12)
+    ax.plot(x_h, y_h, "ro", markersize=12)
+    ax.plot(x_c, y_c, "go", markersize=12)
 
-        # Mark non-sequential bonds
-        line_info = {-1: ("r", 2), -5: ("g", 3.5)}
-        for acid in data.items():
-            friends = protein.neighbours(acid[0])
-            for friend in friends:
-                if friend in data and abs(acid[1][1] - data[friend][1]) != 1:
-                    score = protein.type_bond(acid[0], friend)
-                    if score < 0:
-                        ax.plot([acid[0][0], friend[0]], [acid[0][1], friend[1]], line_info[score][0], linewidth=line_info[score][1], linestyle="dotted")
+    # Mark non-sequential bonds
+    line_info = {-1: ("r", 2), -5: ("g", 3.5)}
+    for acid in data.items():
+        friends = protein.neighbours(acid[0])
+        for friend in friends:
+            if friend in data and abs(acid[1][1] - data[friend][1]) != 1:
+                score = protein.type_bond(acid[0], friend)
+                if score < 0:
+                    ax.plot([acid[0][0], friend[0]], [acid[0][1], friend[1]], line_info[score][0], linewidth=line_info[score][1], linestyle="dotted")
 
-        # Specific plot settings
-        ax.set_aspect("equal", adjustable="box")
-        ax.grid(True)
-        ax.set_xticklabels([])
-        ax.set_yticklabels([])
+    # Specific plot settings
+    ax.set_aspect("equal", adjustable="box")
+    ax.grid(True)
+    ax.set_xticklabels([])
+    ax.set_yticklabels([])
 
-        # Show plot
-        stability = protein.stability()
-        plt.title(f"Stability score: {stability}", fontsize=17, fontweight="bold")
-        plt.xlim(min(borders) - 1, max(borders) + 1)
-        plt.ylim(min(borders) - 1, max(borders) + 1)
-        plt.legend(in_plot)
-        plt.show()
+    # Show plot
+    stability = protein.stability()
+    plt.title(f"Stability score: {stability}", fontsize=17, fontweight="bold")
+    plt.xlim(min(borders) - 1, max(borders) + 1)
+    plt.ylim(min(borders) - 1, max(borders) + 1)
+    plt.legend(in_plot)
+    plt.show()

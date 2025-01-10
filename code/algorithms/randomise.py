@@ -1,6 +1,7 @@
 from code.classes.protein import Protein
-from code.visualisation.visualisation import Visualise
+from code.visualisation.visualisation import *
 import random
+
 
 def random_fold(protein: Protein, attempts: int) -> Protein:
     """Randomly folds a protein multiple times."""
@@ -22,7 +23,7 @@ def random_fold(protein: Protein, attempts: int) -> Protein:
                     current_coord = coord
                     break
 
-            fold_choice = random.randint(0,1)
+            fold_choice = random.randint(0, 1)
 
             if fold_choice == 0 and copy_protein.is_foldable(current_coord, copy_protein.left_turn):
                 copy_protein.fold(current_coord, "left")
@@ -31,7 +32,8 @@ def random_fold(protein: Protein, attempts: int) -> Protein:
 
     return copy_protein
 
+
 protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
 folded_protein = random_fold(protein1, 60)
-Visualise.visualise_protein(folded_protein)
+visualise_protein(folded_protein)
 print(folded_protein.give_data())

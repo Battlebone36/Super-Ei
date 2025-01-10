@@ -69,36 +69,36 @@ class Protein:
                 return -5
         return 0
 
-    def h_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
-        """
-        Returns if the coordinates are in the protein dataset and
-        if they have a bond that makes the protein stronger.
-        For H and H.
-        """
-        if coord1 in self.data and coord2 in self.data:
-            return self.data[coord1][0] == "H" and self.data[coord2][0] == "H"
-        return False
+    # def h_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
+    #     """
+    #     Returns if the coordinates are in the protein dataset and
+    #     if they have a bond that makes the protein stronger.
+    #     For H and H.
+    #     """
+    #     if coord1 in self.data and coord2 in self.data:
+    #         return self.data[coord1][0] == "H" and self.data[coord2][0] == "H"
+    #     return False
 
-    def hc_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
-        """
-        Returns if the coordinates are in the protein dataset and
-        if they have a bond that makes the protein stronger.
-        For C and H or H and C
-        """
-        if coord1 in self.data and coord2 in self.data:
-            return ((self.data[coord1][0] == "C" and self.data[coord2][0] == "H") or
-                    (self.data[coord1][0] == "H" and self.data[coord2][0] == "C"))
-        return False
+    # def hc_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
+    #     """
+    #     Returns if the coordinates are in the protein dataset and
+    #     if they have a bond that makes the protein stronger.
+    #     For C and H or H and C
+    #     """
+    #     if coord1 in self.data and coord2 in self.data:
+    #         return ((self.data[coord1][0] == "C" and self.data[coord2][0] == "H") or
+    #                 (self.data[coord1][0] == "H" and self.data[coord2][0] == "C"))
+    #     return False
 
-    def c_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
-        """
-        Returns if the coordinates are in the protein dataset and
-        if they have a bond that makes the protein stronger.
-        For C and C.
-        """
-        if coord1 in self.data and coord2 in self.data:
-            return self.data[coord1][0] == "C" and self.data[coord2][0] == "C"
-        return False
+    # def c_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
+    #     """
+    #     Returns if the coordinates are in the protein dataset and
+    #     if they have a bond that makes the protein stronger.
+    #     For C and C.
+    #     """
+    #     if coord1 in self.data and coord2 in self.data:
+    #         return self.data[coord1][0] == "C" and self.data[coord2][0] == "C"
+    #     return False
 
     def stability(self) -> int:
         """A function that calculates the stability of a protein and returns it in an integer."""
@@ -139,7 +139,7 @@ class Protein:
         new_coord = (rel_new_coord[0] + pivot[0], rel_new_coord[1] + pivot[1])
         return new_coord
 
-    def is_foldable(self, pivot: tuple[int, int], matrix) -> tuple[bool, dict[tuple[int, int], tuple[str, int]]] | bool:
+    def is_foldable(self, pivot: tuple[int, int], matrix) -> bool:
         # Store the points that are following in the sequence
         # These are following in the sequence
         points_to_rot: dict[tuple[int, int], tuple[str, int]] = {}
@@ -153,7 +153,7 @@ class Protein:
             new_coord = self.rotate_coord(acid, pivot, matrix)
             if new_coord in self.data:
                 return False
-        return (True, points_to_rot)
+        return True
 
     def fold(self, pivot: tuple[int, int], direction: str) -> bool:
         """Folds a protein at a given pivot point in a certain direction: "left" or "right"."""
@@ -170,8 +170,13 @@ class Protein:
             rot_matrix = self.left_turn
 
         # Rotate every point
-        if (info := self.is_foldable(pivot, rot_matrix)):
-            valid, points_to_rot = info
+        if self.is_foldable(pivot, rot_matrix):
+            # Store points that must be rotated
+            points_to_rot: dict[tuple[int, int], tuple[str, int]] = {}
+        
+            for coord, amino in self.data.items():
+                if amino[1] > self.data[pivot][1]:
+                    points_to_rot[coord] = amino
 
             # points_to_rot = dictionary
             for acid in points_to_rot:
@@ -220,3 +225,8 @@ class Protein:
 
 
 protein1 = Protein("CHPHHPHC")
+# print(protein1.give_data())
+# protein1.fold((4, 0), "left")
+# protein1.fold((3, 0), "left")
+# print(protein1.give_data())
+
