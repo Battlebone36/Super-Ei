@@ -8,9 +8,19 @@ Grote taken
 - algoritme maken dat random fold - Bryan
 - output algoritme opslaan
 - output algoritme visualiseren
-- bij __init__ een aparte functie maken die met een string de dictionary vult
+- bij __init__ een aparte functie maken die met een string de dictionary vult - Bryan
 
 Kleine taken:
+
+3D taken:
+Protein:
+- __init__
+- give_data
+- neighbours
+- rotate_coord
+- is_foldable
+- fold
+- check_direction
 
 DONE:
 - Present file nieuwe naam - Bryan
