@@ -1,4 +1,5 @@
 from code.classes.protein import Protein
+from code.visualisation.visualisation import Visualise
 import random
 
 def random_fold(protein: Protein, attempts: int) -> Protein:
@@ -21,17 +22,16 @@ def random_fold(protein: Protein, attempts: int) -> Protein:
                     current_coord = coord
                     break
 
-            fold_choice = random.randint(0,2)
+            fold_choice = random.randint(0,1)
 
-            if fold_choice == 1:
-                copy_protein.is_foldable(current_coord)
+            if fold_choice == 0 and copy_protein.is_foldable(current_coord, copy_protein.left_turn):
                 copy_protein.fold(current_coord, "left")
-            elif fold_choice == 2:
-                copy_protein.is_foldable(current_coord)
+            elif fold_choice == 1 and copy_protein.is_foldable(current_coord, copy_protein.right_turn):
                 copy_protein.fold(current_coord, "right")
 
-    return protein
+    return copy_protein
 
-protein1 = Protein("HHCPPPPH")
-protein1 = random_fold(protein1)
-print(protein1.give_data())
+protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
+folded_protein = random_fold(protein1, 60)
+Visualise.visualise_protein(folded_protein)
+print(folded_protein.give_data())
