@@ -69,37 +69,6 @@ class Protein:
                 return -5
         return 0
 
-    # def h_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
-    #     """
-    #     Returns if the coordinates are in the protein dataset and
-    #     if they have a bond that makes the protein stronger.
-    #     For H and H.
-    #     """
-    #     if coord1 in self.data and coord2 in self.data:
-    #         return self.data[coord1][0] == "H" and self.data[coord2][0] == "H"
-    #     return False
-
-    # def hc_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
-    #     """
-    #     Returns if the coordinates are in the protein dataset and
-    #     if they have a bond that makes the protein stronger.
-    #     For C and H or H and C
-    #     """
-    #     if coord1 in self.data and coord2 in self.data:
-    #         return ((self.data[coord1][0] == "C" and self.data[coord2][0] == "H") or
-    #                 (self.data[coord1][0] == "H" and self.data[coord2][0] == "C"))
-    #     return False
-
-    # def c_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> bool:
-    #     """
-    #     Returns if the coordinates are in the protein dataset and
-    #     if they have a bond that makes the protein stronger.
-    #     For C and C.
-    #     """
-    #     if coord1 in self.data and coord2 in self.data:
-    #         return self.data[coord1][0] == "C" and self.data[coord2][0] == "C"
-    #     return False
-
     def stability(self) -> int:
         """A function that calculates the stability of a protein and returns it in an integer."""
         # Filter out the "H" acids
