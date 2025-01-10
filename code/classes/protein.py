@@ -212,8 +212,7 @@ class Protein:
                 return 1
             else:
                 return -1 
-        
-                
+
 
     def output(self) -> str:
         """
