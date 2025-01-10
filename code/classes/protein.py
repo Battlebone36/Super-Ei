@@ -101,6 +101,7 @@ class Protein:
         if coord1 in self.data and coord2 in self.data:
             return self.data[coord1][0] == "C" and self.data[coord2][0] == "C"
         return False
+
     # TODO: AANPASSEN
     def stability(self) -> int:
         """A function that calculates the stability of a protein and returns it in an integer."""
@@ -118,12 +119,8 @@ class Protein:
                 
                 if friend in self.data and abs(acid[1][1] - self.data[friend][1]) == 1:
                     continue
-                elif self.h_bond(acid[0], friend):
-                    score -= 1
-                elif self.hc_bond(acid[0], friend):
-                    score -= 1
-                elif self.c_bond(acid[0], friend):
-                    score -= 5
+                else:
+                    score += self.type_bond(acid[0], friend)
         score //= 2
         return score
 
@@ -242,6 +239,14 @@ class Protein:
         return fold_commands
             
 
-protein1 = Protein("HHPHPC")
+protein1 = Protein("CHPHHPHC")
 print(protein1.give_data())
-print(protein1.type_bond((5, 0), (5, 0)))
+print(protein1.stability())
+protein1.fold((4, 0), "left")
+print(protein1.give_data())
+print(protein1.stability())
+protein1.fold((3, 0), "left")
+print(protein1.give_data())
+print(protein1.stability())
+
+# print(protein1.type_bond((5, 0), (5, 0)))
