@@ -53,7 +53,7 @@ def visualise_protein(protein: Protein) -> None:
             if friend in data and abs(acid[1][1] - data[friend][1]) != 1:
                 score = protein.type_bond(acid[0], friend)
                 if score < 0:
-                    ax.plot([acid[0][0], friend[0]], [acid[0][1], friend[1]], line_info[score][0], linewidth=line_info[score][1], linestyle="dotted")
+                    ax.plot([acid[0][0], friend[0]], [acid[0][1], friend[1]], [acid[0][2], friend[2]], line_info[score][0], linewidth=line_info[score][1], linestyle="dotted")
 
     # Specific plot settings
     ax.set_aspect("equal", adjustable="box")

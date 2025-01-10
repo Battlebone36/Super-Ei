@@ -97,7 +97,7 @@ class Protein:
         score //= 2
         return score
 
-    def rotate_coord(self, coord: tuple[int, int, int], pivot: tuple[int, int],  matrix) -> tuple[int, int]:
+    def rotate_coord(self, coord: tuple[int, int, int], pivot: tuple[int, int, int], matrix) -> tuple[int, int, int]:
         """
         Rotates the coordinate around a pivot with a rotation matrix.
 
@@ -133,7 +133,7 @@ class Protein:
         return True
 
     def fold(self, pivot: tuple[int, int, int], direction: str) -> bool:
-        """Folds a protein at a given pivot point in a certain direction: "{axis} {direction}"."""
+        """Folds a protein at a given pivot point in a certain direction: "{axis}_{direction}"."""
         # Raise an error if the coordinate is not in the dataset
         if pivot not in self.data:
             print("coordinate not in dataset")
@@ -142,12 +142,12 @@ class Protein:
         # Make the command case insensitive and define the rotation matrix otherwise return false
         direction = direction.lower()
         direction_data = {
-            "x pos": self.x_pos,
-            "x neg": self.x_neg,
-            "y pos": self.y_pos,
-            "y neg": self.y_neg,
-            "z pos": self.z_pos,
-            "z neg": self.z_neg
+            "x_pos": self.x_pos,
+            "x_neg": self.x_neg,
+            "y_pos": self.y_pos,
+            "y_neg": self.y_neg,
+            "z_pos": self.z_pos,
+            "z_neg": self.z_neg
         }
         if direction in direction_data:
             rot_matrix = direction_data[direction]
@@ -174,7 +174,7 @@ class Protein:
 
     def check_direction(self, coord1: tuple[int, int, int], coord2: tuple[int, int, int]) -> int:
         """
-        Function to check in what direction the protein moves
+        Function to check in what direction the protein moves.
         """
         # If the x coordinate is the same look at the y coordinate
         if coord2[0] == coord1[0] and coord2[2] == coord1[2]:
@@ -196,7 +196,7 @@ class Protein:
 
     def output(self) -> str:
         """
-        Put the final configuration into the correct data input for the check50
+        Put the final configuration into the correct data input for the check50.
         """
         fold_commands = [["amino", "fold"]]
         previous_amino = (0, 0, 0)

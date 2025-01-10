@@ -14,7 +14,9 @@ def random_fold(protein: Protein, attempts: int) -> Protein:
                 sequence += amino
                 break
 
-    # Keep folding the protein
+    # Keep folding the protein randomly
+    directions = ["x_pos", "x_neg", "y_pos", "y_neg", "z_pos", "z_neg"]
+
     for attempt in range(attempts):
         copy_protein = Protein(sequence)
 
@@ -27,12 +29,12 @@ def random_fold(protein: Protein, attempts: int) -> Protein:
                     break
             
             # Random fold choice
-            fold_choice = random.randint(0,1)
+            fold_direction = random.choice(directions)
 
-            if fold_choice == 0 and copy_protein.is_foldable(current_coord, copy_protein.left_turn):
-                copy_protein.fold(current_coord, "left")
-            elif fold_choice == 1 and copy_protein.is_foldable(current_coord, copy_protein.right_turn):
-                copy_protein.fold(current_coord, "right")
+            if copy_protein.is_foldable(current_coord, getattr(copy_protein, fold_direction)):
+                copy_protein.fold(current_coord, fold_direction)
+            # elif fold_choice == 1 and copy_protein.is_foldable(current_coord, copy_protein.right_turn):
+            #     copy_protein.fold(current_coord, "right")
 
     return copy_protein
 
