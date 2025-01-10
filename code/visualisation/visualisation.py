@@ -37,7 +37,7 @@ def visualise_protein(protein: Protein) -> None:
 
     # Make the plot with dots and line
     fig, ax = plt.subplots()
-    ax.plot(x_l, y_l, c = "black", alpha=0.8, linewidth=3)
+    ax.plot(x_l, y_l, c = "black", alpha=0.8, linewidth=4)
     ax.plot(x_p, y_p, "bo", markersize=12)
     ax.plot(x_h, y_h, "ro", markersize=12)
     ax.plot(x_c, y_c, "go", markersize=12)
@@ -61,7 +61,7 @@ def visualise_protein(protein: Protein) -> None:
     # Show plot
     stability = protein.stability()
     plt.title(f"Stability score: {stability}", fontsize=17, fontweight="bold")
-    plt.xlim(min(borders) - 1, max(borders) + 1)
-    plt.ylim(min(borders) - 1, max(borders) + 1)
+    plt.xlim(min(x_l) - 1, max(x_l) + 1)
+    plt.ylim(min(y_l) - 1, max(y_l) + 1)
     plt.legend(in_plot)
     plt.show()

@@ -9,6 +9,6 @@ if __name__ == "__main__":
     visualise_protein(protein_vis)
     print(f"{protein_vis.output()}")
 
-    with open('output.csv', 'w', newline = '') as csvfile:
-        my_writer = csv.writer(csvfile, delimiter=' ')
-        my_writer.writerow(protein_vis.output())
+    with open ('output.csv','w',newline = '') as csvfile:
+        my_writer = csv.writer(csvfile, delimiter = ',')
+        my_writer.writerows(protein_vis.output())

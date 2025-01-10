@@ -208,19 +208,21 @@ class Protein:
         """
         Put the final configuration into the correct data input for the check50
         """
-        fold_commands = "amino, fold\n"
+        fold_commands = [["amino", "fold"]]
         previous_amino = (0, 0)
         for amino in self.data:
-            # Add the first amino from (0, 0)
             if amino == (0, 0):
-                fold_commands += f"{self.data[amino][0]},"
+                amino_char = f"{self.data[amino][0]}"
                 continue
 
             direction = self.check_direction(amino, previous_amino)
-            fold_commands += f"{direction}\n{self.data[amino][0]},"
+            fold_commands.append([amino_char, f"{direction}"])
+            amino_char = f"{self.data[amino][0]}"
             previous_amino = amino
 
-        fold_commands += f"0\nscore,{self.stability()}"
+        fold_commands.append([f"{self.data[previous_amino][0]}", "0"])
+        fold_commands.append(["score", f"{self.stability()}"])
+
         return fold_commands
 
 
