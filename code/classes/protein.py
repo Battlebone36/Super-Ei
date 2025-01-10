@@ -8,7 +8,7 @@ class Protein:
         The character with its order are stored in a dictionary where the keys are the coordinates.
         """
         sequence = sequence.upper()
-        self.data: dict[tuple[int, int], tuple[str, int]] = {}
+        self.data: dict[tuple[int, int, int], tuple[str, int]] = {}
         self.load_data(sequence, command)
         self.left_turn = np.array([[0, -1], [1, 0]], dtype=int)
         self.right_turn = np.array([[0, 1], [-1, 0]], dtype=int)
@@ -39,17 +39,17 @@ class Protein:
             self.data[(0, -1)] = ("P", 11)
             self.data = dict(sorted(self.data.items(), key=lambda item: item[1][1]))
 
-    def give_data(self) -> dict[tuple[int, int], tuple[str, int]]:
+    def give_data(self) -> dict[tuple[int, int, int], tuple[str, int]]:
         return self.data
 
-    def neighbours(self, coord: tuple[int, int]) -> list[tuple[int, int]]:
+    def neighbours(self, coord: tuple[int, int, int]) -> list[tuple[int, int, int]]:
         """Returns the North, East, South and West coördinates of the one given."""
         x_diff = [0, 1, 0, -1]
         y_diff = [1, 0, -1, 0]
         result = [(x_diff[i] + coord[0], y_diff[i] + coord[1]) for i in range(4)]
         return result
 
-    def type_bond(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> int:
+    def type_bond(self, coord1: tuple[int, int, int], coord2: tuple[int, int, int]) -> int:
         """
         Gives back the stability of the bond that could be formed between the two amino acids.
 
@@ -72,7 +72,7 @@ class Protein:
     def stability(self) -> int:
         """A function that calculates the stability of a protein and returns it in an integer."""
         # Filter out the "H" acids
-        h_acids: dict[tuple[int, int], tuple[str, int]] = {}
+        h_acids: dict[tuple[int, int, int], tuple[str, int]] = {}
         for acid in self.data.items():
             if acid[1][0] == "H" or acid[1][0] == "C":
                 h_acids[acid[0]] = acid[1]
@@ -89,7 +89,7 @@ class Protein:
         score //= 2
         return score
 
-    def rotate_coord(self, coord: tuple[int, int], pivot: tuple[int, int],  matrix) -> tuple[int, int]:
+    def rotate_coord(self, coord: tuple[int, int, int], pivot: tuple[int, int],  matrix) -> tuple[int, int]:
         """
         Rotates the coordinate around a pivot with a rotation matrix.
 
@@ -108,10 +108,10 @@ class Protein:
         new_coord = (rel_new_coord[0] + pivot[0], rel_new_coord[1] + pivot[1])
         return new_coord
 
-    def is_foldable(self, pivot: tuple[int, int], matrix) -> bool:
+    def is_foldable(self, pivot: tuple[int, int, int], matrix) -> bool:
         # Store the points that are following in the sequence
         # These are following in the sequence
-        points_to_rot: dict[tuple[int, int], tuple[str, int]] = {}
+        points_to_rot: dict[tuple[int, int, int], tuple[str, int]] = {}
         
         for coord, amino in self.data.items():
             if amino[1] > self.data[pivot][1]:
@@ -124,7 +124,7 @@ class Protein:
                 return False
         return True
 
-    def fold(self, pivot: tuple[int, int], direction: str) -> bool:
+    def fold(self, pivot: tuple[int, int, int], direction: str) -> bool:
         """Folds a protein at a given pivot point in a certain direction: "left" or "right"."""
         # Raise an error if the coordinate is not in the dataset
         if pivot not in self.data:
@@ -141,7 +141,7 @@ class Protein:
         # Rotate every point
         if self.is_foldable(pivot, rot_matrix):
             # Store points that must be rotated
-            points_to_rot: dict[tuple[int, int], tuple[str, int]] = {}
+            points_to_rot: dict[tuple[int, int, int], tuple[str, int]] = {}
         
             for coord, amino in self.data.items():
                 if amino[1] > self.data[pivot][1]:
@@ -156,7 +156,7 @@ class Protein:
         else:
             return False
 
-    def check_direction(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> int:
+    def check_direction(self, coord1: tuple[int, int, int], coord2: tuple[int, int]) -> int:
         """
         Function to check in what direction the protein moves
         """
