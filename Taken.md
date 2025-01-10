@@ -9,6 +9,8 @@ Grote taken
 - output algoritme opslaan
 - output algoritme visualiseren
 - Vierkante grid
+- pycodestyle
+- mypy
 
 
 Kleine taken:
