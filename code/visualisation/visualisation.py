@@ -37,17 +37,10 @@ class Visualise:
 
         # Make the plot with dots and line
         fig, ax = plt.subplots()
-<<<<<<< HEAD
-        ax.plot(x_l, y_l, c = "black", alpha= 0.8, linewidth= 3)
-        ax.plot(x_p, y_p, "bo", markersize= 12)
-        ax.plot(x_h, y_h, "ro", markersize= 12)
-        ax.plot(x_c, y_c, "go", markersize= 12)
-=======
-        ax.plot(x_l, y_l, c="black", alpha=0.8, linewidth=5)
-        ax.plot(x_p, y_p, "bo", markersize=20)
-        ax.plot(x_h, y_h, "ro", markersize=20)
-        ax.plot(x_c, y_c, "go", markersize=20)
->>>>>>> 2195c57c8bb7adcbd16f321c9edaa596a8d98431
+        ax.plot(x_l, y_l, c = "black", alpha=0.8, linewidth=3)
+        ax.plot(x_p, y_p, "bo", markersize=12)
+        ax.plot(x_h, y_h, "ro", markersize=12)
+        ax.plot(x_c, y_c, "go", markersize=12)
 
         # Mark non-sequential bonds
         line_info = {-1: ("r", 2), -5: ("g", 3.5)}
