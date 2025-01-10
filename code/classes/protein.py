@@ -11,8 +11,8 @@ class Protein:
         sequence = sequence.upper()
         self.data: dict[tuple[int, int], tuple[str, int]] = {}
         self.load_data(sequence, command)
-        self.left_turn = [[0, -1], [1, 0]]
-        self.right_turn = [[0, 1], [-1, 0]]
+        self.left_turn = np.array([[0, -1], [1, 0]])
+        self.right_turn = np.array([[0, 1], [-1, 0]])
     
     def load_data(self, sequence: str, command = None) -> None:
         """
@@ -147,7 +147,7 @@ class Protein:
         new_coord = (rel_new_coord[0] + pivot[0], rel_new_coord[1] + pivot[1])
         return new_coord
     
-    def is_foldable(self, pivot: tuple[int, int],  matrix) -> tuple[bool, dict[tuple[int, int], tuple[str, int]]] | bool:
+    def is_foldable(self, pivot: tuple[int, int], matrix) -> tuple[bool, dict[tuple[int, int], tuple[str, int]]] | bool:
         # Store the points that are following in the sequence
         # These are following in the sequence
         points_to_rot: dict[tuple[int, int], tuple[str, int]] = {}
@@ -172,9 +172,9 @@ class Protein:
         # Make the command case insensitive and define the rotation matrix
         direction = direction.lower()
         if direction == "right":
-            rot_matrix = np.array(self.right_turn)
+            rot_matrix = self.right_turn
         elif direction == "left":
-            rot_matrix = np.array(self.left_turn)
+            rot_matrix = self.left_turn
         
         # # Store the points that are following in the sequence
         # # These are following in the sequence

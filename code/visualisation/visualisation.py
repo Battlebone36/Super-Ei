@@ -64,7 +64,3 @@ class Visualise:
         plt.legend(in_plot)
         plt.show()
 
-protein_vis = Protein("HHCPPPPH")
-Visualise.visualise_protein(protein_vis)
-protein_vis.fold((2,0), "right")
-Visualise.visualise_protein(protein_vis)
