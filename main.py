@@ -7,7 +7,6 @@ if __name__ == "__main__":
     Visualise.visualise_protein(protein_vis)
     protein_vis.fold((2,0), "right")
     Visualise.visualise_protein(protein_vis)
-    print(f"{protein_vis.output()}")
 
     with open ('output.csv','w',newline = '') as csvfile:
         my_writer = csv.writer(csvfile, delimiter = ',')
