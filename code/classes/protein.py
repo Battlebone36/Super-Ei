@@ -28,7 +28,7 @@ class Protein:
         """
         if command is None:
             for i, char in enumerate(sequence):
-                self.data[(i, 0)] = (f"{char}", i)
+                self.data[(i, 0, 0)] = (f"{char}", i)
             return
         command.lower()
         if command == "manual" or command == "manuel":
@@ -53,7 +53,7 @@ class Protein:
         """Returns the North, East, South and West coördinates of the one given."""
         x_diff = [0, 1, 0, 0, -1, 0]
         y_diff = [1, 0, 0, -1, 0, 0]
-        z_diff = [0, 0, 1, 0, 0 , -1]
+        z_diff = [0, 0, 1, 0, 0, -1]
         result = [(x_diff[i] + coord[0], y_diff[i] + coord[1], z_diff[i] + coord[2]) for i in range(6)]
         return result
 
@@ -109,11 +109,11 @@ class Protein:
         Output:
         - Rotated coordinate
         """
-        rel_coord = (coord[0] - pivot[0], coord[1] - pivot[1])
+        rel_coord = (coord[0] - pivot[0], coord[1] - pivot[1], coord[2] - pivot[2])
         v_rel_coord = np.array(rel_coord, dtype=int)
         rel_rot_coord = matrix @ v_rel_coord
         rel_new_coord = tuple(rel_rot_coord)
-        new_coord = (rel_new_coord[0] + pivot[0], rel_new_coord[1] + pivot[1])
+        new_coord = (rel_new_coord[0] + pivot[0], rel_new_coord[1] + pivot[1], rel_new_coord[2] + pivot[2])
         return new_coord
 
     def is_foldable(self, pivot: tuple[int, int, int], matrix) -> bool:
@@ -209,3 +209,5 @@ class Protein:
 
 
 protein1 = Protein("CHPHHPHC")
+print(protein1.give_data())
+# print(protein1.is_foldable(()))
