@@ -36,7 +36,7 @@ class Protein:
             self.data[(2, 0, 0)] = ("C", 8)
             self.data[(2, -1, 0)] = ("H", 9)
             self.data[(1, -1, 0)] = ("C", 10)
-            self.data[(0, -1, 0)] = ("P", 11)
+            self.data[(1, -1, 1)] = ("P", 11)
             self.data = dict(sorted(self.data.items(), key=lambda item: item[1][1]))
 
     def give_data(self) -> dict[tuple[int, int, int], tuple[str, int]]:
@@ -164,20 +164,20 @@ class Protein:
         # If the x coordinate is the same look at the y coordinate
         if coord2[0] == coord1[0] and coord2[2] == coord1[2]:
             if coord2[1] - coord1[1] == 1:
-                return 2
-            else:
                 return -2
+            else:
+                return 2
         # Else the y coordinates are the same thus look at the x coordinate
         elif coord2[1] == coord1[1] and coord2[2] == coord1[2]:
             if coord2[0] - coord1[0] == 1:
-                return 1
-            else:
                 return -1
+            else:
+                return 1
         else:
             if coord2[2] - coord1[2] == 1:
-                return 3
-            else:
                 return -3
+            else:
+                return 3
 
     def output(self) -> str:
         """
