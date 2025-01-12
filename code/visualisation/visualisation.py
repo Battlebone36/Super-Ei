@@ -3,9 +3,9 @@ from code.classes.protein import Protein
 
 
 # class Visualise:
-def filter_data(data: dict[tuple[int, int], tuple[str, int]], amino: str | None = None) -> tuple[list[int], list[int], list[int]]:
+def filter_data(data: dict[tuple[int, int, int], tuple[str, int]], amino: str) -> tuple[list[int], list[int], list[int]]:
     """"Filters the coordinates of amino acids from a dataset, optionally filtering by type."""
-    if amino is None:
+    if amino == "all":
         x = [item[0][0] for item in data.items()]
         y = [item[0][1] for item in data.items()]
         z = [item[0][2] for item in data.items()]
@@ -14,6 +14,24 @@ def filter_data(data: dict[tuple[int, int], tuple[str, int]], amino: str | None 
         y = [item[0][1] for item in data.items() if item[1][0] == amino]
         z = [item[0][2] for item in data.items() if item[1][0] == amino]
     return (x, y, z)
+
+
+def plot_settings(ax) -> None:
+    ax.set_aspect("equal", adjustable="box")
+    ax.grid(False)
+    ax.set_xticklabels([])
+    ax.set_yticklabels([])
+    # ax.set_zticklabels([])
+
+    ax.set_axis_off()
+
+    ax.xaxis.pane.fill = False
+    ax.yaxis.pane.fill = False
+    ax.zaxis.pane.fill = False
+
+    ax.xaxis.pane.set_edgecolor((1.0, 1.0, 1.0, 0.0))
+    ax.yaxis.pane.set_edgecolor((1.0, 1.0, 1.0, 0.0))
+    ax.zaxis.pane.set_edgecolor((1.0, 1.0, 1.0, 0.0))
 
 def visualise_protein(protein: Protein) -> None:
     """Makes a plot of the protein."""
@@ -56,21 +74,7 @@ def visualise_protein(protein: Protein) -> None:
                     ax.plot([acid[0][0], friend[0]], [acid[0][1], friend[1]], [acid[0][2], friend[2]], line_info[score][0], linewidth=line_info[score][1], linestyle="dotted")
 
     # Specific plot settings
-    ax.set_aspect("equal", adjustable="box")
-    ax.grid(False)
-    ax.set_xticklabels([])
-    ax.set_yticklabels([])
-    ax.set_zticklabels([])
-
-    ax.set_axis_off()
-
-    ax.xaxis.pane.fill = False
-    ax.yaxis.pane.fill = False
-    ax.zaxis.pane.fill = False
-
-    ax.xaxis.pane.set_edgecolor((1.0, 1.0, 1.0, 0.0))
-    ax.yaxis.pane.set_edgecolor((1.0, 1.0, 1.0, 0.0))
-    ax.zaxis.pane.set_edgecolor((1.0, 1.0, 1.0, 0.0))
+    plot_settings(ax=ax)
 
     # Show plot
     stability = protein.stability()

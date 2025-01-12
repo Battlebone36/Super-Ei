@@ -10,15 +10,15 @@ class Protein:
         sequence = sequence.upper()
         self.data: dict[tuple[int, int, int], tuple[str, int]] = {}
         self.load_data(sequence, command)
-        self.left_turn = np.array([[0, -1], [1, 0]], dtype=int)
-        self.right_turn = np.array([[0, 1], [-1, 0]], dtype=int)
+        self.rotations = {
+            "x_pos": np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]]),
+            "x_neg": np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]]),
+            "y_pos": np.array([[0, 0, -1], [0, 1, 0], [1, 0, 0]]),
+            "y_neg": np.array([[0, 0, 1], [0, 1, 0], [-1, 0, 0]]),
+            "z_pos": np.array([[0, -1, 0], [1, 0, 0], [0, 0, -1]]),
+            "z_neg": np.array([[0, 1, 0], [-1, 0, 0], [0, 0, -1]])
+        }
 
-        self.x_neg = np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]])
-        self.x_pos = np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]])
-        self.y_neg = np.array([[0, 0, 1], [0, 1, 0], [-1, 0, 0]])
-        self.y_pos = np.array([[0, 0, -1], [0, 1, 0], [1, 0, 0]])
-        self.z_neg = np.array([[0, 1, 0], [-1, 0, 0], [0, 0, -1]])
-        self.z_pos = np.array([[0, -1, 0], [1, 0, 0], [0, 0, -1]])
 
     def load_data(self, sequence: str, command=None) -> None:
         """
@@ -50,7 +50,7 @@ class Protein:
         return self.data
 
     def neighbours(self, coord: tuple[int, int, int]) -> list[tuple[int, int, int]]:
-        """Returns the North, East, South and West coördinates of the one given."""
+        """Returns adjesent 3D coördinates of the one given."""
         x_diff = [0, 1, 0, 0, -1, 0]
         y_diff = [1, 0, 0, -1, 0, 0]
         z_diff = [0, 0, 1, 0, 0, -1]
@@ -79,13 +79,13 @@ class Protein:
 
     def stability(self) -> int:
         """A function that calculates the stability of a protein and returns it in an integer."""
-        # Filter out the "H" and "C" acids
+        # Filter out the "H" and "C" amino acids
         h_acids: dict[tuple[int, int, int], tuple[str, int]] = {}
         for acid in self.data.items():
             if acid[1][0] == "H" or acid[1][0] == "C":
                 h_acids[acid[0]] = acid[1]
 
-        # Loop through the "H" acids and look to the neighbours
+        # Loop through the "H" and "C" amino acids and look to the neighbours
         score = 0
         for acid in h_acids.items():
             friends = self.neighbours(acid[0])
@@ -117,8 +117,8 @@ class Protein:
         return new_coord
 
     def is_foldable(self, pivot: tuple[int, int, int], matrix) -> bool:
+        """Returns if the protein can rotate in certain direction (matrix) around a pivot point"""
         # Store the points that are following in the sequence
-        # These are following in the sequence
         points_to_rot: dict[tuple[int, int, int], tuple[str, int]] = {}
         
         for coord, amino in self.data.items():
@@ -131,6 +131,18 @@ class Protein:
             if new_coord in self.data:
                 return False
         return True
+    
+    def possible_folds(self) -> list[tuple[tuple[int, int, int], str]]:
+        """Returns the possible folds in a protein"""
+
+        possibilities: list[tuple[tuple[int, int, int], str]]= []
+        for amino in self.data:
+
+            for key, value in self.rotations.items():
+                if self.is_foldable(amino, value):
+                    possibilities.append((amino, key))
+        return possibilities
+
 
     def fold(self, pivot: tuple[int, int, int], direction: str) -> bool:
         """Folds a protein at a given pivot point in a certain direction: "{axis}_{direction}"."""
@@ -141,16 +153,9 @@ class Protein:
 
         # Make the command case insensitive and define the rotation matrix otherwise return false
         direction = direction.lower()
-        direction_data = {
-            "x_pos": self.x_pos,
-            "x_neg": self.x_neg,
-            "y_pos": self.y_pos,
-            "y_neg": self.y_neg,
-            "z_pos": self.z_pos,
-            "z_neg": self.z_neg
-        }
-        if direction in direction_data:
-            rot_matrix = direction_data[direction]
+
+        if direction in self.rotations:
+            rot_matrix = self.rotations[direction]
         else:
             return False
 
@@ -163,7 +168,6 @@ class Protein:
                 if amino[1] > self.data[pivot][1]:
                     points_to_rot[coord] = amino
 
-            # points_to_rot = dictionary
             for acid in points_to_rot:
                 new_coord = self.rotate_coord(acid, pivot, rot_matrix)
                 store_value = self.data.pop(acid)
@@ -194,7 +198,7 @@ class Protein:
             else:
                 return 3
 
-    def output(self) -> str:
+    def output(self) -> list[list[str]]:
         """
         Put the final configuration into the correct data input for the check50.
         """
@@ -214,6 +218,3 @@ class Protein:
         fold_commands.append(["score", f"{self.stability()}"])
 
         return fold_commands
-
-
-protein1 = Protein("CHPHHPHC")
