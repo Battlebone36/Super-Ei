@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 from code.classes.protein import Protein
+from code.algorithms.randomise import random_fold
+import numpy as np
 
 
 # class Visualise:
@@ -42,26 +44,13 @@ def visualise_protein(protein: Protein) -> None:
     x_c, y_c, z_c = filter_data(data, "C")
     x_l, y_l, z_l = filter_data(data, "all")
 
-    # # Borders for plot and legend
-    # borders = [min(x_l), max(x_l), min(y_l), max(y_l), min(z_l), max(z_l)]
-
-    in_plot = []
-    if x_l:
-        in_plot.append("Bond")
-    if x_p:
-        in_plot.append("Polar")
-    if x_h:
-        in_plot.append("Hydrofobe")
-    if x_c:
-        in_plot.append("Cysteine")
-
     # Make the plot with dots and line
     fig = plt.figure()
     ax = fig.add_subplot(111, projection="3d")
-    ax.plot(x_l, y_l, z_l, c = "black", alpha=0.8, linewidth=4)
-    ax.plot(x_p, y_p, z_p, "bo", markersize=12)
-    ax.plot(x_h, y_h, z_h, "ro", markersize=12)
-    ax.plot(x_c, y_c, z_c, "go", markersize=12)
+    ax.plot(x_l, y_l, z_l, "black", markersize=12, linewidth=4, label="Bond")
+    ax.plot(x_p, y_p, z_p, "bo", markersize=12, linewidth=4, label="Polar")
+    ax.plot(x_h, y_h, z_h, "ro", markersize=12, linewidth=4, label="Hydrofobe")
+    ax.plot(x_c, y_c, z_c, "go", markersize=12, linewidth=4, label="Cysteine")
 
     # Mark non-sequential bonds
     line_info = {-1: ("r", 2), -5: ("g", 3.5)}
@@ -79,7 +68,27 @@ def visualise_protein(protein: Protein) -> None:
     # Show plot
     stability = protein.stability()
     plt.title(f"Stability score: {stability}", fontsize=17, fontweight="bold")
-    plt.xlim(min(x_l) - 1, max(x_l) + 1)
-    plt.ylim(min(y_l) - 1, max(y_l) + 1)
-    plt.legend(in_plot)
+    plt.legend()
+    plt.show()
+
+def plot_algorithm(algorithm, ax) -> None:
+    sequence = "HHPHHHPHPHHHPH"
+    test_protein = Protein(sequence)
+    stability_scores = []
+    for i in range(100):
+        result_protein: Protein = algorithm(test_protein)
+        stability_scores.append(result_protein.stability())
+    max_score = max(stability_scores)
+    min_score = min(stability_scores)
+    ax.hist(stability_scores, edgecolor="black", bins= max_score - min_score + 1, range=(min_score - 0.5, max_score + 0.5), alpha=0.8, label=f"{algorithm.__name__}")
+
+def visualise_algorithm(algorithms) -> None:
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    for algorithm in algorithms:
+        plot_algorithm(algorithm=algorithm, ax=ax)
+    plt.xlabel("Stability")
+    plt.ylabel("Ocurrency")
+    plt.title("Functionality of algorithm out of 100 tests")
+    plt.legend()
     plt.show()

@@ -7,6 +7,7 @@
 - Zelfde afstand tussen punten in plot
 
 
+
 ## 3D taken:
 Protein:
 - check_direction
@@ -27,8 +28,10 @@ Protein:
 - Vierkante grid - Sydney, Ronan
 - Bij de visualistie waterstofbruggen tonen en de stabiliteit - Sydney
 - algoritme maken dat random fold - Sydney
+- Visualiseer algoritmes - Bryan
 
 3D:
+- Type correctie - Ronan
 - rotate_coord
 - is_foldable
 - fold
