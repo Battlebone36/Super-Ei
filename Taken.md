@@ -4,7 +4,6 @@
 - Comments doorlopen
 - 3D alles nakijken
 - algoritmes
-- Zelfde afstand tussen punten in plot
 
 
 ## 3D taken:
@@ -24,7 +23,7 @@ Protein:
 - pycodestyle, mypy gewoon - Bryan
 - output algoritme opslaan - Dinges
 - output algoritme visualiseren - Sydney
-- Vierkante grid - Sydney, Ronan
+- Vierkante grid / zelfde afstand tussen punten in plot - Sydney, Ronan
 - Bij de visualistie waterstofbruggen tonen en de stabiliteit - Sydney
 - algoritme maken dat random fold - Sydney
 
@@ -35,4 +34,4 @@ Protein:
 - give_data
 - neighbours
 - __init__ - Ronan, Bryan
-- plot... - Sydney
+- 3D plot - Sydney
