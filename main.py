@@ -1,15 +1,17 @@
 from code.classes.protein import Protein
 from code.visualisation.visualisation import *
 from code.algorithms.randomise import random_fold
+from code.algorithms.greedy_search import greedy_search
 import csv
 
 if __name__ == "__main__":
     
     protein_vis = Protein("HHCPPPPH", "manual")
-    visualise_protein(protein_vis)
+    # visualise_protein(protein_vis)
+    greedy_search(protein_vis)
 
     # plot_algorithm(random_fold)
-    algorithms = [random_fold, random_fold]
+    # algorithms = [random_fold, random_fold]
     # visualise_algorithm(algorithms)
 
 
