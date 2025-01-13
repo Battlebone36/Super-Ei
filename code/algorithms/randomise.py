@@ -31,8 +31,11 @@ def random_fold(protein: Protein, attempts: int) -> Protein:
             # Random fold choice
             fold_direction = random.choice(directions)
 
-            if copy_protein.is_foldable(current_coord, getattr(copy_protein, fold_direction)):
+            if copy_protein.is_foldable(current_coord, copy_protein.rotations[fold_direction]):
                 copy_protein.fold(current_coord, fold_direction)
+            
+            # if copy_protein.is_foldable(current_coord, getattr(copy_protein, fold_direction)):
+            #     copy_protein.fold(current_coord, fold_direction)
             # elif fold_choice == 1 and copy_protein.is_foldable(current_coord, copy_protein.right_turn):
             #     copy_protein.fold(current_coord, "right")
 
