@@ -7,6 +7,8 @@ def greedy_fold(protein: Protein) -> Protein:
     score for each possibility."""
     old_protein = copy.deepcopy(protein)
     choice_dict = {}
+    lowest_score = 0
+    best_direction = ""
     for i in range(len(protein.data)):
         current_protein = copy.deepcopy(old_protein)
         for coord in current_protein.data:
@@ -25,11 +27,16 @@ def greedy_fold(protein: Protein) -> Protein:
             current_protein.fold(amino,p_folds)
             new_stability = current_protein.stability()
             choice_dict[p_folds] = new_stability
-            print(choice_dict)
+            # print(choice_dict)
             current_protein = copy.deepcopy(old_protein)
         
-        best_direction = min(choice_dict)
-        # print(best_direction)
+        
+        for choices in choice_dict:
+            if choice_dict[choices] <= lowest_score:
+                lowest_score = choice_dict[choices]
+                best_direction = choices
+
+
         old_protein.fold(amino, best_direction)
         choice_dict.clear()
     
