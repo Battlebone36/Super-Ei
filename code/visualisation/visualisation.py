@@ -55,20 +55,29 @@ def visualise_protein(protein: Protein) -> None:
     plt.show()
 
 def plot_algorithm(algorithm, ax) -> None:
-    """Plot a specific algorithm in the total plot"""
+    """Test an algoritmh on a predefined sequence and plot it in the total plot."""
+    # Define variables
     sequence = "HHPHHHPHPHHHPH"
     test_protein = Protein(sequence)
     stability_scores = []
+
+    # Test the algorithm 100 times and store the result
     for i in range(100):
         result_protein: Protein = algorithm(test_protein)
         stability_scores.append(result_protein.stability())
+
+    # Plot the result
     max_score = max(stability_scores)
     min_score = min(stability_scores)
     ax.hist(stability_scores, edgecolor="black", bins= max_score - min_score + 1, range=(min_score - 0.5, max_score + 0.5), alpha=0.8, label=f"{algorithm.__name__}")
 
 def visualise_algorithm(algorithms) -> None:
+    """Visualise all algorithms given."""
+    # Define total plot
     fig = plt.figure()
     ax = fig.add_subplot(111)
+
+    # Plot efficiency of all algorithms
     for algorithm in algorithms:
         plot_algorithm(algorithm=algorithm, ax=ax)
     plt.xlabel("Stability")
