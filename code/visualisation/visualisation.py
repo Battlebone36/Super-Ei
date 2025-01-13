@@ -40,7 +40,7 @@ def visualise_protein(protein: Protein) -> None:
     x_p, y_p, z_p = filter_data(data, "P")
     x_h, y_h, z_h = filter_data(data, "H")
     x_c, y_c, z_c = filter_data(data, "C")
-    x_l, y_l, z_l = filter_data(data)
+    x_l, y_l, z_l = filter_data(data, "all")
 
     # # Borders for plot and legend
     # borders = [min(x_l), max(x_l), min(y_l), max(y_l), min(z_l), max(z_l)]
