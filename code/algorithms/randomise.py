@@ -6,14 +6,14 @@ import random
 
 def random_fold(protein: Protein) -> Protein:
     """Randomly folds a protein multiple times and returns the folded protein."""
-    sequence = ""
+    sequence = protein.sequence
 
-    # Stores the protein sequence
-    for i in range(len(protein.data)):
-        for coord, (amino, index) in protein.data.items():
-            if index == i:
-                sequence += amino
-                break
+    # # Stores the protein sequence
+    # for i in range(len(protein.data)):
+    #     for coord, (amino, index) in protein.data.items():
+    #         if index == i:
+    #             sequence += amino
+    #             break
 
     # Keep folding the protein randomly
     directions = ["x_pos", "x_neg", "y_pos", "y_neg", "z_pos", "z_neg"]
