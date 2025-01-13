@@ -1,5 +1,6 @@
 from code.classes.protein import Protein
 from code.visualisation.visualisation import *
+import random
 import copy
 
 def greedy_fold(protein: Protein) -> Protein:
@@ -29,7 +30,6 @@ def greedy_fold(protein: Protein) -> Protein:
             choice_dict[p_folds] = new_stability
             # print(choice_dict)
             current_protein = copy.deepcopy(old_protein)
-        
         
         for choices in choice_dict:
             if choice_dict[choices] <= lowest_score:
