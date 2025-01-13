@@ -18,6 +18,7 @@ class Protein:
             "z_pos": np.array([[0, -1, 0], [1, 0, 0], [0, 0, -1]]),
             "z_neg": np.array([[0, 1, 0], [-1, 0, 0], [0, 0, -1]])
         }
+        self.sequence = sequence
 
 
     def load_data(self, sequence: str, command=None) -> None:
