@@ -1,15 +1,14 @@
 import numpy as np
 
-
 class Protein:
     def __init__(self, sequence: str, command: str | None = None) -> None:
         """
         Initialise the protein from a sequence of "P", "H" and "C" characters.
-        The character with its order are stored in a dictionary where the keys are the coordinates.
+        The character with its sequence index are stored in a dictionary where the keys are the coordinates.
         """
-        sequence = sequence.upper()
+        self.sequence = sequence.upper()
         self.data: dict[tuple[int, int, int], tuple[str, int]] = {}
-        self.load_data(sequence, command)
+        self.load_data(command)
         self.rotations = {
             "x_pos": np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]]),
             "x_neg": np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]]),
@@ -18,21 +17,20 @@ class Protein:
             "z_pos": np.array([[0, -1, 0], [1, 0, 0], [0, 0, -1]]),
             "z_neg": np.array([[0, 1, 0], [-1, 0, 0], [0, 0, -1]])
         }
-        self.sequence = sequence
 
-
-    def load_data(self, sequence: str, command=None) -> None:
+    def load_data(self, command=None) -> None:
         """
         Load data into the protein library.
-        If the command "manual" is not given the string is implemented in the data.
-        Otherwise a folded protein is implemented in the data.
+        If the command "manual" is not given, the input string is implemented in the data.
+        Otherwise a manually folded protein is implemented in the data.
         """
         if command is None:
-            for i, char in enumerate(sequence):
+            for i, char in enumerate(self.sequence):
                 self.data[(i, 0, 0)] = (f"{char}", i)
             return
         command.lower()
-        if command == "manual" or command == "manuel":
+        
+        if command == "manual":
             self.data[(0, 0, 0)] = ("P", 0)
             self.data[(1, 0, 0)] = ("C", 1)
             self.data[(1, 1, 0)] = ("H", 2)
@@ -48,10 +46,11 @@ class Protein:
             self.data = dict(sorted(self.data.items(), key=lambda item: item[1][1]))
 
     def give_data(self) -> dict[tuple[int, int, int], tuple[str, int]]:
+        """Returns the data dictionary of a protein."""
         return self.data
 
     def neighbours(self, coord: tuple[int, int, int]) -> list[tuple[int, int, int]]:
-        """Returns adjesent 3D coördinates of the one given."""
+        """Returns adjacent 3D coordinates of the given coordinate."""
         x_diff = [0, 1, 0, 0, -1, 0]
         y_diff = [1, 0, 0, -1, 0, 0]
         z_diff = [0, 0, 1, 0, 0, -1]
@@ -79,7 +78,7 @@ class Protein:
         return 0
 
     def stability(self) -> int:
-        """A function that calculates the stability of a protein and returns it in an integer."""
+        """A function that calculates the stability of a protein and returns it as an integer."""
         # Filter out the "H" and "C" amino acids
         h_acids: dict[tuple[int, int, int], tuple[str, int]] = {}
         for acid in self.data.items():
@@ -118,7 +117,7 @@ class Protein:
         return new_coord
 
     def is_foldable(self, pivot: tuple[int, int, int], matrix) -> bool:
-        """Returns if the protein can rotate in certain direction (matrix) around a pivot point"""
+        """Returns if the protein can rotate in a certain direction (matrix) around a pivot point."""
         # Store the points that are following in the sequence
         points_to_rot: dict[tuple[int, int, int], tuple[str, int]] = {}
         
@@ -134,8 +133,7 @@ class Protein:
         return True
     
     def possible_folds(self) -> list[tuple[tuple[int, int, int], str]]:
-        """Returns the possible folds in a protein"""
-
+        """Returns the possible folds in a protein."""
         possibilities: list[tuple[tuple[int, int, int], str]]= []
         for amino in self.data:
 
@@ -159,7 +157,7 @@ class Protein:
             print("coordinate not in dataset")
             raise IndexError
 
-        # Make the command case insensitive and define the rotation matrix otherwise return false
+        # Make the command case insensitive and define the rotation matrix, otherwise return False
         direction = direction.lower()
 
         if direction in self.rotations:
@@ -186,15 +184,15 @@ class Protein:
 
     def check_direction(self, coord1: tuple[int, int, int], coord2: tuple[int, int, int]) -> int:
         """
-        Function to check in what direction the protein moves.
+        Function to check in what direction the protein is folded.
         """
-        # If the x coordinate is the same look at the y coordinate
+        # If the x-coordinates and z-coordinates are the same, look at the y-coordinate
         if coord2[0] == coord1[0] and coord2[2] == coord1[2]:
             if coord2[1] - coord1[1] == 1:
                 return -2
             else:
                 return 2
-        # Else the y coordinates are the same thus look at the x coordinate
+        # Else the y-coordinates and z-coordinates are the same, look at the x-coordinate
         elif coord2[1] == coord1[1] and coord2[2] == coord1[2]:
             if coord2[0] - coord1[0] == 1:
                 return -1
@@ -208,7 +206,7 @@ class Protein:
 
     def output(self) -> list[list[str]]:
         """
-        Put the final configuration into the correct data input for the check50.
+        Store the configuration of the folded protein in the right format.
         """
         fold_commands = [["amino", "fold"]]
         previous_amino = (0, 0, 0)

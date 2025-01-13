@@ -1,9 +1,10 @@
 from code.classes.protein import Protein
 from code.visualisation.visualisation import *
 import random
+# random.seed(0)
 
 
-def random_fold(protein: Protein, attempts: int) -> Protein:
+def random_fold(protein: Protein) -> Protein:
     """Randomly folds a protein multiple times and returns the folded protein."""
     sequence = protein.sequence
 
@@ -17,7 +18,7 @@ def random_fold(protein: Protein, attempts: int) -> Protein:
     # Keep folding the protein randomly
     directions = ["x_pos", "x_neg", "y_pos", "y_neg", "z_pos", "z_neg"]
 
-    for attempt in range(attempts):
+    for attempt in range(int(len(protein.data) * 1.5)):
         copy_protein = Protein(sequence)
 
         # Loop over the amino acids in the protein
@@ -42,7 +43,7 @@ def random_fold(protein: Protein, attempts: int) -> Protein:
     return copy_protein
 
 
-protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
-folded_protein = random_fold(protein1, 60)
-visualise_protein(folded_protein)
-print(folded_protein.give_data())
+# protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
+# folded_protein = random_fold(protein1, 60)
+# visualise_protein(folded_protein)
+# print(folded_protein.give_data())

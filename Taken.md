@@ -4,7 +4,7 @@
 - Comments doorlopen
 - 3D alles nakijken
 - algoritmes
-- Zelfde afstand tussen punten in plot
+
 
 
 ## 3D taken:
@@ -22,17 +22,19 @@ Protein:
 - functie maken die kijkt of een fold mogelijk is - Bryan
 - bij __init__ een aparte functie maken die met een string de dictionary vult - Bryan
 - pycodestyle, mypy gewoon - Bryan
-- output algoritme opslaan - Dinges
+- output algoritme opslaan - Ronan
 - output algoritme visualiseren - Sydney
-- Vierkante grid - Sydney, Ronan
+- Vierkante grid / zelfde afstand tussen punten in plot - Sydney, Ronan
 - Bij de visualistie waterstofbruggen tonen en de stabiliteit - Sydney
 - algoritme maken dat random fold - Sydney
+- Visualiseer algoritmes - Bryan
 
 3D:
+- Type correctie - Ronan
 - rotate_coord
 - is_foldable
 - fold
 - give_data
 - neighbours
 - __init__ - Ronan, Bryan
-- plot... - Sydney
+- 3D plot - Sydney

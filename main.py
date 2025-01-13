@@ -1,16 +1,16 @@
 from code.classes.protein import Protein
 from code.visualisation.visualisation import *
+from code.algorithms.randomise import random_fold
 import csv
 
 if __name__ == "__main__":
+    
     protein_vis = Protein("HHCPPPPH", "manual")
-    # print(protein_vis.possible_folds())
     visualise_protein(protein_vis)
-    # protein_vis.fold((3, 0, 0), "z_pos")
-    # visualise_protein(protein_vis)
-    # protein_vis.fold((3, 0, 0), "z_neg")
-    # protein_vis.fold((3, 0, 0), "z_neg")
-    # visualise_protein(protein_vis)
+
+    # plot_algorithm(random_fold)
+    algorithms = [random_fold, random_fold]
+    # visualise_algorithm(algorithms)
 
 
     with open ('output.csv','w',newline = '') as csvfile:
