@@ -45,6 +45,6 @@ def greedy_fold(protein: Protein) -> Protein:
 
     
 
-protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
-protein1 = greedy_fold(protein1)
-visualise_protein(protein1)
+# protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
+# protein1 = greedy_fold(protein1)
+# visualise_protein(protein1)
