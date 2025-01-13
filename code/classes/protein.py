@@ -134,7 +134,6 @@ class Protein:
     
     def possible_folds(self) -> list[tuple[tuple[int, int, int], str]]:
         """Returns the possible folds in a protein."""
-
         possibilities: list[tuple[tuple[int, int, int], str]]= []
         for amino in self.data:
 
