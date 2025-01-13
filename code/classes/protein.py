@@ -143,6 +143,13 @@ class Protein:
                 if self.is_foldable(amino, value):
                     possibilities.append((amino, key))
         return possibilities
+    
+    def possible_folds_point(self, coord: tuple[int, int, int]) -> list[str]:
+        possibilities: list[str] = []
+        for direction in self.rotations:
+            if self.is_foldable(coord, self.rotations[direction]):
+                possibilities.append(direction)
+        return possibilities
 
 
     def fold(self, pivot: tuple[int, int, int], direction: str) -> bool:
