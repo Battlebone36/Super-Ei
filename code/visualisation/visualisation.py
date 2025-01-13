@@ -17,24 +17,6 @@ def filter_data(data: dict[tuple[int, int, int], tuple[str, int]], amino: str) -
         z = [item[0][2] for item in data.items() if item[1][0] == amino]
     return (x, y, z)
 
-
-def plot_settings(ax) -> None:
-    ax.set_aspect("equal", adjustable="box")
-    ax.grid(False)
-    ax.set_xticklabels([])
-    ax.set_yticklabels([])
-    # ax.set_zticklabels([])
-
-    ax.set_axis_off()
-
-    ax.xaxis.pane.fill = False
-    ax.yaxis.pane.fill = False
-    ax.zaxis.pane.fill = False
-
-    ax.xaxis.pane.set_edgecolor((1.0, 1.0, 1.0, 0.0))
-    ax.yaxis.pane.set_edgecolor((1.0, 1.0, 1.0, 0.0))
-    ax.zaxis.pane.set_edgecolor((1.0, 1.0, 1.0, 0.0))
-
 def visualise_protein(protein: Protein) -> None:
     """Makes a plot of the protein."""
     # Filter the points out of the data
@@ -62,8 +44,9 @@ def visualise_protein(protein: Protein) -> None:
                 if score < 0:
                     ax.plot([acid[0][0], friend[0]], [acid[0][1], friend[1]], [acid[0][2], friend[2]], line_info[score][0], linewidth=line_info[score][1], linestyle="dotted")
 
-    # Specific plot settings
-    plot_settings(ax=ax)
+    # Make the distance between the points equal and remove the axis
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_axis_off()
 
     # Show plot
     stability = protein.stability()
@@ -72,6 +55,7 @@ def visualise_protein(protein: Protein) -> None:
     plt.show()
 
 def plot_algorithm(algorithm, ax) -> None:
+    """Plot a specific algorithm in the total plot"""
     sequence = "HHPHHHPHPHHHPH"
     test_protein = Protein(sequence)
     stability_scores = []
@@ -88,7 +72,7 @@ def visualise_algorithm(algorithms) -> None:
     for algorithm in algorithms:
         plot_algorithm(algorithm=algorithm, ax=ax)
     plt.xlabel("Stability")
-    plt.ylabel("Ocurrency")
+    plt.ylabel("Occurrency")
     plt.title("Functionality of algorithm out of 100 tests")
     plt.legend()
     plt.show()
