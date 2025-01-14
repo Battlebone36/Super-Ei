@@ -13,14 +13,15 @@ def write_output(protein: Protein):
 
 if __name__ == "__main__":
     
-    # protein_vis = Protein("HHCPPPPH", "manual")
+    protein_vis = Protein("HHCPPPPH")
+    greedy_search_sequence(protein_vis)
     # visualise_protein(protein_vis)
 
     # algorithms = [random_fold, greedy_fold, greedy_search_sequence]
     algorithms = [greedy_search_sequence]
     visualise_algorithm(algorithms)
 
-    protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
+    # protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
 
 
 

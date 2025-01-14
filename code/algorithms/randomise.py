@@ -16,7 +16,7 @@ def random_fold(protein: Protein) -> Protein:
 
         # Loop over the amino acids in the protein
         for i in range(1, len(copy_protein.data) - 1):
-            current_coord = None
+            current_coord = (0, 0, 0)
             for coord, (amino, index) in copy_protein.data.items():
                 if index == i:
                     current_coord = coord
