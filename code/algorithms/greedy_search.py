@@ -5,30 +5,50 @@ import copy
 
 
 def greedy_search_sequence(protein: Protein) -> Protein:
+    """"""
+    # Define the variabels used
     old_score = 0
     max_score = 0
+
+    # Make a protein to explore the different stabilities in the loop
     old_protein = copy.deepcopy(protein)
     old_protein.fold(*random.choice(protein.possible_folds()))
-    
-    for i in range(30):
+
+    # Loop through the sequence and store the best folded protein
+    for i in range(len(protein.sequence)):
+
+        # Define the folds that are possible in this state and
+        # a storage for folds that have the same stability
         folds = old_protein.possible_folds()
-        random.shuffle(folds)
         possible_choices = []
+
+        # Loop over the possibilities
         for fold in folds:
+
+            # Fold it, calculate stability
             old_protein.fold(*fold)
             stab = old_protein.stability()
-            # possible_choices.append((stab, fold))
+
+            # Store store protein and stability if stability is lower
             if max_score > stab:
                 max_score = stab
                 new_protein = copy.deepcopy(old_protein)
-            elif max_score + 3 > stab:
+            
+            # store a fold if it has the same result
+            elif max_score == stab:
                 possible_choices.append((stab, fold))
+            
+            # Pop the protein back to previous state
             old_protein.fold_revers(*fold)
-        
+
+        # Fold if there are options with same result but not with better results otherwise return the protein
         if old_score == max_score and possible_choices:
             old_protein.fold(*possible_choices[0][1])
             new_protein = copy.deepcopy(old_protein)
-        
+        # else:
+        #     return new_protein
+
+        # Define variables to start loop again in the new protein
         old_protein = copy.deepcopy(new_protein)
         old_score = max_score
 
