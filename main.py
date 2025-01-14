@@ -5,27 +5,23 @@ from code.algorithms.greedy import greedy_fold
 from code.algorithms.greedy_search import greedy_search_sequence
 import csv
 
+def write_output(protein: Protein):
+    with open ('output.csv','w',newline = '') as csvfile:
+        my_writer = csv.writer(csvfile, delimiter = ',')
+        my_writer.writerows(protein.output())
+
+
 if __name__ == "__main__":
     
     # protein_vis = Protein("HHCPPPPH", "manual")
     # visualise_protein(protein_vis)
 
-    # plot_algorithm(random_fold)
-    # algorithms = [random_fold, greedy_fold]
-    # visualise_algorithm(algorithms)
+    # algorithms = [random_fold, greedy_fold, greedy_search_sequence]
+    algorithms = [greedy_search_sequence]
+    visualise_algorithm(algorithms)
 
     protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
-    protein1 = greedy_search_sequence(protein1)
-    visualise_protein(protein1)
-
-    # protein1 = random_fold(protein1)
-
-    # visualise_protein(protein1)
-    # protein1 = greedy_fold(protein1)
-    # visualise_protein(protein1)
 
 
 
-    with open ('output.csv','w',newline = '') as csvfile:
-        my_writer = csv.writer(csvfile, delimiter = ',')
-        my_writer.writerows(protein1.output())
+    
