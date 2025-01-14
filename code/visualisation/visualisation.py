@@ -62,7 +62,7 @@ def plot_algorithm(algorithm, ax) -> None:
     stability_scores = []
 
     # Test the algorithm 100 times and store the result
-    for i in range(1000):
+    for i in range(100):
         result_protein: Protein = algorithm(test_protein)
         stability_scores.append(result_protein.stability())
 

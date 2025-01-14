@@ -4,6 +4,7 @@
 - Comments doorlopen
 - 3D alles nakijken
 - algoritmes
+- Functie die op twee plaatsen fold tegelijk
 
 
 
