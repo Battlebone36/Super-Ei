@@ -18,7 +18,6 @@ def greedy_search_sequence(protein: Protein) -> Protein:
 
     # Loop through the sequence and store the best folded protein
     for i in range(len(protein.sequence)):
-    # while True:
 
         # Define the folds that are possible in this state and
         # a storage for folds that have the same stability
