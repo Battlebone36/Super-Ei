@@ -115,5 +115,5 @@ def better_best_move(protein: Protein) -> Protein:
 
 
 
-protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
-better_climbing_fold(protein1)
+# protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
+# better_climbing_fold(protein1)
