@@ -18,7 +18,7 @@ if __name__ == "__main__":
     # visualise_protein(protein_vis)
 
     # algorithms = [random_fold, greedy_fold, greedy_search_sequence]
-    algorithms = [greedy_search_sequence]
+    algorithms = [greedy_search_sequence, climbing_fold, random_fold]
     visualise_algorithm(algorithms)
 
     protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
