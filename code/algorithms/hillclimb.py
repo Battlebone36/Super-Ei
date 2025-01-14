@@ -21,6 +21,7 @@ def climbing_fold(protein: Protein) -> Protein:
         if new_stability == stability:
             break
     
+    return protein
 
 def best_move(protein: Protein) -> Protein:
     # Loop over the randomized protein
