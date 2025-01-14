@@ -13,9 +13,11 @@ def write_output(protein: Protein):
 
 
 if __name__ == "__main__":
+    numb = 0.00111
+    # print(f"{numb:0.4f}")
     
-    protein_vis = Protein("HHCPPPPH")
-    print(protein_vis.give_data())
+    # protein_vis = Protein("HHCPPPPH")
+    # print(protein_vis.give_data())
     # greedy_search_sequence(protein_vis)
     # visualise_protein(protein_vis)
 

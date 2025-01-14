@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 from code.classes.protein import Protein
 from code.algorithms.randomise import random_fold
 import numpy as np
+from timeit import default_timer as timer
+
+
 
 
 # class Visualise:
@@ -60,16 +63,24 @@ def plot_algorithm(algorithm, ax) -> None:
     sequence = "HHPHHHPHPHHHPH"
     test_protein = Protein(sequence)
     stability_scores = []
+    time_scores = []
+    
 
     # Test the algorithm 100 times and store the result
     for i in range(100):
+        start = timer()
         result_protein: Protein = algorithm(test_protein)
+        end = timer()
         stability_scores.append(result_protein.stability())
+        time_scores.append(end - start)
 
     # Plot the result
     max_score = max(stability_scores)
     min_score = min(stability_scores)
-    ax.hist(stability_scores, edgecolor="black", bins= max_score - min_score + 1, range=(min_score - 0.5, max_score + 0.5), alpha=0.8, label=f"{algorithm.__name__}")
+
+    mean_time = np.mean(time_scores)
+    std_time = np.std(time_scores)
+    ax.hist(stability_scores, edgecolor="black", bins= max_score - min_score + 1, range=(min_score - 0.5, max_score + 0.5), alpha=0.8, label=f"{algorithm.__name__}, {mean_time:0.2} +- {std_time:0.2}")
 
 def visualise_algorithm(algorithms) -> None:
     """Visualise all algorithms given."""
@@ -82,6 +93,6 @@ def visualise_algorithm(algorithms) -> None:
         plot_algorithm(algorithm=algorithm, ax=ax)
     plt.xlabel("Stability")
     plt.ylabel("Occurrency")
-    plt.title("Functionality of algorithm out of 1000 tests")
+    plt.title("Functionality of algorithm out of 100 tests")
     plt.legend()
     plt.show()
