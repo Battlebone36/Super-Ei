@@ -5,6 +5,7 @@
 - 3D alles nakijken
 - algoritmes
 - Functie die op twee plaatsen fold tegelijk
+- Plot met tijd
 
 
 
