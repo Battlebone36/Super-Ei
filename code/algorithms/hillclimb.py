@@ -119,7 +119,7 @@ def even_better_climbing_fold(protein: Protein) -> Protein:
     """
     # Create the random protein
     protein = random_fold(protein)
-    visualise_protein(protein)
+    # visualise_protein(protein)
 
     for i in range(20):
         stability = protein.stability()
@@ -191,10 +191,10 @@ def even_better_best_move(protein: Protein) -> Protein:
                 best_protein = copy.deepcopy(adjust_protein)
                 lowest_stability = stability
             adjust_protein.fold_revers(amino, p_folds)
-    visualise_protein(best_protein)
+    # visualise_protein(best_protein)
 
     return best_protein
 
 
-protein1 = Protein("CPPCHPPCHPPCPPHCCPCHPPCPCHPPHPC")
-even_better_climbing_fold(protein1)
+# protein1 = Protein("CPPCHPPCHPPCPPHCCPCHPPCPCHPPHPC")
+# even_better_climbing_fold(protein1)
