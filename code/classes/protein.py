@@ -135,13 +135,27 @@ class Protein:
     def possible_folds(self) -> list[tuple[tuple[int, int, int], str]]:
         """Returns the possible folds in a protein."""
         possibilities: list[tuple[tuple[int, int, int], str]]= []
-        for amino in self.data:
-
-            for key, value in self.rotations.items():
-                if self.is_foldable(amino, value):
-                    possibilities.append((amino, key))
+        for coord, amino in self.data.items():
+            if amino[1] != 0 and amino[1] != len(self.sequence) - 1:
+                for key, value in self.rotations.items():
+                    if self.is_foldable(coord, value):
+                        possibilities.append((coord, key))
         return possibilities
-
+    
+    def possible_folds_point(self, coord: tuple[int, int, int]) -> list[str]:
+        possibilities: list[str] = []
+        for direction in self.rotations:
+            if self.is_foldable(coord, self.rotations[direction]):
+                possibilities.append(direction)
+        return possibilities
+    
+    def fold_revers(self, pivot: tuple[int, int, int], direction: str) -> bool:
+        """Folds a protein in reverse to the direction that is given"""
+        if "pos" in direction:
+            direction = direction.replace("pos", "neg")
+        else:
+            direction = direction.replace("neg", "pos")
+        return self.fold(pivot=pivot, direction=direction)
 
     def fold(self, pivot: tuple[int, int, int], direction: str) -> bool:
         """Folds a protein at a given pivot point in a certain direction: "{axis}_{direction}"."""
