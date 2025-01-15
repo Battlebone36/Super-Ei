@@ -3,13 +3,22 @@ from code.visualisation.visualisation import *
 import random
 import copy
 import math
-random.seed(0)
+# random.seed(0)
 
-def simulated_annealing(protein: Protein, initial_temp: int = 100, cooling_rate: int = 0.99, min_temp = 1) -> Protein:
-    """"""
+def simulated_annealing(protein: Protein) -> Protein:
+    """
+    Starts with a randomly folded protein that will try to apply random folds.
+    Each fold that improves the stability score is accepted for the next iteration.
+    Sometimes worse folds are accepted, depending on the current temperature.
+    """
+    # Starting values
+    initial_temp: int = 100
+    cooling_rate: int = 0.99
+    min_temp = 1
+
     # Track the best solution found
-    current_protein = copy.deepcopy(protein)
-    best_protein = copy.deepcopy(protein)
+    current_protein = random_fold(protein)
+    best_protein = copy.deepcopy(current_protein)
     current_stability = current_protein.stability()
     best_stability = current_stability
     
@@ -51,17 +60,12 @@ def simulated_annealing(protein: Protein, initial_temp: int = 100, cooling_rate:
                         best_protein = copy.deepcopy(current_protein)
                         best_stability = current_stability
 
-        # Lower the temperature
+        # Lower the current temperature
         current_temp *= cooling_rate
 
     return best_protein
 
 
-# protein = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
-# best_protein = simulated_annealing(protein)
+# protein = "HHPHHHPHPHHHPH"
+# best_protein = simulated_annealing(Protein(protein))
 # visualise_protein(best_protein)
-
-
-
-# delta_e < 0 -> for the better configurations -> always accepted
-# random.uniform(0, 1) < probability -> for the worse configurations -> randomly accepted or denied
