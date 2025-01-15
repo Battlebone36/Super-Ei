@@ -8,8 +8,8 @@
     - Twee coordinaten op assen hetzelfde, buren dezelfde richting
 
 - genetic algoritme
-- simulated annihilation
-
+- simulated annihilation -Sydney
+- Database om de resultaten op te slaan -Bryan
 
 
 
@@ -35,7 +35,7 @@ Protein:
 - algoritme maken dat random fold - Sydney
 - Visualiseer algoritmes - Bryan
 - Plot met tijd - Bryan
-- Bars splitsen -Bryan
+- Bars splitsen - Bryan
 
 3D:
 - Type correctie - Ronan
