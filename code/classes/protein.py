@@ -188,6 +188,27 @@ class Protein:
             return True
         else:
             return False
+        
+    def fold_by_DNA(self, DNA: int, index: int) -> bool:
+        if DNA == 0:
+            return True
+
+        DNA_to_direction = {
+            1: "x_pos",
+            2: "x_neg",
+            3: "y_pos",
+            4: "y_neg",
+            5: "z_pos",
+            6: "z_neg"
+        }
+        direction = DNA_to_direction[DNA]
+        pivot = (0, 0, 0)        
+        for key, value in self.data.items():
+            if value[1] == index:
+                pivot = key
+        
+        return self.fold(pivot=pivot, direction=direction)
+
 
     def check_direction(self, coord1: tuple[int, int, int], coord2: tuple[int, int, int]) -> int:
         """
