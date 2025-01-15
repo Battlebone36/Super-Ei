@@ -5,7 +5,11 @@
 - 3D alles nakijken
 - algoritmes
 - Functie die op twee plaatsen fold tegelijk
-- Plot met tijd
+    - Twee coordinaten op assen hetzelfde, buren dezelfde richting
+
+- genetic algoritme
+- simulated annihilation -Sydney
+- Database om de resultaten op te slaan -Bryan
 
 
 
@@ -30,6 +34,8 @@ Protein:
 - Bij de visualistie waterstofbruggen tonen en de stabiliteit - Sydney
 - algoritme maken dat random fold - Sydney
 - Visualiseer algoritmes - Bryan
+- Plot met tijd - Bryan
+- Bars splitsen - Bryan
 
 3D:
 - Type correctie - Ronan

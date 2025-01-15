@@ -41,7 +41,7 @@ def greedy_search_sequence(protein: Protein) -> Protein:
                 possible_choices.append((stab, fold))
             
             # Pop the protein back to previous state
-            old_protein.fold_revers(*fold)
+            old_protein.fold_reverse(*fold)
 
         # Fold if there are options with same result but not with better results otherwise return the protein
         if old_score == max_score and possible_choices:
