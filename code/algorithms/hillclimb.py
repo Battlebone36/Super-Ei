@@ -43,7 +43,7 @@ def best_move(protein: Protein) -> Protein:
             if stability < lowest_stability:
                 best_protein = copy.deepcopy(adjust_protein)
                 lowest_stability = stability
-            adjust_protein.fold_revers(amino, p_folds)
+            adjust_protein.fold_reverse(amino, p_folds)
     # visualise_protein(best_protein)
 
     return best_protein
@@ -99,7 +99,7 @@ def better_best_move(protein: Protein) -> Protein:
                     if mid_stability < lowest_stability:
                         best_protein = copy.deepcopy(mid_adjust_protein)
                         lowest_stability = mid_stability
-                    mid_adjust_protein.fold_revers(mid_amino, mid_p_folds)
+                    mid_adjust_protein.fold_reverse(mid_amino, mid_p_folds)
 
 
             # -----------------------------------------------------------------
@@ -107,7 +107,7 @@ def better_best_move(protein: Protein) -> Protein:
             if stability < lowest_stability:
                 best_protein = copy.deepcopy(adjust_protein)
                 lowest_stability = stability
-            adjust_protein.fold_revers(amino, p_folds)
+            adjust_protein.fold_reverse(amino, p_folds)
     # visualise_protein(best_protein)
 
     return best_protein
@@ -174,7 +174,7 @@ def even_better_best_move(protein: Protein) -> Protein:
                             if mid2_stability < lowest_stability:
                                 best_protein = copy.deepcopy(mid2_adjust_protein)
                                 lowest_stability = mid2_stability
-                            mid2_adjust_protein.fold_revers(mid2_amino, mid2_p_folds)
+                            mid2_adjust_protein.fold_reverse(mid2_amino, mid2_p_folds)
 
 
                     # -----------------------------------------------------------------
@@ -182,7 +182,7 @@ def even_better_best_move(protein: Protein) -> Protein:
                     if mid_stability < lowest_stability:
                         best_protein = copy.deepcopy(mid_adjust_protein)
                         lowest_stability = mid_stability
-                    mid_adjust_protein.fold_revers(mid_amino, mid_p_folds)
+                    mid_adjust_protein.fold_reverse(mid_amino, mid_p_folds)
 
 
             # -----------------------------------------------------------------
@@ -190,7 +190,7 @@ def even_better_best_move(protein: Protein) -> Protein:
             if stability < lowest_stability:
                 best_protein = copy.deepcopy(adjust_protein)
                 lowest_stability = stability
-            adjust_protein.fold_revers(amino, p_folds)
+            adjust_protein.fold_reverse(amino, p_folds)
     # visualise_protein(best_protein)
 
     return best_protein

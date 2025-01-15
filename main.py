@@ -16,13 +16,13 @@ if __name__ == "__main__":
     numb = 0.00111
     # print(f"{numb:0.4f}")
     
-    # protein_vis = Protein("HHCPPPPH")
+    # protein_vis = Protein("HCPHPCPHPCHCHPH")
     # print(protein_vis.give_data())
-    # greedy_search_sequence(protein_vis)
+    # visualise_protein(even_better_climbing_fold(protein_vis))
     # visualise_protein(protein_vis)
 
-    algorithms = [greedy_search_sequence, climbing_fold, better_climbing_fold, even_better_climbing_fold]
-    # algorithms = [random_fold]
-    visualise_algorithm(algorithms)
+    # algorithms = [greedy_search_sequence, climbing_fold, better_climbing_fold, even_better_climbing_fold]
+    algorithms = [random_fold, greedy_search_sequence, climbing_fold]
+    visualise_algorithm(algorithms, "line")
 
     # protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")

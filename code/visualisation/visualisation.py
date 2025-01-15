@@ -5,8 +5,6 @@ import numpy as np
 from timeit import default_timer as timer
 
 
-
-
 # class Visualise:
 def filter_data(data: dict[tuple[int, int, int], tuple[str, int]], amino: str) -> tuple[list[int], list[int], list[int]]:
     """"Filters the coordinates of amino acids from a dataset, optionally filtering by type."""
@@ -57,14 +55,17 @@ def visualise_protein(protein: Protein) -> None:
     plt.legend()
     plt.show()
 
-def plot_algorithm(algorithm, ax) -> None:
-    """Test an algoritmh on a predefined sequence and plot it in the total plot."""
-    # Define variables
+def hist_of_algorithm(algorithm) -> tuple[list[int], int, int, float, float]:
+    """
+    2nd generation helper function
+
+    Test the algorithm 100 times and store the data into lists.
+    Return the data with some calculated time variables.
+    """
     sequence = "HHPHHHPHPHHHPH"
     test_protein = Protein(sequence)
-    stability_scores = []
-    time_scores = []
-    
+    stability_scores: list[int] = []
+    time_scores: list[float] = []
 
     # Test the algorithm 100 times and store the result
     for i in range(100):
@@ -74,23 +75,103 @@ def plot_algorithm(algorithm, ax) -> None:
         stability_scores.append(result_protein.stability())
         time_scores.append(end - start)
 
-    # Plot the result
+    # Define variables for making the plot
     max_score = max(stability_scores)
     min_score = min(stability_scores)
-
     mean_time = np.mean(time_scores)
     std_time = np.std(time_scores)
-    ax.hist(stability_scores, edgecolor="black", bins= max_score - min_score + 1, range=(min_score - 0.5, max_score + 0.5), alpha=0.8, label=f"{algorithm.__name__}, {mean_time:0.2} +- {std_time:0.2}")
+    return (stability_scores, max_score, min_score, mean_time, std_time)
 
-def visualise_algorithm(algorithms) -> None:
-    """Visualise all algorithms given."""
-    # Define total plot
+
+def plot_algorithm_split(algorithm, ax, width: float, offset: float) -> None:
+    """
+    Plot the gathered data as a histogram in the total plot with bars split.
+
+    Uses:
+    - hist_of_algorithm()
+    """
+    # Define variables
+    stability_scores, max_score, min_score, mean_time, std_time = hist_of_algorithm(algorithm)
+
+    # Define locations and heights of the bars
+    bins = np.arange(min_score, max_score + 1)
+    hist_values, bin_edges = np.histogram(stability_scores, bins=bins)
+    x_positions = (bin_edges[:-1] + bin_edges[1:]) / 2 + offset + width
+
+    # Make plot
+    ax.bar(x_positions, hist_values, width=width, edgecolor="black",
+           label=f"{algorithm.__name__}, mean: {mean_time:0.2}s ± {std_time:0.2}s")
+
+
+def plot_algorithm_together(algorithm, ax) -> None:
+    """
+    Helper function.
+    Plot the gathered data as a histogram in the total plot with bars together.
+    
+    Uses:
+    - hist_of_algorithm()
+    """
+    # Define variables
+    stability_scores, max_score, min_score, mean_time, std_time = hist_of_algorithm(algorithm)
+
+    # Make plot with bars together
+    ax.hist(stability_scores, edgecolor="black", bins= max_score - min_score + 1,
+            range=(min_score - 0.5, max_score + 0.5), alpha=0.8, label=f"{algorithm.__name__}, mean: {mean_time:0.2}s ± {std_time:0.2}s")
+
+
+def plot_algorithm_line(algorithm, ax) -> None:
+    """
+    Helper function.
+    Plot the gathered data as histogram in a line plot.
+
+    Uses:
+    - hist_of_algorithm()
+    """
+    # Define variables
+    stability_scores, max_score, min_score, mean_time, std_time = hist_of_algorithm(algorithm)
+    
+    # Define locations and heights of the line
+    bins = np.arange(min_score, max_score + 1)
+    hist_values, bin_edges = np.histogram(stability_scores, bins=bins)
+    x_positions = (bin_edges[:-1] + bin_edges[1:]) / 2 + 0.5
+
+    # Make the line plot
+    ax.plot(x_positions, hist_values, label=f"{algorithm.__name__}, mean: {mean_time:0.2}s ± {std_time:0.2}s")
+
+
+def visualise_algorithm(algorithms, command: str="split") -> None:
+    """
+    Visualise all algorithms given. The plot can be altered with a command.
+
+    command:
+    - "split" (default) gives a histogram with the bars split
+    - "together" gives a histogram with the bars together
+    - "line"     gives a histogram in a line plot.
+
+    Uses:
+    - plot_algorithm_split()
+    - plot_algorithm_together()
+    - plot_algorithm_line()
+    """
+    # Define total plot and dataframe
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
-    # Plot efficiency of all algorithms
-    for algorithm in algorithms:
-        plot_algorithm(algorithm=algorithm, ax=ax)
+    # Check commands
+    if command == "split":
+        bar_width = 1 / (len(algorithms) + 1)
+        for i, algorithm in enumerate(algorithms):
+            plot_algorithm_split(algorithm=algorithm, ax=ax, width=bar_width, offset=bar_width * i)
+    elif command == "together":
+        for algorithm in algorithms:
+            plot_algorithm_together(algorithm=algorithm, ax=ax)
+    elif command == "line":
+        for algorithm in algorithms:
+            plot_algorithm_line(algorithm=algorithm, ax=ax)
+    else:
+        raise ValueError
+
+    # Plot settings
     plt.xlabel("Stability")
     plt.ylabel("Occurrency")
     plt.title("Functionality of algorithm out of 100 tests")

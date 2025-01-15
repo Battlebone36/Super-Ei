@@ -149,8 +149,8 @@ class Protein:
                 possibilities.append(direction)
         return possibilities
     
-    def fold_revers(self, pivot: tuple[int, int, int], direction: str) -> bool:
-        """Folds a protein in reverse to the direction that is given"""
+    def fold_reverse(self, pivot: tuple[int, int, int], direction: str) -> bool:
+        """Folds a protein in reversee to the direction that is given"""
         if "pos" in direction:
             direction = direction.replace("pos", "neg")
         else:
