@@ -46,11 +46,15 @@ class Protein:
             self.data = dict(sorted(self.data.items(), key=lambda item: item[1][1]))
 
     def give_data(self) -> dict[tuple[int, int, int], tuple[str, int]]:
-        """Returns the data dictionary of a protein."""
+        """
+        Returns the data dictionary of a protein.
+        """
         return self.data
 
     def neighbours(self, coord: tuple[int, int, int]) -> list[tuple[int, int, int]]:
-        """Returns adjacent 3D coordinates of the given coordinate."""
+        """
+        Returns adjacent 3D coordinates of the given coordinate.
+        """
         x_diff = [0, 1, 0, 0, -1, 0]
         y_diff = [1, 0, 0, -1, 0, 0]
         z_diff = [0, 0, 1, 0, 0, -1]
@@ -78,7 +82,9 @@ class Protein:
         return 0
 
     def stability(self) -> int:
-        """A function that calculates the stability of a protein and returns it as an integer."""
+        """
+        A function that calculates the stability of a protein and returns it as an integer.
+        """
         # Filter out the "H" and "C" amino acids
         h_acids: dict[tuple[int, int, int], tuple[str, int]] = {}
         for acid in self.data.items():
@@ -117,7 +123,9 @@ class Protein:
         return new_coord
 
     def is_foldable(self, pivot: tuple[int, int, int], matrix) -> bool:
-        """Returns if the protein can rotate in a certain direction (matrix) around a pivot point."""
+        """
+        Returns if the protein can rotate in a certain direction (matrix) around a pivot point.
+        """
         # Store the points that are following in the sequence
         points_to_rot: dict[tuple[int, int, int], tuple[str, int]] = {}
         
@@ -133,7 +141,9 @@ class Protein:
         return True
     
     def possible_folds(self) -> list[tuple[tuple[int, int, int], str]]:
-        """Returns the possible folds in a protein."""
+        """
+        Returns the possible folds in a protein.
+        """
         possibilities: list[tuple[tuple[int, int, int], str]]= []
         for coord, amino in self.data.items():
             if amino[1] != 0 and amino[1] != len(self.sequence) - 1:
@@ -143,6 +153,9 @@ class Protein:
         return possibilities
     
     def possible_folds_point(self, coord: tuple[int, int, int]) -> list[str]:
+        """
+        Returns the possible folds in a protein at a specific coordinate.
+        """
         possibilities: list[str] = []
         for direction in self.rotations:
             if self.is_foldable(coord, self.rotations[direction]):
@@ -150,7 +163,9 @@ class Protein:
         return possibilities
     
     def fold_reverse(self, pivot: tuple[int, int, int], direction: str) -> bool:
-        """Folds a protein in reversee to the direction that is given"""
+        """
+        Folds a protein in reverse to the direction that is given.
+        """
         if "pos" in direction:
             direction = direction.replace("pos", "neg")
         else:
@@ -158,7 +173,9 @@ class Protein:
         return self.fold(pivot=pivot, direction=direction)
 
     def fold(self, pivot: tuple[int, int, int], direction: str) -> bool:
-        """Folds a protein at a given pivot point in a certain direction: "{axis}_{direction}"."""
+        """
+        Folds a protein at a given pivot point in a certain direction: "{axis}_{direction}".
+        """
         # Raise an error if the coordinate is not in the dataset
         if pivot not in self.data:
             print("coordinate not in dataset")
