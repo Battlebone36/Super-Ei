@@ -4,6 +4,7 @@ from code.algorithms.randomise import random_fold
 from code.algorithms.greedy import greedy_fold
 from code.algorithms.greedy_search import greedy_search_sequence
 from code.algorithms.hillclimb import climbing_fold, better_climbing_fold, even_better_climbing_fold
+from code.algorithms.simulated_annealing import simulated_annealing
 import csv
 
 def write_output(protein: Protein):
@@ -21,8 +22,9 @@ if __name__ == "__main__":
     # greedy_search_sequence(protein_vis)
     # visualise_protein(protein_vis)
 
-    algorithms = [greedy_search_sequence, climbing_fold, better_climbing_fold, even_better_climbing_fold]
+    # algorithms = [greedy_search_sequence, climbing_fold, better_climbing_fold, even_better_climbing_fold]
     # algorithms = [random_fold]
+    algorithms = [random_fold, simulated_annealing]
     visualise_algorithm(algorithms)
 
     # protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
