@@ -21,7 +21,7 @@ def gather_data(algorithm) -> list[[str, int, float]]:
     
 
     # Test the algorithm 100 times and store the result
-    for i in range(100):
+    for i in range(5000):
         print(i)
         start = timer()
         result_protein: Protein = algorithm(test_protein)
@@ -50,5 +50,5 @@ def store_data(algorithm: str) -> None:
         my_writer.writerows(data)
 
 if __name__ == "__main__":
-    store_data(better_climbing_fold)
+    store_data(random_fold)
     
