@@ -10,6 +10,7 @@
 - genetic algoritme
 - simulated annihilation -Sydney
 - Database om de resultaten op te slaan -Bryan
+- HOE? -Bryan, Ronan
 
 
 
