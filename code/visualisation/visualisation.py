@@ -69,6 +69,7 @@ def hist_of_algorithm(algorithm) -> tuple[list[int], int, int, float, float]:
 
     # Test the algorithm 100 times and store the result
     for i in range(100):
+        print(i)
         start = timer()
         result_protein: Protein = algorithm(test_protein)
         end = timer()
