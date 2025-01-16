@@ -30,11 +30,12 @@ python3 -m code.visualisation.visualisation
 
 ## Repository structure
 The following list describes the main directories and files in the repository, and where to find them:
-* **/code**: contains all the code for this project
-    * **/code/algorithms**: contains the code for the algorithms
-    * **/code/classes**: contains the needed classes for this case
-    * **/code/visualisation**: contains the code for the visualisation
-* **/static**:
+* **/code**: contains all the code for this project.
+    * **/code/algorithms**: contains the code for the algorithms.
+    * **/code/classes**: contains the needed classes for this case.
+    * **/code/visualisation**: contains the code for the visualisation.
+* **/data**: contains the generated csv files and scripts for storing and analyzing algorithm performance data.
+* **/static**: ???
 
 # Authors
 * Sydney Celie
