@@ -1,7 +1,7 @@
 import numpy as np
 
 class Protein:
-    def __init__(self, sequence: str, command: str | None = None) -> None:
+    def __init__(self, sequence: str, command: str="") -> None:
         """
         Initialise the protein from a sequence of "P", "H" and "C" characters.
         The character with its sequence index are stored in a dictionary where the keys are the coordinates.
@@ -18,38 +18,34 @@ class Protein:
             "z_neg": np.array([[0, 1, 0], [-1, 0, 0], [0, 0, -1]])
         }
 
-    def load_data(self, command=None) -> None:
+    def load_data(self, command="") -> None:
         """
         Load data into the protein library.
         If the command "manual" is not given, the input string is implemented in the data.
         Otherwise a manually folded protein is implemented in the data.
         """
-        if command is None:
+        command = command.lower()
+        if command != "manual":
             for i, char in enumerate(self.sequence):
-                self.data[(i, 0, 0)] = (f"{char}", i)
+                self.data[(i, 0, 0)] = (char, i)
             return
-        command.lower()
         
-        if command == "manual":
-            self.data[(0, 0, 0)] = ("P", 0)
-            self.data[(1, 0, 0)] = ("C", 1)
-            self.data[(1, 1, 0)] = ("H", 2)
-            self.data[(0, 1, 0)] = ("H", 3)
-            self.data[(0, 2, 0)] = ("H", 4)
-            self.data[(1, 2, 0)] = ("P", 5)
-            self.data[(2, 2, 0)] = ("P", 6)
-            self.data[(2, 1, 0)] = ("H", 7)
-            self.data[(2, 0, 0)] = ("C", 8)
-            self.data[(2, -1, 0)] = ("H", 9)
-            self.data[(1, -1, 0)] = ("C", 10)
-            self.data[(1, -1, 1)] = ("P", 11)
-            self.data = dict(sorted(self.data.items(), key=lambda item: item[1][1]))
+    def add_amino(self, coord: tuple[int, int, int], char: str, index: int) -> None:
+        if coord not in self.data:
+            char = char.upper()
+            self.data[coord] = (char, index)
 
     def give_data(self) -> dict[tuple[int, int, int], tuple[str, int]]:
         """
         Returns the data dictionary of a protein.
         """
         return self.data
+    
+    def is_in_data(self, coord: tuple[int, int, int]) -> bool:
+        """
+        Returns if the coordinate is in the dataset
+        """
+        return coord in self.data
 
     def neighbours(self, coord: tuple[int, int, int]) -> list[tuple[int, int, int]]:
         """
@@ -161,16 +157,6 @@ class Protein:
             if self.is_foldable(coord, self.rotations[direction]):
                 possibilities.append(direction)
         return possibilities
-    
-    def fold_reverse(self, pivot: tuple[int, int, int], direction: str) -> bool:
-        """
-        Folds a protein in reverse to the direction that is given.
-        """
-        if "pos" in direction:
-            direction = direction.replace("pos", "neg")
-        else:
-            direction = direction.replace("neg", "pos")
-        return self.fold(pivot=pivot, direction=direction)
 
     def fold(self, pivot: tuple[int, int, int], direction: str) -> bool:
         """
@@ -205,6 +191,16 @@ class Protein:
             return True
         else:
             return False
+    
+    def fold_reverse(self, pivot: tuple[int, int, int], direction: str) -> bool:
+        """
+        Folds a protein in reverse to the direction that is given.
+        """
+        if "pos" in direction:
+            direction = direction.replace("pos", "neg")
+        else:
+            direction = direction.replace("neg", "pos")
+        return self.fold(pivot=pivot, direction=direction)
         
     def fold_by_DNA(self, DNA: int, index: int) -> bool:
         """

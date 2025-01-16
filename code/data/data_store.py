@@ -8,7 +8,7 @@ from code.algorithms.simulated_annealing import simulated_annealing
 import csv 
 from pathlib import Path
 
-def gather_data(algorithm) -> list[[str, int, float]]:
+def gather_data(algorithm) -> list[str, int, float]:
     """
     2nd generation helper function
 
@@ -31,7 +31,7 @@ def gather_data(algorithm) -> list[[str, int, float]]:
 
     return data
 
-def store_data(algorithm: str) -> None:
+def store_data(algorithm) -> None:
     """
     Store the data into a csv file. 
     """

@@ -9,7 +9,9 @@
 
 - genetic algoritme
 - simulated annihilation -Sydney
-- Database om de resultaten op te slaan -Bryan
+
+- Visualisatie beter maken
+- Random algoritme aanpassen
 - HOE? -Bryan, Ronan
 
 
@@ -37,6 +39,7 @@ Protein:
 - Visualiseer algoritmes - Bryan
 - Plot met tijd - Bryan
 - Bars splitsen - Bryan
+- Database om de resultaten op te slaan -Ronan
 
 3D:
 - Type correctie - Ronan
