@@ -12,7 +12,7 @@ def climbing_fold(protein: Protein) -> Protein:
     """
     # Create the random protein
     protein = random_fold(protein)
-    visualise_protein(protein)
+    # visualise_protein(protein)
     solve_protein(protein, "depth1")
     
     return protein
@@ -107,7 +107,7 @@ def best_move(protein: Protein, depth: str) -> Protein:
                 amino,
                 p_folds,
                 best_protein)
-    visualise_protein(best_protein)
+    # visualise_protein(best_protein)
 
     return best_protein
 
@@ -139,5 +139,5 @@ def most_stable_protein(stability, lowest_stability, adjust_protein, amino, p_fo
 
     return (best_protein, lowest_stability)
 
-protein1 = Protein("CPPCHPPCHPPCPPHCCPCHPPCPCHPPHPC")
-climbing_fold(protein1)
+# protein1 = Protein("CPPCHPPCHPPCPPHCCPCHPPCPCHPPHPC")
+# climbing_fold(protein1)
