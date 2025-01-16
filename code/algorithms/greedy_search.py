@@ -3,7 +3,6 @@ from code.visualisation.visualisation import *
 import random
 import copy
 
-random.seed(0)
 
 def greedy_search_sequence(protein: Protein) -> Protein:
     """
@@ -16,6 +15,7 @@ def greedy_search_sequence(protein: Protein) -> Protein:
     old_protein = copy.deepcopy(protein)
     old_protein.fold(*random.choice(protein.possible_folds()))
     new_protein = old_protein
+    possible_choices_counter = 0
 
     # Loop through the sequence and store the best folded protein
     for i in range(len(protein.sequence)):
@@ -48,11 +48,13 @@ def greedy_search_sequence(protein: Protein) -> Protein:
         if old_score == max_score and possible_choices:
             old_protein.fold(*possible_choices[0][1])
             new_protein = copy.deepcopy(old_protein)
-        elif old_score == max_score and not possible_choices:
+            possible_choices_counter += 1
+        if (old_score == max_score and not possible_choices) or possible_choices_counter == 3:
             return new_protein
 
         # Define variables to start loop again in the new protein
         old_protein = copy.deepcopy(new_protein)
         old_score = max_score
+    print(i, "einde")
 
     return new_protein

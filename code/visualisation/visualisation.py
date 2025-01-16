@@ -3,6 +3,7 @@ from code.classes.protein import Protein
 from code.algorithms.randomise import random_fold
 import numpy as np
 from timeit import default_timer as timer
+import pandas as pd
 
 
 # class Visualise:
@@ -108,7 +109,7 @@ def plot_algorithm_split(algorithm, ax, width: float, offset: float) -> None:
            hist_values,
            width=width,
            edgecolor="black",
-           label=f"{algorithm.__name__}")
+           label=f"{algorithm.__name__}, mean: {mean_time:0.2}s ± {std_time:0.2}s")
     # , mean: {mean_time:0.2}s ± {std_time:0.2}s
 
 
@@ -210,3 +211,8 @@ def visualise_algorithm(algorithms, command: str="split") -> None:
     plt.title("Functionality of algorithm out of 100 tests")
     plt.legend()
     plt.show()
+
+# def import_algorithm_data(algorithm, df) -> 
+
+# def visualise_algorithm_data(algorithms) -> None:
+#     df = pd.DataFrame()
