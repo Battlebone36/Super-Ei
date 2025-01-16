@@ -100,11 +100,15 @@ def plot_algorithm_split(algorithm, ax, width: float, offset: float) -> None:
     x_positions = (bin_edges[:-1] + bin_edges[1:]) / 2 + offset + width
 
     # Make plot
-    ax.bar(x_positions, hist_values, width=width, edgecolor="black",
-           label=f"{algorithm.__name__}, mean: {mean_time:0.2}s ± {std_time:0.2}s")
+    ax.bar(x_positions,
+           hist_values,
+           width=width,
+           edgecolor="black",
+           label=f"{algorithm.__name__}")
+    # , mean: {mean_time:0.2}s ± {std_time:0.2}s
 
 
-def plot_algorithm_together(algorithm, ax) -> None:
+def plot_algorithm_together(algorithm, ax, color: str) -> None:
     """
     Helper function.
     Plot the gathered data as a histogram in the total plot with bars together.
@@ -116,8 +120,21 @@ def plot_algorithm_together(algorithm, ax) -> None:
     stability_scores, max_score, min_score, mean_time, std_time = hist_of_algorithm(algorithm)
 
     # Make plot with bars together
-    ax.hist(stability_scores, edgecolor="black", bins= max_score - min_score + 1,
-            range=(min_score - 0.5, max_score + 0.5), alpha=0.8, label=f"{algorithm.__name__}, mean: {mean_time:0.2}s ± {std_time:0.2}s")
+    ax.hist(
+        stability_scores,
+        # edgecolor="black",
+        bins= max_score - min_score + 1,
+        range=(min_score - 0.5, max_score + 0.5),
+        density=True,
+        # alpha=0.8,
+        label=f"{algorithm.__name__}",
+        linewidth=5,
+        histtype="step"
+    )
+    # , mean: {mean_time:0.2}s ± {std_time:0.2}s
+    # histtype="barstacked",
+    
+            # density=True
 
 
 def plot_algorithm_line(algorithm, ax) -> None:
@@ -137,7 +154,10 @@ def plot_algorithm_line(algorithm, ax) -> None:
     x_positions = (bin_edges[:-1] + bin_edges[1:]) / 2 + 0.5
 
     # Make the line plot
-    ax.plot(x_positions, hist_values, label=f"{algorithm.__name__}, mean: {mean_time:0.2}s ± {std_time:0.2}s")
+    ax.plot(x_positions,
+            hist_values,
+            label=f"{algorithm.__name__}")
+    # , mean: {mean_time:0.2}s ± {std_time:0.2}s
 
 
 def visualise_algorithm(algorithms, command: str="split") -> None:
@@ -157,6 +177,13 @@ def visualise_algorithm(algorithms, command: str="split") -> None:
     # Define total plot and dataframe
     fig = plt.figure()
     ax = fig.add_subplot(111)
+    colors = {
+        "random_fold": "blue",
+        "greedy_search_sequence": "green",
+        "climbing_fold": "red",
+        "beter_climbing_fold": "orange",
+        "even_beter_climbing_fold": "yellow" 
+    }
 
     # Check commands
     if command == "split":
@@ -165,7 +192,7 @@ def visualise_algorithm(algorithms, command: str="split") -> None:
             plot_algorithm_split(algorithm=algorithm, ax=ax, width=bar_width, offset=bar_width * i)
     elif command == "together":
         for algorithm in algorithms:
-            plot_algorithm_together(algorithm=algorithm, ax=ax)
+            plot_algorithm_together(algorithm=algorithm, ax=ax, color=colors[f"{algorithm.__name__}"])
     elif command == "line":
         for algorithm in algorithms:
             plot_algorithm_line(algorithm=algorithm, ax=ax)

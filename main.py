@@ -15,17 +15,17 @@ def write_output(protein: Protein):
 
 if __name__ == "__main__":
     protein_vis = Protein("HCPHPCPHPCHCHPH")
-    print(protein_vis.fold_by_DNA(5, 4))
-    # visualise_protein(even_better_climbing_fold(protein_vis))
-    visualise_protein(protein_vis)
+    # print(protein_vis.fold_by_DNA(5, 4))
+    # # visualise_protein(even_better_climbing_fold(protein_vis))
+    # visualise_protein(protein_vis)
 
     # algorithms = [greedy_search_sequence, climbing_fold, better_climbing_fold, even_better_climbing_fold]
     algorithms = [random_fold, greedy_search_sequence, climbing_fold]
-    visualise_algorithm(algorithms, "line")
+    visualise_algorithm(algorithms, "together")
     # algorithms = [greedy_search_sequence, climbing_fold, better_climbing_fold, even_better_climbing_fold]
     # algorithms = [random_fold]
-    algorithms = [random_fold, simulated_annealing]
-    visualise_algorithm(algorithms)
+    # algorithms = [random_fold, simulated_annealing]
+    # visualise_algorithm(algorithms)
 
     # protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
     

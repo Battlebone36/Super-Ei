@@ -9,7 +9,8 @@
 
 - genetic algoritme
 - simulated annihilation -Sydney
-- Database om de resultaten op te slaan -Bryan
+- Database om de resultaten op te slaan -Ronan
+- Visualisatie beter maken
 - HOE? -Bryan, Ronan
 
 
