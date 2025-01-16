@@ -7,7 +7,9 @@ from timeit import default_timer as timer
 
 # class Visualise:
 def filter_data(data: dict[tuple[int, int, int], tuple[str, int]], amino: str) -> tuple[list[int], list[int], list[int]]:
-    """"Filters the coordinates of amino acids from a dataset, optionally filtering by type."""
+    """"
+    Filters the coordinates of amino acids from a dataset, optionally filtering by type.
+    """
     if amino == "all":
         x = [item[0][0] for item in data.items()]
         y = [item[0][1] for item in data.items()]
@@ -19,7 +21,9 @@ def filter_data(data: dict[tuple[int, int, int], tuple[str, int]], amino: str) -
     return (x, y, z)
 
 def visualise_protein(protein: Protein) -> None:
-    """Makes a plot of the protein."""
+    """
+    Makes a plot of the protein.
+    """
     # Filter the points out of the data
     data: dict[tuple[int, int, int], tuple[str, int]] = protein.give_data()
     x_p, y_p, z_p = filter_data(data, "P")
@@ -142,12 +146,13 @@ def plot_algorithm_line(algorithm, ax) -> None:
 
 def visualise_algorithm(algorithms, command: str="split") -> None:
     """
-    Visualise all algorithms given. The plot can be altered with a command.
+    Visualise the distribution of stability scores of the given algorithms. 
+    The plot style can be altered using the command parameter.
 
     command:
-    - "split" (default) gives a histogram with the bars split
-    - "together" gives a histogram with the bars together
-    - "line"     gives a histogram in a line plot.
+    - "split" (default): gives a histogram with the bars split.
+    - "together": gives a histogram with the bars together.
+    - "line": gives a histogram in a line plot.
 
     Uses:
     - plot_algorithm_split()

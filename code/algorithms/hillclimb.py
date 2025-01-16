@@ -50,8 +50,8 @@ def best_move(protein: Protein) -> Protein:
 
 def better_climbing_fold(protein: Protein) -> Protein:
     """
-    The same as the climbing fold but this one looks into more moves
-    at the same time
+    The same as the climbing fold, but this one looks into more moves
+    at the same time.
     """
     # Create the random protein
     protein = random_fold(protein)
@@ -68,7 +68,7 @@ def better_climbing_fold(protein: Protein) -> Protein:
 
 def better_best_move(protein: Protein) -> Protein:
     """
-    Find the best possible move at a certain configuration but look
+    Find the best possible move at a certain configuration, but looks
     into more moves at once.
     """
     # Loop over the randomized protein
@@ -114,8 +114,8 @@ def better_best_move(protein: Protein) -> Protein:
     
 def even_better_climbing_fold(protein: Protein) -> Protein:
     """
-    The same as the climbing fold but this one looks into more moves
-    at the same time
+    The same as the climbing fold, but this one looks into more moves
+    at the same time.
     """
     # Create the random protein
     protein = random_fold(protein)
@@ -132,7 +132,7 @@ def even_better_climbing_fold(protein: Protein) -> Protein:
 
 def even_better_best_move(protein: Protein) -> Protein:
     """
-    Find the best possible move at a certain configuration but look
+    Find the best possible move at a certain configuration, but looks
     into more moves at once.
     """
     # Loop over the randomized protein

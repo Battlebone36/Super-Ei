@@ -8,16 +8,19 @@ from code.algorithms.simulated_annealing import simulated_annealing
 import csv
 
 def write_output(protein: Protein):
+    """
+    Writes the configuration of a folded protein to a CSV file in a specific format.
+    """
     with open ('output.csv','w',newline = '') as csvfile:
         my_writer = csv.writer(csvfile, delimiter = ',')
         my_writer.writerows(protein.output())
 
 
 if __name__ == "__main__":
-    # protein_vis = Protein("HCPHPCPHPCHCHPH")
-    # print(protein_vis.give_data())
+    protein_vis = Protein("HCPHPCPHPCHCHPH")
+    print(protein_vis.fold_by_DNA(5, 4))
     # visualise_protein(even_better_climbing_fold(protein_vis))
-    # visualise_protein(protein_vis)
+    visualise_protein(protein_vis)
 
     # algorithms = [greedy_search_sequence, climbing_fold, better_climbing_fold, even_better_climbing_fold]
     algorithms = [random_fold, greedy_search_sequence, climbing_fold]
@@ -28,3 +31,4 @@ if __name__ == "__main__":
     visualise_algorithm(algorithms)
 
     # protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
+    
