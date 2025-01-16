@@ -11,7 +11,6 @@ def simulated_annealing(protein: Protein) -> Protein:
     Sometimes worse folds are accepted, depending on the current temperature.
     """
     # Starting values
-    initial_temp: int = 75
     initial_temp: int = 100
     cooling_rate: int = 0.99
     min_temp = 1
