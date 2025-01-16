@@ -36,7 +36,7 @@ def store_data(algorithm: str) -> None:
     Store the data into a csv file. 
     """
     data = gather_data(algorithm)
-    fname = f"code/data/{algorithm.__name__}.csv"
+    fname = f"code/data/csv_data{algorithm.__name__}.csv"
     write_mode = 'w'
         
     my_file = Path(fname)
