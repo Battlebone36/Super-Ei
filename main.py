@@ -3,7 +3,7 @@ from code.visualisation.visualisation import *
 from code.algorithms.randomise import random_fold
 from code.algorithms.greedy import greedy_fold
 from code.algorithms.greedy_search import greedy_search_sequence
-from code.algorithms.hillclimb import climbing_fold, depth2_climbing_fold, depth3_climbing_fold
+from code.algorithms.hillclimb import climbing_fold, depth2_climbing_fold, climbing_fold
 from code.algorithms.simulated_annealing import simulated_annealing
 import csv
 
