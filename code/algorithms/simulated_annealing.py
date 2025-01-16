@@ -3,7 +3,6 @@ from code.visualisation.visualisation import *
 import random
 import copy
 import math
-# random.seed(0)
 
 def simulated_annealing(protein: Protein) -> Protein:
     """
@@ -26,6 +25,7 @@ def simulated_annealing(protein: Protein) -> Protein:
     current_temp = initial_temp
     
     while current_temp > min_temp:
+        # Try random folding 10 times per temperature
         for _ in range(10):
             print(current_temp)
             possible_folds = current_protein.possible_folds()
@@ -64,8 +64,3 @@ def simulated_annealing(protein: Protein) -> Protein:
         current_temp *= cooling_rate
 
     return best_protein
-
-
-# protein = "HHPHHHPHPHHHPH"
-# best_protein = simulated_annealing(Protein(protein))
-# visualise_protein(best_protein)
