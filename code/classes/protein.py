@@ -207,6 +207,8 @@ class Protein:
             return False
         
     def fold_by_DNA(self, DNA: int, index: int) -> bool:
+        """
+        """
         if DNA == 0:
             return True
 
