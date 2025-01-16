@@ -1,6 +1,6 @@
 - Introductie
     * het probleem - case uitleg
-        - doel -> functie diie gebruikt wordt(?)
+        - doel -> functie die gebruikt wordt(?)
         - bindingen die mogelijk zijn en de stabiliteit score die horen bij de bindingen
     * constraints
         - hard constraints
@@ -8,6 +8,7 @@
     * state space
         - gebruikte functie
         - waar houdt het rekening mee -> assumpties
+            * maakt volgorde uit?
 - Theorie
 - Methoden
     * eerst alle algoritmen doorlopen
