@@ -13,70 +13,48 @@ def climbing_fold(protein: Protein) -> Protein:
     # Create the random protein
     protein = random_fold(protein)
     # visualise_protein(protein)
-
-    for i in range(20):
-        stability = protein.stability()
-        protein = best_move(protein)
-        new_stability = protein.stability()
-        if new_stability == stability:
-            break
+    solve_protein(protein, "depth1")
     
     return protein
 
-def best_move(protein: Protein) -> Protein:
+def depth2_climbing_fold(protein: Protein) -> Protein:
     """
-    Find the best possible move at a certain configuration.
+    Start from a random state and look at all the neighbouring states. 
+    Then look at all the neighbouring states of those. Find the best possible
+    solution untill it cannot be improved anymore.
     """
-    # Loop over the randomized protein
-    lowest_stability = protein.stability()
-    adjust_protein = copy.deepcopy(protein)
-    best_protein = copy.deepcopy(protein)
-    for amino in protein.data:
+    # Create the random protein
+    protein = random_fold(protein)
+    # visualise_protein(protein)
+    solve_protein(protein, "depth2")
 
-        # Copy the first protein and find the possible folds at a point
-        possible_folds = protein.possible_folds_point(amino)
-
-        # Find the stability for each of the moves and save the best
-        for p_folds in possible_folds:
-            adjust_protein.fold(amino, p_folds)
-            stability = adjust_protein.stability()
-            if stability < lowest_stability:
-                best_protein = copy.deepcopy(adjust_protein)
-                lowest_stability = stability
-            adjust_protein.fold_reverse(amino, p_folds)
-    # visualise_protein(best_protein)
-
-    return best_protein
-
-def better_climbing_fold(protein: Protein) -> Protein:
+    return protein
+    
+def depth3_climbing_fold(protein: Protein) -> Protein:
     """
-    The same as the climbing fold, but this one looks into more moves
-    at the same time.
+    Start from a random state and look at all the neighbouring states. 
+    Then look at all the neighbouring states of those. 
+    Then look at all the neighbouring states of those. Find the best possible
+    solution untill it cannot be improved anymore.
     """
     # Create the random protein
     protein = random_fold(protein)
     # visualise_protein(protein)
 
-    for i in range(20):
-        stability = protein.stability()
-        protein = better_best_move(protein)
-        new_stability = protein.stability()
-        if new_stability == stability:
-            break
+    solve_protein(protein, "depth3")
 
     return protein
 
-def better_best_move(protein: Protein) -> Protein:
+def best_move(protein: Protein, depth: str) -> Protein:
     """
     Find the best possible move at a certain configuration, but looks
-    into more moves at once.
+    into 3 moves.
     """
     # Loop over the randomized protein
     lowest_stability = protein.stability()
     adjust_protein = copy.deepcopy(protein)
     best_protein = copy.deepcopy(protein)
     for amino in protein.data:
-
         # Copy the first protein and find the possible folds at a point
         possible_folds = protein.possible_folds_point(amino)
 
@@ -84,117 +62,82 @@ def better_best_move(protein: Protein) -> Protein:
         for p_folds in possible_folds:
             adjust_protein.fold(amino, p_folds)
             stability = adjust_protein.stability()
+            if depth == "depth2" or depth == "depth3":
+                # Check another move
+                # -----------------------------------------------------------------
+                mid_adjust_protein = copy.deepcopy(adjust_protein)
+                for mid_amino in adjust_protein.data:
 
-            # Check another move
-            # -----------------------------------------------------------------
-            mid_adjust_protein = copy.deepcopy(adjust_protein)
-            for mid_amino in adjust_protein.data:
+                    mid_possible_folds = adjust_protein.possible_folds_point(mid_amino)
 
-                mid_possible_folds = adjust_protein.possible_folds_point(mid_amino)
+                    for mid_p_folds in mid_possible_folds:
+                        mid_adjust_protein.fold(mid_amino, mid_p_folds)
+                        mid_stability = mid_adjust_protein.stability()
+                        if depth == "depth3":
+                            # Check another move
+                            # -----------------------------------------------------------------
+                            mid2_adjust_protein = copy.deepcopy(mid_adjust_protein)
+                            for mid2_amino in mid_adjust_protein.data:
 
-                for mid_p_folds in mid_possible_folds:
-                    mid_adjust_protein.fold(mid_amino, mid_p_folds)
-                    mid_stability = mid_adjust_protein.stability()
+                                mid2_possible_folds = mid_adjust_protein.possible_folds_point(mid2_amino)
 
-                    if mid_stability < lowest_stability:
-                        best_protein = copy.deepcopy(mid_adjust_protein)
-                        lowest_stability = mid_stability
-                    mid_adjust_protein.fold_reverse(mid_amino, mid_p_folds)
-
-
-            # -----------------------------------------------------------------
-
-            if stability < lowest_stability:
-                best_protein = copy.deepcopy(adjust_protein)
-                lowest_stability = stability
-            adjust_protein.fold_reverse(amino, p_folds)
+                                for mid2_p_folds in mid2_possible_folds:
+                                    mid2_adjust_protein.fold(mid2_amino, mid2_p_folds)
+                                    mid2_stability = mid2_adjust_protein.stability()
+                                    best_protein, lowest_stability = most_stable_protein(
+                                        mid2_stability,
+                                        lowest_stability,
+                                        mid2_adjust_protein,
+                                        mid2_amino,
+                                        mid2_p_folds,
+                                        best_protein)
+                            # -----------------------------------------------------------------
+                        best_protein, lowest_stability = most_stable_protein(
+                            mid_stability,
+                            lowest_stability,
+                            mid_adjust_protein,
+                            mid_amino,
+                            mid_p_folds,
+                            best_protein)
+                # -----------------------------------------------------------------
+            best_protein, lowest_stability = most_stable_protein(
+                stability,
+                lowest_stability,
+                adjust_protein,
+                amino,
+                p_folds,
+                best_protein)
     # visualise_protein(best_protein)
 
     return best_protein
-    
-def even_better_climbing_fold(protein: Protein) -> Protein:
-    """
-    The same as the climbing fold, but this one looks into more moves
-    at the same time.
-    """
-    # Create the random protein
-    protein = random_fold(protein)
-    # visualise_protein(protein)
 
+def solve_protein(protein: Protein, depth: str) -> Protein:
+    """
+    Run the climbing algorithm at depth 1 2 or 3.
+    """
     for i in range(20):
         stability = protein.stability()
-        protein = even_better_best_move(protein)
+        if depth == "depth2":
+            protein = best_move(protein, depth)
+        elif depth == "depth3":
+            protein = best_move(protein, depth)
+        else:
+            protein = best_move(protein, depth)
         new_stability = protein.stability()
         if new_stability == stability:
+            print(f"The top of the hill has been found at {i} climbs")
             break
 
-    return protein
-
-def even_better_best_move(protein: Protein) -> Protein:
+def most_stable_protein(stability, lowest_stability, adjust_protein, amino, p_folds, best_protein):
     """
-    Find the best possible move at a certain configuration, but looks
-    into more moves at once.
+    Check whether the given protein is the best up untill now.
     """
-    # Loop over the randomized protein
-    lowest_stability = protein.stability()
-    adjust_protein = copy.deepcopy(protein)
-    best_protein = copy.deepcopy(protein)
-    for amino in protein.data:
-        print(amino)
-        # Copy the first protein and find the possible folds at a point
-        possible_folds = protein.possible_folds_point(amino)
+    if stability < lowest_stability:
+        best_protein = copy.deepcopy(adjust_protein)
+        lowest_stability = stability
+    adjust_protein.fold_reverse(amino, p_folds)
 
-        # Find the stability for each of the moves and save the best
-        for p_folds in possible_folds:
-            adjust_protein.fold(amino, p_folds)
-            stability = adjust_protein.stability()
-
-            # Check another move
-            # -----------------------------------------------------------------
-            mid_adjust_protein = copy.deepcopy(adjust_protein)
-            for mid_amino in adjust_protein.data:
-
-                mid_possible_folds = adjust_protein.possible_folds_point(mid_amino)
-
-                for mid_p_folds in mid_possible_folds:
-                    mid_adjust_protein.fold(mid_amino, mid_p_folds)
-                    mid_stability = mid_adjust_protein.stability()
-
-                    # Check another move
-                    # -----------------------------------------------------------------
-                    mid2_adjust_protein = copy.deepcopy(mid_adjust_protein)
-                    for mid2_amino in mid_adjust_protein.data:
-
-                        mid2_possible_folds = mid_adjust_protein.possible_folds_point(mid2_amino)
-
-                        for mid2_p_folds in mid2_possible_folds:
-                            mid2_adjust_protein.fold(mid2_amino, mid2_p_folds)
-                            mid2_stability = mid2_adjust_protein.stability()
-
-                            if mid2_stability < lowest_stability:
-                                best_protein = copy.deepcopy(mid2_adjust_protein)
-                                lowest_stability = mid2_stability
-                            mid2_adjust_protein.fold_reverse(mid2_amino, mid2_p_folds)
-
-
-                    # -----------------------------------------------------------------
-
-                    if mid_stability < lowest_stability:
-                        best_protein = copy.deepcopy(mid_adjust_protein)
-                        lowest_stability = mid_stability
-                    mid_adjust_protein.fold_reverse(mid_amino, mid_p_folds)
-
-
-            # -----------------------------------------------------------------
-
-            if stability < lowest_stability:
-                best_protein = copy.deepcopy(adjust_protein)
-                lowest_stability = stability
-            adjust_protein.fold_reverse(amino, p_folds)
-    # visualise_protein(best_protein)
-
-    return best_protein
-
+    return (best_protein, lowest_stability)
 
 # protein1 = Protein("CPPCHPPCHPPCPPHCCPCHPPCPCHPPHPC")
-# even_better_climbing_fold(protein1)
+# climbing_fold(protein1)

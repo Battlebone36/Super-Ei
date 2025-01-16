@@ -42,13 +42,23 @@ def visualise_protein(protein: Protein) -> None:
 
     # Mark non-sequential bonds
     line_info = {-1: ("r", 2), -5: ("g", 3.5)}
+    labeled_scores = set()
     for acid in data.items():
         friends = protein.neighbours(acid[0])
         for friend in friends:
             if friend in data and abs(acid[1][1] - data[friend][1]) != 1:
                 score = protein.type_bond(acid[0], friend)
-                if score < 0:
-                    ax.plot([acid[0][0], friend[0]], [acid[0][1], friend[1]], [acid[0][2], friend[2]], line_info[score][0], linewidth=line_info[score][1], linestyle="dotted")
+                if score in line_info:
+                    # Create a label for in the legend
+                    label = f"{score} bond" if score not in labeled_scores else ""
+                    ax.plot([acid[0][0], friend[0]], 
+                            [acid[0][1], friend[1]], 
+                            [acid[0][2], friend[2]], 
+                            line_info[score][0], 
+                            linewidth=line_info[score][1], 
+                            linestyle="dotted",
+                            label=label)
+                    labeled_scores.add(score)
 
     # Make the distance between the points equal and remove the axis
     ax.set_aspect("equal", adjustable="box")
@@ -91,6 +101,7 @@ def hist_of_algorithm(algorithm) -> tuple[list[int], int, int, float, float]:
 
 def plot_algorithm_split(algorithm, ax, width: float, offset: float) -> None:
     """
+    Helper function
     Plot the gathered data as a histogram in the total plot with bars split.
 
     Uses:
@@ -115,7 +126,7 @@ def plot_algorithm_split(algorithm, ax, width: float, offset: float) -> None:
 
 def plot_algorithm_together(algorithm, ax, color: str) -> None:
     """
-    Helper function.
+    Helper function
     Plot the gathered data as a histogram in the total plot with bars together.
     
     Uses:
@@ -144,7 +155,7 @@ def plot_algorithm_together(algorithm, ax, color: str) -> None:
 
 def plot_algorithm_line(algorithm, ax) -> None:
     """
-    Helper function.
+    Helper function
     Plot the gathered data as histogram in a line plot.
 
     Uses:
