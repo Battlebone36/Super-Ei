@@ -8,6 +8,9 @@ from code.algorithms.simulated_annealing import simulated_annealing
 import csv
 
 def write_output(protein: Protein):
+    """
+    Writes the configuration of a folded protein to a CSV file in a specific format.
+    """
     with open ('output.csv','w',newline = '') as csvfile:
         my_writer = csv.writer(csvfile, delimiter = ',')
         my_writer.writerows(protein.output())

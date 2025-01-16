@@ -5,7 +5,9 @@ import random
 
 
 def random_fold(protein: Protein) -> Protein:
-    """Randomly folds a protein multiple times and returns the folded protein."""
+    """
+    Randomly folds a protein multiple times and returns the folded protein.
+    """
     sequence = protein.sequence
 
     # Keep folding the protein randomly

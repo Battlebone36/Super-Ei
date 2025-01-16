@@ -6,7 +6,8 @@ import copy
 random.seed(0)
 
 def greedy_search_sequence(protein: Protein) -> Protein:
-    """"""
+    """
+    """
     # Define the variabels used
     old_score = 0
     max_score = 0
