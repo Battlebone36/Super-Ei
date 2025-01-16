@@ -17,7 +17,10 @@ def write_output(protein: Protein):
 
 
 if __name__ == "__main__":
-    protein_vis = Protein("HCPHPCPHPCHCHPH")
+    # protein_vis = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
+    
+    # visualise_protein(simulated_annealing(protein_vis))
+
     # greedy_search_sequence(protein_vis)
     # protein_vis.add_amino((0, 0, 0), "H", 0)
     # new_prot = random_fold_grow.algorithm(protein_vis)
