@@ -21,13 +21,13 @@ def gather_data(algorithm) -> list[str, int, float]:
     
 
     # Test the algorithm 100 times and store the result
-    for i in range(5000):
+    for i in range(1000):
         print(i)
         start = timer()
         result_protein: Protein = algorithm(test_protein)
         end = timer()
 
-        data.append([sequence, result_protein.stability(), end - start])
+        data.append([sequence, result_protein.stability(), end - start, f"{algorithm.__name__}"])
 
     return data
 
@@ -46,7 +46,7 @@ def store_data(algorithm) -> None:
     with open (fname, write_mode, newline = '') as csvfile:
         my_writer = csv.writer(csvfile, delimiter = ',')
         if write_mode == 'w':
-            my_writer.writerow(["protein", "stability", "time"])
+            my_writer.writerow(["protein", "stability", "time", "algorithm"])
         my_writer.writerows(data)
 
 if __name__ == "__main__":

@@ -83,7 +83,7 @@ def hist_of_algorithm(algorithm) -> tuple[list[int], int, int, float, float]:
     time_scores: list[float] = []
 
     # Test the algorithm 100 times and store the result
-    for i in range(100):
+    for i in range(1000):
         print(i)
         start = timer()
         result_protein: Protein = algorithm(test_protein)
@@ -223,7 +223,9 @@ def visualise_algorithm(algorithms, command: str="split") -> None:
     plt.legend()
     plt.show()
 
-# def import_algorithm_data(algorithm, df) -> 
+# def import_algorithm_data(algorithm, df):
+
+
 
 # def visualise_algorithm_data(algorithms) -> None:
 #     df = pd.DataFrame()
