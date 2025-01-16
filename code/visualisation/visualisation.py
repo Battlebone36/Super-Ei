@@ -146,12 +146,13 @@ def plot_algorithm_line(algorithm, ax) -> None:
 
 def visualise_algorithm(algorithms, command: str="split") -> None:
     """
-    Visualise all algorithms given. The plot can be altered with a command.
+    Visualise the distribution of stability scores of the given algorithms. 
+    The plot style can be altered using the command parameter.
 
     command:
-    - "split" (default) gives a histogram with the bars split
-    - "together" gives a histogram with the bars together
-    - "line"     gives a histogram in a line plot.
+    - "split" (default): gives a histogram with the bars split.
+    - "together": gives a histogram with the bars together.
+    - "line": gives a histogram in a line plot.
 
     Uses:
     - plot_algorithm_split()
