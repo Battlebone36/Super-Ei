@@ -90,6 +90,7 @@ def hist_of_algorithm(algorithm) -> tuple[list[int], int, int, float, float]:
 
 def plot_algorithm_split(algorithm, ax, width: float, offset: float) -> None:
     """
+    Helper function.
     Plot the gathered data as a histogram in the total plot with bars split.
 
     Uses:
