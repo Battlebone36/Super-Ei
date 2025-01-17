@@ -37,7 +37,7 @@ if __name__ == "__main__":
     # algorithms = [random_fold, random_fold_grow.random_fold2]
     algorithms = [random_fold, greedy_fold, greedy_search_sequence]
     # visualise_algorithm(algorithms)
-    visualise_algorithm_data(algorithms, "occurency-stability", "dodge")
+    visualise_algorithm_data(algorithms, "time-stability")
 
     # protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
     

@@ -233,29 +233,31 @@ def import_algorithm_data(algorithm, df):
     df_data_gathered = pd.read_csv(f"code/data/csv_data/{algorithm.__name__}.csv")
     return pd.concat([df, df_data_gathered], axis=0)
 
-def make_plot(df, algorithms, axes=None, type="occurency-stability", multiple="stack") -> None:
+def make_plot(df, algorithms, axes=None, type="occurency-stability") -> None:
     """
     Make the a histogram of the occurency-stability of all the algorithms in the dataset
     """
+    
     # Make a histogram by default and by type occurency-stability
     if type == "occurency-stability":
         for i, algorithm in enumerate(algorithms):
+            bins = df["stability"].max() - df["stability"].min()
             df_filtered = df[df["algorithm"] == f"{algorithm.__name__}"]
             plot = sns.histplot(
-                data=df_filtered,
-                x="stability",
-                bins=df["stability"].max() - df["stability"].min(),
+                df_filtered["stability"],
+                kde=True,
+                bins=bins,
                 stat="density",
                 discrete=True,
-                legend=True,
-                kde=True,
-                palette="husl",
                 ax=axes[i]
             )
             # plot.set_xticks(np.arange(df["stability"].min() - 1, df["stability"].max()) + 1)
             plot.set_title(f"{algorithm.__name__}")
+            plot.text(-bins, 0.95, s=f'Trials: {len(df_filtered)}', fontsize=10, color='black')
+        plot.set_xlabel("Stability")
+        plot.set_ylabel("Chance")
         plot.set_ylim(0, 1)
-        plt.show()
+        
 
     # If type is time-stability make a line plot with mean time on y-axis
     # and stability on x-axis
@@ -267,14 +269,15 @@ def make_plot(df, algorithms, axes=None, type="occurency-stability", multiple="s
             hue="algorithm",
             marker="o",
         )
-        plot.set_ylim(0)
         plot.set_xlabel("Stability")
         plot.set_ylabel("Mean time")
-        plt.legend()        
-        plt.show()
+        plot.set_xlim(right=1)
+        plot.legend()
+
+    plt.show()
 
 
-def visualise_algorithm_data(algorithms, type: str="occurency-stability", multiple="stack") -> None:
+def visualise_algorithm_data(algorithms, type: str="occurency-stability") -> None:
     """
     Import all data and make the plot for the data.
     """
@@ -284,11 +287,10 @@ def visualise_algorithm_data(algorithms, type: str="occurency-stability", multip
     for algorithm in algorithms:
         df = import_algorithm_data(algorithm=algorithm, df=df)
     
-    # Make specific plot    
+    # Make specific plot
     if type == "occurency-stability":
         fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True, sharey=True)
-        make_plot(df=df, algorithms=algorithms, multiple=multiple, axes=axes)
+        make_plot(df=df, algorithms=algorithms, axes=axes)
     elif type == "time-stability":
         grouped = df.groupby(["algorithm", "protein", "stability"]).mean().reset_index()
         make_plot(df=grouped, algorithms=algorithms, type=type)
-
