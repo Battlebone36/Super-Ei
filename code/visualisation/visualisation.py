@@ -251,7 +251,8 @@ def make_plot(df, algorithms, axes=None, type="occurency-stability") -> None:
                 discrete=True,
                 ax=axes[i]
             )
-            # plot.set_xticks(np.arange(df["stability"].min() - 1, df["stability"].max()) + 1)
+            ticks = np.arange(0, -bins - 1, -bins // 8)
+            plot.set_xticks(ticks=ticks)
             plot.set_title(f"{algorithm.__name__}")
             plot.text(-bins, 0.95, s=f'Trials: {len(df_filtered)}', fontsize=10, color='black')
         plot.set_xlabel("Stability")

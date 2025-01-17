@@ -1,18 +1,6 @@
 # Taken die nog volbracht moeten worden
 
 ## Grote taken
-- Comments doorlopen
-- 3D alles nakijken
-- algoritmes
-- Functie die op twee plaatsen fold tegelijk
-    - Twee coordinaten op assen hetzelfde, buren dezelfde richting
-
-- DNA anders noemen -> direction
-- genetic algoritme
-- simulated annihilation -Sydney
-
-- Visualisatie beter maken
-- Random algoritme aanpassen
 - HOE? -Bryan, Ronan
 
 
@@ -41,6 +29,7 @@ Protein:
 - Plot met tijd - Bryan
 - Bars splitsen - Bryan
 - Database om de resultaten op te slaan -Ronan
+- Visualisatie data -Bryan
 
 3D:
 - Type correctie - Ronan

@@ -56,6 +56,5 @@ def greedy_search_sequence(protein: Protein) -> Protein:
         # Define variables to start loop again in the new protein
         old_protein = copy.deepcopy(new_protein)
         old_score = max_score
-    print(i, "einde")
 
     return new_protein

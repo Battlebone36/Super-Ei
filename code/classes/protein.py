@@ -10,12 +10,13 @@ class Protein:
         self.data: dict[tuple[int, int, int], tuple[str, int]] = {}
         self.load_data(command)
         self.rotations = {
-            "x_pos": np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]]),
-            "x_neg": np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]]),
-            "y_pos": np.array([[0, 0, -1], [0, 1, 0], [1, 0, 0]]),
-            "y_neg": np.array([[0, 0, 1], [0, 1, 0], [-1, 0, 0]]),
-            "z_pos": np.array([[0, -1, 0], [1, 0, 0], [0, 0, -1]]),
-            "z_neg": np.array([[0, 1, 0], [-1, 0, 0], [0, 0, -1]])
+            0: np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]]),
+            1: np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]]),
+            2: np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]]),
+            3: np.array([[0, 0, -1], [0, 1, 0], [1, 0, 0]]),
+            4: np.array([[0, 0, 1], [0, 1, 0], [-1, 0, 0]]),
+            5: np.array([[0, -1, 0], [1, 0, 0], [0, 0, -1]]),
+            6: np.array([[0, 1, 0], [-1, 0, 0], [0, 0, -1]])
         }
 
     def load_data(self, command="") -> None:
@@ -144,11 +145,13 @@ class Protein:
         for coord, amino in self.data.items():
             if amino[1] != 0 and amino[1] != len(self.sequence) - 1:
                 for key, value in self.rotations.items():
-                    if self.is_foldable(coord, value):
+                    if key == 0:
+                        possibilities.append((coord, key))
+                    elif self.is_foldable(coord, value):
                         possibilities.append((coord, key))
         return possibilities
     
-    def possible_folds_point(self, coord: tuple[int, int, int]) -> list[str]:
+    def possible_folds_point(self, coord: tuple[int, int, int]) -> list[int]:
         """
         Returns the possible folds in a protein at a specific coordinate.
         """
@@ -158,7 +161,7 @@ class Protein:
                 possibilities.append(direction)
         return possibilities
 
-    def fold(self, pivot: tuple[int, int, int], direction: str) -> bool:
+    def fold(self, pivot: tuple[int, int, int], direction: int) -> bool:
         """
         Folds a protein at a given pivot point in a certain direction: "{axis}_{direction}".
         """
@@ -166,11 +169,10 @@ class Protein:
         if pivot not in self.data:
             print("coordinate not in dataset")
             raise IndexError
-
-        # Make the command case insensitive and define the rotation matrix, otherwise return False
-        direction = direction.lower()
-
-        if direction in self.rotations:
+        
+        if direction == 1:
+            return True
+        elif direction in self.rotations:
             rot_matrix = self.rotations[direction]
         else:
             return False
@@ -201,28 +203,6 @@ class Protein:
         else:
             direction = direction.replace("neg", "pos")
         return self.fold(pivot=pivot, direction=direction)
-        
-    def fold_by_DNA(self, DNA: int, index: int) -> bool:
-        """
-        Folds the protein in a direction on an amino_acid defined by the index.
-        """
-        if DNA == 0:
-            return True
-
-        DNA_to_direction = {
-            1: "x_pos",
-            2: "x_neg",
-            3: "y_pos",
-            4: "y_neg",
-            5: "z_pos",
-            6: "z_neg"
-        }
-        direction = DNA_to_direction[DNA]
-        pivot = (0, 0, 0)        
-        for key, value in self.data.items():
-            if value[1] == index:
-                pivot = key
-                return self.fold(pivot=pivot, direction=direction)
 
 
     def check_direction(self, coord1: tuple[int, int, int], coord2: tuple[int, int, int]) -> int:
