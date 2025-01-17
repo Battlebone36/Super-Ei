@@ -239,20 +239,22 @@ def make_plot(df, algorithms, axes=None, type="occurency-stability", multiple="s
     """
     # Make a histogram by default and by type occurency-stability
     if type == "occurency-stability":
-        plot = sns.histplot(
-            data=df,
-            x="stability",
-            hue="algorithm",
-            bins=df["stability"].max() - df["stability"].min(),
-            stat="density",
-            discrete=True,
-            legend=True,
-            kde=True,
-            multiple=multiple,
-            palette="husl"
-        )
-        # plot.set_xticks(np.arange(df["stability"].min() - 1, df["stability"].max()) + 1)
-        plot.set_title("Normalised Histogram of the Effectivity of the algorithms")
+        for i, algorithm in enumerate(algorithms):
+            df_filtered = df[df["algorithm"] == f"{algorithm.__name__}"]
+            plot = sns.histplot(
+                data=df_filtered,
+                x="stability",
+                bins=df["stability"].max() - df["stability"].min(),
+                stat="density",
+                discrete=True,
+                legend=True,
+                kde=True,
+                palette="husl",
+                ax=axes[i]
+            )
+            # plot.set_xticks(np.arange(df["stability"].min() - 1, df["stability"].max()) + 1)
+            plot.set_title(f"{algorithm.__name__}")
+        plot.set_ylim(0, 1)
         plt.show()
 
     # If type is time-stability make a line plot with mean time on y-axis
@@ -284,10 +286,9 @@ def visualise_algorithm_data(algorithms, type: str="occurency-stability", multip
     
     # Make specific plot    
     if type == "occurency-stability":
-        fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True)
+        fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True, sharey=True)
         make_plot(df=df, algorithms=algorithms, multiple=multiple, axes=axes)
     elif type == "time-stability":
-        # print("ja")
         grouped = df.groupby(["algorithm", "protein", "stability"]).mean().reset_index()
         make_plot(df=grouped, algorithms=algorithms, type=type)
 
