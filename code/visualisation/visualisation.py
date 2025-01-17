@@ -4,6 +4,7 @@ from code.algorithms.randomise import random_fold
 import numpy as np
 from timeit import default_timer as timer
 import pandas as pd
+import seaborn as sns
 
 
 # class Visualise:
@@ -209,7 +210,7 @@ def visualise_algorithm(algorithms, command: str="split") -> None:
             plot_algorithm_split(algorithm=algorithm, ax=ax, width=bar_width, offset=bar_width * i)
     elif command == "together":
         for algorithm in algorithms:
-            plot_algorithm_together(algorithm=algorithm, ax=ax, color=colors[f"{algorithm.__name__}"])
+            plot_algorithm_together(algorithm=algorithm, ax=ax)
     elif command == "line":
         for algorithm in algorithms:
             plot_algorithm_line(algorithm=algorithm, ax=ax)
@@ -223,9 +224,70 @@ def visualise_algorithm(algorithms, command: str="split") -> None:
     plt.legend()
     plt.show()
 
-# def import_algorithm_data(algorithm, df):
+
+def import_algorithm_data(algorithm, df):
+    """
+    Import the data out of a certain algorithm csv files.
+    """
+
+    df_data_gathered = pd.read_csv(f"code/data/csv_data/{algorithm.__name__}.csv")
+    return pd.concat([df, df_data_gathered], axis=0)
+
+def make_plot(df, algorithms, axes=None, type="occurency-stability", multiple="stack") -> None:
+    """
+    Make the a histogram of the occurency-stability of all the algorithms in the dataset
+    """
+    # Make a histogram by default and by type occurency-stability
+    if type == "occurency-stability":
+        plot = sns.histplot(
+            data=df,
+            x="stability",
+            hue="algorithm",
+            bins=df["stability"].max() - df["stability"].min(),
+            stat="density",
+            discrete=True,
+            legend=True,
+            kde=True,
+            multiple=multiple,
+            palette="husl"
+        )
+        # plot.set_xticks(np.arange(df["stability"].min() - 1, df["stability"].max()) + 1)
+        plot.set_title("Normalised Histogram of the Effectivity of the algorithms")
+        plt.show()
+
+    # If type is time-stability make a line plot with mean time on y-axis
+    # and stability on x-axis
+    elif type == "time-stability":
+        plot = sns.lineplot(
+            data=df,
+            x="stability",
+            y="time",
+            hue="algorithm",
+            marker="o",
+        )
+        plot.set_ylim(0)
+        plot.set_xlabel("Stability")
+        plot.set_ylabel("Mean time")
+        plt.legend()        
+        plt.show()
 
 
+def visualise_algorithm_data(algorithms, type: str="occurency-stability", multiple="stack") -> None:
+    """
+    Import all data and make the plot for the data.
+    """
+    # Make DataFrame and import data from files
+    type = type.lower()
+    df = pd.DataFrame()
+    for algorithm in algorithms:
+        df = import_algorithm_data(algorithm=algorithm, df=df)
+    
+    # Make specific plot    
+    if type == "occurency-stability":
+        fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True)
+        make_plot(df=df, algorithms=algorithms, multiple=multiple, axes=axes)
+    elif type == "time-stability":
+        # print("ja")
+        grouped = df.groupby(["algorithm", "protein", "stability"]).mean().reset_index()
+        make_plot(df=grouped, algorithms=algorithms, type=type)
 
-# def visualise_algorithm_data(algorithms) -> None:
-#     df = pd.DataFrame()

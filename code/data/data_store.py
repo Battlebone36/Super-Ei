@@ -3,8 +3,8 @@ from code.visualisation.visualisation import *
 from code.algorithms.randomise import random_fold
 from code.algorithms.greedy import greedy_fold
 from code.algorithms.greedy_search import greedy_search_sequence
-from code.algorithms.hillclimb import climbing_fold, better_climbing_fold, even_better_climbing_fold
-from code.algorithms.simulated_annealing import simulated_annealing
+# from code.algorithms.hillclimb import climbing_fold, better_climbing_fold, even_better_climbing_fold
+# from code.algorithms.simulated_annealing import simulated_annealing
 import csv 
 from pathlib import Path
 
@@ -36,7 +36,7 @@ def store_data(algorithm) -> None:
     Store the data into a csv file. 
     """
     data = gather_data(algorithm)
-    fname = f"code/data/csv_data{algorithm.__name__}.csv"
+    fname = f"code/data/csv_data/{algorithm.__name__}.csv"
     write_mode = 'w'
         
     my_file = Path(fname)
@@ -50,5 +50,5 @@ def store_data(algorithm) -> None:
         my_writer.writerows(data)
 
 if __name__ == "__main__":
-    store_data(random_fold)
+    store_data(greedy_fold)
     

@@ -7,6 +7,7 @@
 - Functie die op twee plaatsen fold tegelijk
     - Twee coordinaten op assen hetzelfde, buren dezelfde richting
 
+- DNA anders noemen -> direction
 - genetic algoritme
 - simulated annihilation -Sydney
 

@@ -6,6 +6,7 @@ import copy
 
 def greedy_search_sequence(protein: Protein) -> Protein:
     """
+    A greedy algorithm that folds the protein in a short term way to maximise stability.
     """
     # Define the variabels used
     old_score = 0
