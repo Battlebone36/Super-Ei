@@ -1,14 +1,14 @@
 import numpy as np
 
 class Protein:
-    def __init__(self, sequence: str, command: str="") -> None:
+    def __init__(self, sequence: str) -> None:
         """
         Initialise the protein from a sequence of "P", "H" and "C" characters.
         The character with its sequence index are stored in a dictionary where the keys are the coordinates.
         """
         self.sequence = sequence.upper()
         self.data: dict[tuple[int, int, int], tuple[str, int]] = {}
-        self.load_data(command)
+        self.load_data()
         self.rotations = {
             0: np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]]),
             1: np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]]),
@@ -19,18 +19,16 @@ class Protein:
             6: np.array([[0, 1, 0], [-1, 0, 0], [0, 0, -1]])
         }
 
-    def load_data(self, command="") -> None:
+    def load_data(self) -> None:
         """
         Load data into the protein library.
         If the command "manual" is not given, the input string is implemented in the data.
         Otherwise a manually folded protein is implemented in the data.
         """
-        command = command.lower()
-        if command != "manual":
-            for i, char in enumerate(self.sequence):
-                self.data[(i, 0, 0)] = (char, i)
-            return
-        
+        self.data.clear()
+        for i, char in enumerate(self.sequence):
+            self.data[(i, 0, 0)] = (char, i)
+    
     def add_amino(self, coord: tuple[int, int, int], char: str, index: int) -> None:
         if coord not in self.data:
             char = char.upper()
@@ -47,7 +45,7 @@ class Protein:
         Returns if the coordinate is in the dataset
         """
         return coord in self.data
-
+    
     def neighbours(self, coord: tuple[int, int, int]) -> list[tuple[int, int, int]]:
         """
         Returns adjacent 3D coordinates of the given coordinate.
@@ -170,7 +168,7 @@ class Protein:
             print("coordinate not in dataset")
             raise IndexError
         
-        if direction == 1:
+        if direction == 0:
             return True
         elif direction in self.rotations:
             rot_matrix = self.rotations[direction]
@@ -186,9 +184,9 @@ class Protein:
                 if amino[1] > self.data[pivot][1]:
                     points_to_rot[coord] = amino
 
-            for acid in points_to_rot:
-                new_coord = self.rotate_coord(acid, pivot, rot_matrix)
-                store_value = self.data.pop(acid)
+            for coordinate in points_to_rot:
+                new_coord = self.rotate_coord(coordinate, pivot, rot_matrix)
+                store_value = self.data.pop(coordinate)
                 self.data[new_coord] = store_value
             return True
         else:

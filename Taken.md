@@ -2,14 +2,8 @@
 
 ## Grote taken
 - HOE? -Bryan, Ronan
-
-
-
-## 3D taken:
-Protein:
-- check_direction
-
-## Kleine taken:
+- Algoritmes afstemmen -Bryan
+- Algoritmes runnen
 
 
 ## DONE:
