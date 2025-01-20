@@ -22,7 +22,6 @@ if __name__ == "__main__":
     # visualise_algorithm_data(algorithms, "occurency-stability") 
     # test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
     test = Protein("HHHCHCC")
-    H
     # iets = BreadthFirst(test)
     # temp_prot = iets.run()
     # visualise_protein(temp_prot)

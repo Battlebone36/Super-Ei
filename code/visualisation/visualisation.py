@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from code.classes.protein import Protein
-from code.algorithms.randomise import random_fold
+from code.algorithms.randomise import Random_fold
 import numpy as np
 from timeit import default_timer as timer
 import pandas as pd
