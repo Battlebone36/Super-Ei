@@ -1,6 +1,6 @@
 from code.classes.protein import Protein
 from code.visualisation.visualisation import *
-from code.algorithms.randomise import random_fold
+from code.algorithms.randomise import Random_fold
 import copy
 
 def climbing_fold(protein: Protein) -> Protein:
@@ -11,9 +11,10 @@ def climbing_fold(protein: Protein) -> Protein:
     no more good changes.
     """
     # Create the random protein
-    protein = random_fold(protein)
+    protein_random = Random_fold(protein)
+    protein_random.run()
     # visualise_protein(protein)
-    solve_protein(protein, "depth1")
+    solve_protein(protein_random.protein, "depth1")
     
     return protein
 
@@ -24,9 +25,10 @@ def depth2_climbing_fold(protein: Protein) -> Protein:
     solution untill it cannot be improved anymore.
     """
     # Create the random protein
-    protein = random_fold(protein)
+    protein_random = Random_fold(protein)
+    protein_random.run()
     # visualise_protein(protein)
-    solve_protein(protein, "depth2")
+    solve_protein(protein_random.protein, "depth2")
 
     return protein
     
@@ -38,10 +40,11 @@ def depth3_climbing_fold(protein: Protein) -> Protein:
     solution untill it cannot be improved anymore.
     """
     # Create the random protein
-    protein = random_fold(protein)
+    protein_random = Random_fold(protein)
+    protein_random.run()
     # visualise_protein(protein)
 
-    solve_protein(protein, "depth3")
+    solve_protein(protein_random.protein, "depth3")
 
     return protein
 
@@ -107,7 +110,7 @@ def best_move(protein: Protein, depth: str) -> Protein:
                 amino,
                 p_folds,
                 best_protein)
-    # visualise_protein(best_protein)
+    visualise_protein(best_protein)
 
     return best_protein
 
@@ -139,5 +142,5 @@ def most_stable_protein(stability, lowest_stability, adjust_protein, amino, p_fo
 
     return (best_protein, lowest_stability)
 
-# protein1 = Protein("CPPCHPPCHPPCPPHCCPCHPPCPCHPPHPC")
-# climbing_fold(protein1)
+protein1 = Protein("CPPCHPPCHPPCPPHCCPCHPPCPCHPPHPC")
+depth3_climbing_fold(protein1)
