@@ -5,7 +5,8 @@ class Algorithm:
     def __init__(self, protein: Protein):
         self.protein: Protein = Protein(protein.sequence)
         self.protein_check: Protein = Protein(protein.sequence)
-        self.fold_sequence = []
+        self.fold_sequence: list[int] = []
+        self.fold_sequences: dict[list[int], int] = {}
 
     def run(self):
         self.visualise()
