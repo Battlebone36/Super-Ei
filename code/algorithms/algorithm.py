@@ -6,7 +6,7 @@ class Algorithm:
         self.protein: Protein = Protein(protein.sequence)
         self.protein_check: Protein = Protein(protein.sequence)
         self.fold_sequence: list[int] = []
-        self.fold_sequences: dict[list[int], int] = {}
+        self.list_fold_sequences: list[list[int]] = []
 
     def run(self):
         self.visualise()

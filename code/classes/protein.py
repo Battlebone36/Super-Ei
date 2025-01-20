@@ -8,6 +8,7 @@ class Protein:
         """
         self.sequence = sequence.upper()
         self.data: dict[tuple[int, int, int], tuple[str, int]] = {}
+        self.steps: int = 0
         self.load_data()
         self.rotations = {
             0: np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]]),
@@ -192,14 +193,20 @@ class Protein:
         else:
             return False
     
-    def fold_reverse(self, pivot: tuple[int, int, int], direction: str) -> bool:
+    def fold_reverse(self, pivot: tuple[int, int, int], direction: int) -> bool:
         """
         Folds a protein in reverse to the direction that is given.
         """
-        if "pos" in direction:
-            direction = direction.replace("pos", "neg")
-        else:
-            direction = direction.replace("neg", "pos")
+        # if "pos" in direction:
+        #     direction = direction.replace("pos", "neg")
+        # else:
+        #     direction = direction.replace("neg", "pos")
+        if direction == 0:
+            direction = 0
+        elif direction % 2 == 0:
+            direction -= 1
+        elif direction % 2 == 1:
+            direction += 1
         return self.fold(pivot=pivot, direction=direction)
 
 

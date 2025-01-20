@@ -12,11 +12,11 @@ class BreadthFirst(Random_fold):
         If the fold sequence is 6, 6, 6, 6, ... the next sequence will be 0, 0, 0, 0, ....
         """
         carry = 1
-        for i in range(len(self.fold_sequence)):
+        for i in reversed(range(len(self.fold_sequence))):
             self.fold_sequence[i] += carry
             carry = self.fold_sequence[i] // 7
             self.fold_sequence[i] = self.fold_sequence[i] % 7
-        
+
     def index_of_error_in_fold_sequence(self) -> int:
         """
         Gives back the index of where the impossible fold occurs or -1 if ervery fold is possible.
@@ -31,22 +31,23 @@ class BreadthFirst(Random_fold):
                 return amino[1] - 1
         return -1
 
-    # def cut_branch(self) -> None:
-    #     """
-    #     Cut a branch from the sequence and skip to the next branch.
-    #     """
-    #     index = self.index_of_error_in_fold_sequence()
-    #     if index == -1:
-    #         return
-    #     carry = 1
-    #     for i in range(len(self.fold_sequence)):
-    #         if i >= index:
-    #             self.fold_sequence[i] += carry
-    #             carry = self.fold_sequence[i] // 7
-    #             self.fold_sequence[i] = self.fold_sequence[i] % 7 
-    #         elif i < index:
-    #             self.fold_sequence[i] = 0
+    def cut_branch(self, index: int) -> None:
+        """
+        Cut a branch from the sequence and skip to the next branch.
+        """
+        # TODO in range must have index
+        if index not in range(len(self.protein.sequence) - 2):
+            return
+        carry = 1
+        for i in reversed(range(len(self.fold_sequence))):
+            if i <= index:
+                self.fold_sequence[i] += carry
+                carry = self.fold_sequence[i] // 7
+                self.fold_sequence[i] = self.fold_sequence[i] % 7 
+        if carry == 1:
+            self.fold_sequence = [0 for i in range(len(self.protein.sequence) - 2)]
     
+    # Maybe later    
     # def calc_radius(self, coordinate: tuple[int, int, int]):
     #     """
     #     Calculates the radius of a coordinate to the origin.
@@ -55,7 +56,7 @@ class BreadthFirst(Random_fold):
     #     return np.sqrt(r_2)
     
 
-    # Maybe later
+    
     # def hash_protein(self):
     #     """
     #     Gives a rotational invariant hash for the self.protein of the algorithm.
@@ -72,35 +73,30 @@ class BreadthFirst(Random_fold):
     def run(self, shout=False):
         self.fold_sequence = [0 for i in range(len(self.protein.sequence) - 2)]
         self.next_fold_sequence()
-        max_stability = 0
-        max_protein = self.protein
-        non_valid = set()
         while self.fold_sequence != [0 for i in range(len(self.protein.sequence) - 2)]:
             self.next_fold_sequence()
-            if self.index_of_error_in_fold_sequence() != -1:
-                non_valid.add(tuple(self.fold_sequence))
-                continue
-            temp_protein = self.fold_protein_by_sequence()
+            index = self.index_of_error_in_fold_sequence()
+            if index != -1:
+                self.cut_branch(index=index)
+            # print(self.fold_sequence)
+            self.list_fold_sequences.append(tuple(self.fold_sequence))
+        
+        max_stability = 0
+        max_protein = self.protein
+        for fold_sequence in self.list_fold_sequences:
+            temp_protein = self.fold_protein_by_sequence(fold_sequence=list(fold_sequence))
             temp_stability = temp_protein.stability()
             if temp_stability < max_stability:
                 max_protein = temp_protein
                 max_stability = temp_stability
                 if shout == True:
                     print("New score:", max_stability)
-            if (
-                shout == True
+
+            if (shout == True
                 and self.fold_sequence[0] // 6 == 1
                 and self.fold_sequence[1] // 6 == 1
                 and self.fold_sequence[2] // 6 == 1
                 and self.fold_sequence[3] // 6 == 1
             ):
                 print(*self.fold_sequence)
-        counter = 0
-
-        for value in sorted(non_valid):
-            print(value)
-            counter += 1
-            if counter > 50:
-                break
-
         return max_protein

@@ -33,7 +33,7 @@ class Random_fold(Algorithm):
         return folds
     
     
-    def fold_protein_by_sequence(self) -> Protein:
+    def fold_protein_by_sequence(self, fold_sequence: list[int]) -> Protein:
         """
         Folds a protein by a sequence of integers
         """
@@ -45,7 +45,7 @@ class Random_fold(Algorithm):
                     current_coord = coord
                     break
 
-            fold_direction = self.fold_sequence[i - 1]
+            fold_direction = fold_sequence[i - 1]
 
             if copy_protein.is_foldable(current_coord, copy_protein.rotations[fold_direction]):
                 copy_protein.fold(current_coord, fold_direction)
@@ -58,16 +58,16 @@ class Random_fold(Algorithm):
         sequence = self.protein.sequence
         copy_protein = Protein(sequence)
 
-        self.fold_sequence = self.valid_random_sequence()
-        return self.fold_protein_by_sequence()
+        fold_sequence = self.valid_random_sequence()
+        return self.fold_protein_by_sequence(fold_sequence=fold_sequence)
 
 
-# def random_fold(protein: Protein) -> Protein:
-#     """
-#     Randomly folds a protein multiple times and returns the folded protein.
-#     """
-#     sequence = protein.sequence
-#     copy_protein = Protein(sequence)
+def random_fold(protein: Protein) -> Protein:
+    """
+    Randomly folds a protein multiple times and returns the folded protein.
+    """
+    sequence = protein.sequence
+    copy_protein = Protein(sequence)
 
     # Keep folding the protein randomly
     # directions = ["x_pos", "x_neg", "y_pos", "y_neg", "z_pos", "z_neg"]
@@ -76,21 +76,21 @@ class Random_fold(Algorithm):
     # for attempt in range(int(len(protein.data) * 1.5)):
         
 
-#     # Loop over the amino acids in the protein
-#     for i in range(1, len(copy_protein.data) - 1):
-#         current_coord = (0, 0, 0)
-#         for coord, (amino, index) in copy_protein.data.items():
-#             if index == i:
-#                 current_coord = coord
-#                 break
+    # Loop over the amino acids in the protein
+    for i in range(1, len(copy_protein.data) - 1):
+        current_coord = (0, 0, 0)
+        for coord, (amino, index) in copy_protein.data.items():
+            if index == i:
+                current_coord = coord
+                break
         
-#         # Random fold choice
-#         fold_direction = random.choice(directions)
+        # Random fold choice
+        fold_direction = random.choice(directions)
 
-#         if copy_protein.is_foldable(current_coord, copy_protein.rotations[fold_direction]):
-#             copy_protein.fold(current_coord, fold_direction)
+        if copy_protein.is_foldable(current_coord, copy_protein.rotations[fold_direction]):
+            copy_protein.fold(current_coord, fold_direction)
             
-#     return copy_protein
+    return copy_protein
 
 class random_fold_grow:
     def random_fold2(protein: Protein) -> Protein:

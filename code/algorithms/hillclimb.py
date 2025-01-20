@@ -143,4 +143,4 @@ def most_stable_protein(stability, lowest_stability, adjust_protein, amino, p_fo
     return (best_protein, lowest_stability)
 
 protein1 = Protein("CPPCHPPCHPPCPPHCCPCHPPCPCHPPHPC")
-depth3_climbing_fold(protein1)
+# depth3_climbing_fold(protein1)
