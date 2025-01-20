@@ -1,4 +1,5 @@
 from code.classes.protein import Protein
+from code.algorithms.randomise import random_fold
 from code.visualisation.visualisation import *
 import random
 import copy
