@@ -23,7 +23,7 @@ if __name__ == "__main__":
     # algorithms = [random_fold, greedy_fold, greedy_search_sequence]
     # visualise_algorithm_data(algorithms, "occurency-stability") 
     # test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
-    test = Protein("HCHHCHH")
+    test = Protein("HCHHCH")
     prot = BreadthFirst(test)
     plot = prot.run(shout=True)
 
