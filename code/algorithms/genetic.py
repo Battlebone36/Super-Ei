@@ -57,6 +57,7 @@ def genetic(protein: Protein) -> None:
     proteins_dict: dict[int, tuple[Protein, list[int]]] = {}
     unchanged_count = 0
     protein_id = 0
+    generations = 200
 
     # Initial population - generation 0
     # Create ten randomly folded proteins
