@@ -21,14 +21,9 @@ if __name__ == "__main__":
     # algorithms = [random_fold, greedy_fold, greedy_search_sequence]
     # visualise_algorithm_data(algorithms, "occurency-stability") 
     # test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
-    test = Protein("HHCPH")
-    iets = BreadthFirst(test)
-    iets.run()
+    test = Protein("HHHCHCC")
+    # iets = BreadthFirst(test)
+    # temp_prot = iets.run()
+    # visualise_protein(temp_prot)
 
-    iets2 = Random_fold(test)
-    prot = iets2.fold_protein_by_sequence([6, 0, 0, 0])
-
-    # iets = Random_fold(test)
-    # iets.run()
-    # visualise_protein(iets.run())
 
