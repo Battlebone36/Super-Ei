@@ -8,8 +8,8 @@ class BreadthFirst(Random_fold):
     def next_fold_sequence(self):
         """
         Adds one to the sequence of the folds like a clock.
-        For instance 1, 0, 0 will turn into 2, 0, 0 and
-        6, 0, 0 will turn into 0, 1, 0.
+        For instance 0, 0, 1 will turn into 0, 0, 2 and
+        0, 0, 6 will turn into 0, 1, 0.
         If the fold sequence is 6, 6, 6, 6, ... the next sequence will be 0, 0, 0, 0, ....
         """
         # Add 1 to the last integer in the sequence and loop back to the beginning 
@@ -22,7 +22,8 @@ class BreadthFirst(Random_fold):
 
     def index_of_error_in_fold_sequence(self) -> int:
         """
-        Gives back the index of where the impossible fold occurs or -1 if ervery fold is possible.
+        Gives back the index of where the impossible fold occurs or
+        -1 if every fold is possible.
         """
         # Straighten the check protein and loop through the data
         self.copy_protein.load_data()
@@ -147,7 +148,7 @@ class BreadthFirst(Random_fold):
 
     def run(self, shout=False):
         """
-        Runs the breadth first search
+        Runs the breadth first search.
         """
         self.load_possible_fold_sequences(shout=shout)
         print(len(self.list_fold_sequences))
