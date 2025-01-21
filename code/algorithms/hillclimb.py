@@ -14,13 +14,10 @@ class Climbing_fold(Algorithm):
         no more good changes.
         """
         # Create the random protein
-        print("3.1")
         protein_random = Random_fold(self.protein)
-        print("3.2")
         prot = protein_random.run()
-        print("3.3")
         self.protein = copy.deepcopy(prot)
-        visualise_protein(self.protein)
+        # visualise_protein(self.protein)
 
         self.solve_protein(depth)
         
@@ -115,7 +112,7 @@ class Climbing_fold(Algorithm):
 
         return (best_protein, lowest_stability)
 
-if __name__ == "__main__":
-    protein1 = Protein("CPPCHPPCHPPCPPHCCPCHPPCPCHPPHPC")
-    climb = Climbing_fold(protein1)
-    climb.run()
+# if __name__ == "__main__":
+#     protein1 = Protein("CPPCHPPCHPPCPPHCCPCHPPCPCHPPHPC")
+#     climb = Climbing_fold(protein1)
+#     climb.run(2)
