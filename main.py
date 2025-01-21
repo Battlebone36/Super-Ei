@@ -3,7 +3,7 @@ from code.visualisation.visualisation import *
 from code.algorithms.randomise import Random_fold
 from code.algorithms.breadth import BreadthFirst
 from code.algorithms.greedy import greedy
-from code.algorithms.hillclimb import climbing_fold, depth2_climbing_fold
+from code.algorithms.hillclimb import Climbing_fold
 from code.algorithms.simulated_annealing import simulated_annealing
 import random
 random.seed(0)
@@ -20,7 +20,7 @@ def write_output(protein: Protein):
 
 if __name__ == "__main__":
     test = Protein("HHPPCHHPHHHPH")
-    visualise_protein(climbing_fold(test))
+    # visualise_protein(climbing_fold(test))
 
     # prot = Random_fold(test)
     # plot = prot.run()

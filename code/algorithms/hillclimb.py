@@ -4,6 +4,7 @@ from code.algorithms.randomise import Random_fold
 from code.algorithms.algorithm import Algorithm
 import copy
 
+
 class Climbing_fold(Algorithm):
     def run(self, depth: int|None=None):
         """

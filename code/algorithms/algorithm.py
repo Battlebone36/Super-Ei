@@ -12,7 +12,7 @@ class Algorithm:
         self.visualise()
 
     def visualise(self):
-        visualise_protein(self.protein)
+        visualise_protein(protein=self.protein)
     
     def fold_sequence_is_valid(self):
         """
