@@ -20,10 +20,13 @@ def write_output(protein: Protein):
 
 if __name__ == "__main__":
     test = Protein("HHPPCHHPHHHPH")
-    prot = Random_fold(test)
-    plot = prot.run()
+    visualise_protein(climbing_fold(test))
+
+    # prot = Random_fold(test)
+    # plot = prot.run()
     # plot = prot.run(shout=True)
 
-    # visualise_protein(prot)
+
+    # visualise_protein(plot)
 
 

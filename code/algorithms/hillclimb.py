@@ -110,7 +110,7 @@ def best_move(protein: Protein, depth: str) -> Protein:
                 amino,
                 p_folds,
                 best_protein)
-    visualise_protein(best_protein)
+    # visualise_protein(best_protein)
 
     return best_protein
 

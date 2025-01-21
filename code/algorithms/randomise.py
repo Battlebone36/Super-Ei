@@ -22,11 +22,10 @@ class Random_fold(Algorithm):
             # Straighten the copy protein and loop through the data
             self.copy_protein.load_data()
             for coordinate, amino in self.copy_protein.data.items():
-                # print(coordinate, amino)
 
                 # Skip the first and the last amino acid
-                # if amino[1] == 0 or amino[1] == len(self.copy_protein.sequence) - 1:
-                #     continue
+                if amino[1] == 0 or amino[1] == len(self.copy_protein.sequence) - 1:
+                    continue
 
                 # Look for possible folds and add them to the list
                 possible_folds = self.copy_protein.possible_folds_point(coordinate)
@@ -67,7 +66,6 @@ class Random_fold(Algorithm):
         """
         fold_sequence = self.random_sequence()
         return self.fold_protein_by_sequence(fold_sequence=fold_sequence)
-
 
 
 def random_fold(protein: Protein) -> Protein:
