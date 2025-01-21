@@ -21,13 +21,13 @@ class Random_fold(Algorithm):
         """
         Randomly folds a protein multiple times and returns the folded protein.
         """
-        sequence = protein.sequence
-        copy_protein = Protein(sequence)
+        # sequence = protein.sequence
+        # copy_protein = Protein(sequence)
 
         # Loop over the amino acids in the protein
-        for i in range(1, len(copy_protein.data) - 1):
+        for i in range(1, len(self.protein.data) - 1):
             current_coord = (0, 0, 0)
-            for coordinate, (amino, index) in copy_protein.data.items():
+            for coordinate, (amino, index) in self.protein.data.items():
                 if index == i:
                     current_coord = coordinate
                     break
@@ -35,7 +35,7 @@ class Random_fold(Algorithm):
             # Random fold choice
             fold_direction = self.fold_sequence[i - 1]
 
-            if copy_protein.is_foldable(current_coord, copy_protein.rotations[fold_direction]):
-                copy_protein.fold(current_coord, fold_direction)
+            if self.protein.is_foldable(current_coord, self.protein.rotations[fold_direction]):
+                self.protein.fold(current_coord, fold_direction)
 
-        return copy_protein
+        return self.protein

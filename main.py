@@ -23,15 +23,6 @@ if __name__ == "__main__":
     climb = Climbing_fold(test)
     plot = climb.run()
 
-    # prot = Random_fold(test)
-    # plot = prot.run()
-
-
-    # prot = Random_fold(test)
-    # plot = prot.run()
-    # plot = prot.run(shout=True)
-
-
     visualise_protein(plot)
 
 
