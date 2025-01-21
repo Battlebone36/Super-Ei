@@ -1,5 +1,5 @@
 from code.classes.protein import Protein
-from code.algorithms.randomise import random_fold
+from code.algorithms.randomise import Random_fold
 from code.visualisation.visualisation import *
 import random
 import copy
@@ -17,7 +17,8 @@ def simulated_annealing(protein: Protein) -> Protein:
     min_temp = 1
 
     # Track the best solution found
-    current_protein = random_fold(protein)
+    random_protein = Random_fold(protein)
+    current_protein = random_protein.run()
     best_protein = copy.deepcopy(current_protein)
     current_stability = current_protein.stability()
     best_stability = current_stability
