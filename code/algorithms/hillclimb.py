@@ -113,6 +113,6 @@ class Climbing_fold(Algorithm):
         return (best_protein, lowest_stability)
 
 # if __name__ == "__main__":
-#     protein1 = Protein("CPPCHPPCHPPCPPHCCPCHPPCPCHPPHPC")
+#     protein1 = Protein("HPHPPHHPHPPHPHHPPHPH")
 #     climb = Climbing_fold(protein1)
-#     climb.run(2)
+#     climb.run(3)
