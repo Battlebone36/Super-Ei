@@ -9,12 +9,15 @@ class Algorithm:
         self.list_fold_sequences: list[list[int]] = []
 
     def visualise(self):
+        """
+        Visualises the protein made by the algorithm.
+        """
         # print(self.protein.give_data())
         visualise_protein(self.protein)
     
     def fold_sequence_is_valid(self):
         """
-        Checks if the foldsequence is doable.
+        Checks if the fold sequence is valid.
         """
         self.copy_protein.load_data()
         if len(self.fold_sequence) != len(self.protein.sequence) - 2:
@@ -28,11 +31,8 @@ class Algorithm:
     
     def fold_by_sequence(self, protein: Protein) -> Protein:
         """
-        Randomly folds a protein 
+        Randomly folds a protein.
         """
-        # sequence = protein.sequence
-        # copy_protein = Protein(sequence)
-
         # Loop over the amino acids in the protein
         for i in range(1, len(self.protein.data) - 1):
             current_coord = (0, 0, 0)

@@ -22,10 +22,11 @@ def weighted_choice_parents(population: dict[int, tuple[Protein, list[int]]]) ->
 
     return random.choices(list(population.keys()), weights=weights, k=2)
 
-def tournament_selection(population: dict[int, tuple[Protein, list[int]]], tournament_size: int = 3):
+def tournament_selection(population: dict[int, tuple[Protein, list[int]]]):
     """
     Selects a parent using tournament selection. 
     """
+    tournament_size = len(population) // 2
     tournament = random.sample(list(population.values()), k=tournament_size)
     return min(tournament, key=lambda p: p[0].stability())
 
@@ -80,13 +81,15 @@ def genetic(protein: Protein) -> Protein:
     mutation_probability = 0.01
 
     # Create initial population - generation 0
-    for i in range(50):
+    for i in range(3*len(protein.sequence)):
         # Create random folds and apply it to the protein
-        fold_generator = Random_fold(Protein(protein.sequence))
-        folds = fold_generator.random_sequence()
-        folded_protein = fold_generator.fold_protein_by_sequence(folds)
+        random_protein = Random_fold(protein)
+        folded_protein = random_protein.run()
+        folds = random_protein.fold_sequence
 
-        population[protein_id] = (folded_protein, folds)
+        copy_folded_protein = copy.deepcopy(folded_protein)
+
+        population[protein_id] = (copy_folded_protein, folds)
         protein_id += 1
 
     # Track the best solution
@@ -153,6 +156,6 @@ def genetic(protein: Protein) -> Protein:
     
 
 if __name__ == "__main__":
-    test = Protein("HHPHHHPHPHHHPH")
+    test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
     best_protein = genetic(test)
     visualise_protein(best_protein)
