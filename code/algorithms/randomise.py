@@ -14,17 +14,19 @@ class Random_fold(Algorithm):
         """
         Returns a list with a valid sequence of folds.
         """
-        # Make a valid fold sequence while there is none
         folds = []
+        # Make a valid fold sequence while there is none
         while len(folds) != len(self.copy_protein.sequence) - 2:
+            folds.clear()
 
-            # Straighten the check protein and loop through the data
+            # Straighten the copy protein and loop through the data
             self.copy_protein.load_data()
             for coordinate, amino in self.copy_protein.data.items():
+                # print(coordinate, amino)
 
                 # Skip the first and the last amino acid
-                if amino[1] == 0 or amino[1] == len(self.copy_protein.sequence) - 1:
-                    continue
+                # if amino[1] == 0 or amino[1] == len(self.copy_protein.sequence) - 1:
+                #     continue
 
                 # Look for possible folds and add them to the list
                 possible_folds = self.copy_protein.possible_folds_point(coordinate)
@@ -38,8 +40,8 @@ class Random_fold(Algorithm):
                 # If there is no option stop and try again
                 else:
                     break
+            # print(len(folds), len(self.copy_protein.sequence) - 2)
         return folds
-    
     
     def fold_protein_by_sequence(self, fold_sequence: list[int]) -> Protein:
         """
@@ -63,11 +65,9 @@ class Random_fold(Algorithm):
         """
         Randomly folds a protein and returns the folded protein.
         """
-        sequence = self.protein.sequence
-        copy_protein = Protein(sequence)
-
-        fold_sequence = self.valid_random_sequence()
+        fold_sequence = self.random_sequence()
         return self.fold_protein_by_sequence(fold_sequence=fold_sequence)
+
 
 
 def random_fold(protein: Protein) -> Protein:
@@ -82,7 +82,6 @@ def random_fold(protein: Protein) -> Protein:
     directions = [i for i in range(7)]
 
     # for attempt in range(int(len(protein.data) * 1.5)):
-        
 
     # Loop over the amino acids in the protein
     for i in range(1, len(copy_protein.data) - 1):
@@ -99,39 +98,3 @@ def random_fold(protein: Protein) -> Protein:
             copy_protein.fold(current_coord, fold_direction)
             
     return copy_protein
-
-class random_fold_grow:
-    def random_fold2(protein: Protein) -> Protein:
-        sequence = protein.sequence
-        new_protein = Protein("", "manual")
-        cursor_coordinate = (0, 0, 0)
-        for i, char in enumerate(sequence):
-            if i == 0:
-                new_protein.add_amino(cursor_coordinate, char, i)
-            else:
-                options = random_fold_grow.options_to_grow(new_protein, cursor_coordinate)
-                if options:
-                    move = random.choice(options)
-                    place_coord = random_fold_grow.add_two_tuples(move, cursor_coordinate)
-                    new_protein.add_amino(place_coord, char, i)
-                    cursor_coordinate = place_coord
-                else:
-                    return protein
-        return new_protein
-
-    def add_two_tuples(tuple1: tuple[int, int, int], tuple2: tuple[int, int, int]) -> tuple[int, int, int]:
-        return tuple(a + b for a, b in zip(tuple1, tuple2))
-
-    def subtract_two_tuple(tuple1: tuple[int, int, int], tuple2: tuple[int, int, int]) -> tuple[int, int, int]:
-        return tuple(a - b for a, b in zip(tuple1, tuple2))
-    
-    def options_to_grow(new_protein: Protein, coord: tuple[int, int, int]) -> list[tuple[int, int, int]]:
-        all_options = new_protein.neighbours(coord=coord)
-        filtered_options: list[tuple[int, int, int]] = []
-        for option in all_options:
-            if not new_protein.is_in_data(option):
-                rel_coord = random_fold_grow.subtract_two_tuple(option, coord)
-                filtered_options.append(rel_coord)
-        return filtered_options
-
-

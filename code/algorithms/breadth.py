@@ -7,7 +7,7 @@ class BreadthFirst(Random_fold):
 
     def next_fold_sequence(self):
         """
-        Adds one to the sequence of the folds like a clock.
+        Adds one to the fold sequence like a clock to get the next sequence.
         For instance 0, 0, 1 will turn into 0, 0, 2 and
         0, 0, 6 will turn into 0, 1, 0.
         If the fold sequence is 6, 6, 6, 6, ... the next sequence will be 0, 0, 0, 0, ....
@@ -120,31 +120,6 @@ class BreadthFirst(Random_fold):
             iterations +=1
 
         return max_protein
-        
-
-    # Maybe later    
-    # def calc_radius(self, coordinate: tuple[int, int, int]):
-    #     """
-    #     Calculates the radius of a coordinate to the origin.
-    #     """
-    #     r_2 = (coordinate[0]) ** 2 + (coordinate[1]) ** 2 + (coordinate[2]) ** 2
-    #     return np.sqrt(r_2)
-    
-
-    
-    # def hash_protein(self):
-    #     """
-    #     Gives a rotational invariant hash for the self.protein of the algorithm.
-    #     """
-    #     hash_orientation = {}
-    #     for coordinate, amino in self.protein.data.items():
-    #         amino_orientation = (self.calc_radius(coordinate), amino[0])
-    #         print(amino_orientation)
-    #         if amino_orientation not in hash_orientation:
-    #             hash_orientation[amino_orientation] = 1
-    #         else:
-    #             hash_orientation[amino_orientation] += 1
-
 
     def run(self, shout=False):
         """

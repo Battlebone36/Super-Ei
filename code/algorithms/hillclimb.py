@@ -130,6 +130,7 @@ def solve_protein(protein: Protein, depth: str) -> Protein:
         if new_stability == stability:
             print(f"The top of the hill has been found at {i} climbs")
             break
+        visualise_protein(protein=protein)
 
 def most_stable_protein(stability, lowest_stability, adjust_protein, amino, p_folds, best_protein):
     """

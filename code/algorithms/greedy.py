@@ -1,50 +1,72 @@
 from code.classes.protein import Protein
+from code.algorithms.algorithm import Algorithm
 from code.visualisation.visualisation import *
 import random
 import copy
 
-def greedy_fold(protein: Protein) -> Protein:
-    """Folds the protein according to a greedy algorithm which takes the lowest
-    score for each possibility."""
+# class greedy(Algorithm):
+#     # run
+#     # make greedy change
+#     def run(self):
+
+
+
+#     def greedy_choice(self) -> bool:
+
+    
+
+def greedy(protein: Protein) -> Protein:
+    """
+    A greedy algorithm that folds the protein in a short term way to maximise stability.
+    """
+    # Define the variabels used
+    old_score = 0
+    max_score = 0
+
+
+    # Make a protein to explore the different stabilities in the loop
     old_protein = copy.deepcopy(protein)
-    choice_dict = {}
-    lowest_score = 0
-    best_direction = ""
-    for i in range(len(protein.data)):
-        current_protein = copy.deepcopy(old_protein)
-        for coord in current_protein.data:
-            if current_protein.data[coord] == ("H", i):
-                amino = coord
-            elif current_protein.data[coord] == ("P", i):
-                amino = coord
-            elif current_protein.data[coord] == ("C", i):
-                amino = coord
-            else:
-                continue
+    old_protein.fold(*random.choice(protein.possible_folds()))
+    new_protein = old_protein
+    possible_choices_counter = 0
+
+    # Loop through the sequence and store the best folded protein
+    for i in range(len(protein.sequence)):
+
+        # Define the folds that are possible in this state and
+        # a storage for folds that have the same stability
+        folds = old_protein.possible_folds()
+        possible_choices = []
+
+        # Loop over the possibilities
+        for fold in folds:
+
+            # Fold it, calculate stability
+            old_protein.fold(*fold)
+            stab = old_protein.stability()
+
+            # Store store protein and stability if stability is lower
+            if max_score > stab:
+                max_score = stab
+                new_protein = copy.deepcopy(old_protein)
             
-        possible_folds = current_protein.possible_folds_point(amino)
-        
-        for p_folds in possible_folds:
-            current_protein.fold(amino,p_folds)
-            new_stability = current_protein.stability()
-            choice_dict[p_folds] = new_stability
-            # print(choice_dict)
-            current_protein = copy.deepcopy(old_protein)
-        
-        for choices in choice_dict:
-            if choice_dict[choices] <= lowest_score:
-                lowest_score = choice_dict[choices]
-                best_direction = choices
+            # store a fold if it has the same result
+            elif max_score == stab:
+                possible_choices.append((stab, fold))
+            
+            # Pop the protein back to previous state
+            old_protein.fold_reverse(*fold)
 
+        # Fold if there are options with same result but not with better results otherwise return the protein
+        if old_score == max_score and possible_choices:
+            old_protein.fold(*possible_choices[0][1])
+            new_protein = copy.deepcopy(old_protein)
+            possible_choices_counter += 1
+        if (old_score == max_score and not possible_choices) or possible_choices_counter == 3:
+            return new_protein
 
-        old_protein.fold(amino, best_direction)
-        choice_dict.clear()
-    
-    return old_protein
+        # Define variables to start loop again in the new protein
+        old_protein = copy.deepcopy(new_protein)
+        old_score = max_score
 
-
-    
-
-# protein1 = Protein("HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH")
-# protein1 = greedy_fold(protein1)
-# visualise_protein(protein1)
+    return new_protein
