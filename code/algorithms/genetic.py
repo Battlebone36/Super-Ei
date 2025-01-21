@@ -5,7 +5,7 @@ import copy
 from code.visualisation.visualisation import *
 import random
 
-def weighted_choice_parents(proteins: dict[int, tuple[Protein, list[int]]]) -> list[int]: 
+def weighted_choice_parents(population: dict[int, tuple[Protein, list[int]]]) -> list[int]: 
     """
     Selects the two "best" proteins based on their stability using a weighted choice.
     Returns the index of the proteins in the dictionary.
@@ -15,12 +15,19 @@ def weighted_choice_parents(proteins: dict[int, tuple[Protein, list[int]]]) -> l
     # protein stability / total stability -> chance of getting picked during the random choice
     # The higher stability, the higher the chance of it getting picked
     total_stability = 0
-    for protein in proteins.values():
+    for protein in population.values():
         total_stability += protein[0].stability()
 
-    weights = [protein[0].stability() / total_stability for protein in proteins.values()]
+    weights = [protein[0].stability() / total_stability for protein in population.values()]
 
-    return random.choices(list(proteins.keys()), weights=weights, k=2)
+    return random.choices(list(population.keys()), weights=weights, k=2)
+
+def tournament_selection(population: dict[int, tuple[Protein, list[int]]], tournament_size: int = 3):
+    """
+    Selects a parent using tournament selection. 
+    """
+    tournament = random.sample(list(population.values()), k=tournament_size)
+    return min(tournament, key=lambda p: p[0].stability())
 
 def build_offsprings(parent1: tuple[Protein, list[int]], parent2: tuple[Protein, list[int]]) -> tuple[list[int], list[int]]:
     """
@@ -32,6 +39,23 @@ def build_offsprings(parent1: tuple[Protein, list[int]], parent2: tuple[Protein,
     child2_folds = parent2[1][:split_point] + parent1[1][split_point:]
 
     return child1_folds, child2_folds
+
+# def fold_protein_on_sequence(protein: Protein, folds: list[int]) -> Protein:
+#     """
+#     Folds the protein by a sequence of integers.
+#     """
+#     copy_protein = Protein(protein.sequence)
+
+#     for i, (coordinate, amino) in enumerate(copy_protein.data.items()):
+#         # Skip the first and last amino acid
+#         if amino[1] == 0 or amino[1] == len(copy_protein.sequence) - 1:
+#             continue
+
+#         # Check if the fold is possible and fold it
+#         fold_direction = folds[i - 1]
+#         if copy_protein.is_foldable(coordinate, copy_protein.rotations[fold_direction]):
+#             copy_protein.fold(coordinate, fold_direction)
+#     return copy_protein
 
 def fold_protein_on_sequence(protein: Protein, folds: list[int]) -> Protein:
     """
@@ -51,82 +75,111 @@ def fold_protein_on_sequence(protein: Protein, folds: list[int]) -> Protein:
             copy_protein.fold(current_coord, fold_direction)
     return copy_protein 
 
+def mutation_on_sequence(folds: list[int], mutation_probability: float) -> list[int]:
+    """
+    Applies random mutations to a sequence of folds.
+    """
+    mutated_folds = folds.copy()
 
-def genetic(protein: Protein) -> None:
-    """"""
-    proteins_dict: dict[int, tuple[Protein, list[int]]] = {}
-    unchanged_count = 0
+    # Apply random mutations
+    for i in range(len(mutated_folds)):
+        if random.random() < mutation_probability:
+            mutated_folds[i] = random.randint(0, 6)
+
+    return mutated_folds
+
+
+def genetic(protein: Protein) -> Protein:
+    """
+    Genetic algorithm that mimics natural selection to find the optimal folded protein.
+    """
+    print("Starting algorithm")
+    population: dict[int, tuple[Protein, list[int]]] = {}
+    population_size: int = 50
+    generations: int = 500
+    mutation_probability: float = 0.01
     protein_id = 0
-    generations = 200
 
-    # Initial population - generation 0
-    # Create ten randomly folded proteins
-    for i in range(10):
+    # Create initial population - generation 0
+    for i in range(50):
         # Create random folds and apply it to the protein
         fold_generator = Random_fold(Protein(protein.sequence))
-        folds = fold_generator.valid_random_sequence()
-        folded_protein = fold_generator.fold_protein_by_sequence(folds)
+        folds = fold_generator.random_sequence()
+        folded_protein = fold_generator.fold_protein_on_sequence(folds)
 
-        proteins_dict[protein_id] = (folded_protein, folds)
+        population[protein_id] = (folded_protein, folds)
         protein_id += 1
 
-    best_protein = min(proteins_dict.values(), key=lambda p: p[0].stability())
+    print("initial population created")
 
-    # Keep running until the stability doesn't change for two consecutive generations
-    while unchanged_count < 200:
-        # Keep track of the best protein
-        current_best_protein = min(proteins_dict.values(), key=lambda p: p[0].stability())
-        current_best_stability = current_best_protein[0].stability()
+    # Track best solution
+    best_protein = min(population.values(), key=lambda p: p[0].stability())
+    generations_without_change = 0
 
-        # Select the two "best" proteins based on stability
-        selected_parents = weighted_choice_parents(proteins_dict)
-        parent1 = proteins_dict[selected_parents[0]]
-        parent2 = proteins_dict[selected_parents[1]]
+    for generation in range(generations):
+        print(f"Generation {generation + 1}/{generations}")
 
-        # Mix the parents to create the offsprings
+        # Select the two best proteins from the population based on stability
+        selected_parents = weighted_choice_parents(population)
+        parent1 = population[selected_parents[0]]
+        parent2 = population[selected_parents[1]]
+
+        # # Tournament selection
+        # parent1 = tournament_selection(population)
+        # parent2 = tournament_selection(population)
+
+        # Create the offsprings with crossover
         child1_folds, child2_folds = build_offsprings(parent1, parent2)
+        
+        # Apply mutations
+        child1_folds = mutation_on_sequence(child1_folds, mutation_probability)
+        child2_folds = mutation_on_sequence(child2_folds, mutation_probability)
+
+        # Apply the folds to the offsprings
         child1 = Protein(protein.sequence)
         child2 = Protein(protein.sequence)
 
-        # Apply the folds to the offsprings
         folded_child1 = fold_protein_on_sequence(child1, child1_folds)
         folded_child2 = fold_protein_on_sequence(child2, child2_folds)
 
-        # Check the stability
+        population[protein_id] = (folded_child1, child1_folds)
+        protein_id += 1
+
+        population[protein_id] = (folded_child2, child2_folds)
+        protein_id += 1
+
+        # Find the worst two proteins in the population
+        sorted_population = sorted(population.items(), key=lambda p: p[1][0].stability(), reverse=True)
+        keys_worst_proteins = [sorted_population[0][0], sorted_population[1][0]]
+
+        # Replace the worst proteins with the offsprings if they're better
+        children = [(folded_child1, child1_folds), (folded_child2, child2_folds)]
+        for i in range(len(keys_worst_proteins)):
+            if children[i][0].stability() < population[keys_worst_proteins[i]][0].stability():
+                population[keys_worst_proteins[i]] = children[i]
+
+        # Update best solution
+        current_best_protein = min(population.values(), key=lambda p: p[0].stability())
         if current_best_protein[0].stability() < best_protein[0].stability():
             best_protein = current_best_protein
-            unchanged_count = 0
+            generations_without_change = 0
         else:
-            unchanged_count += 1
-        
+            generations_without_change += 1
 
-        # Add the offsprings to the population
-        proteins_dict[protein_id] = (folded_child1, child1_folds)
-        protein_id += 1
+        print(f"Best protein stability at generation {generation + 1}: {best_protein[0].stability()}")
 
-        proteins_dict[protein_id] = (folded_child2, child2_folds)
-        protein_id += 1
+        # Early exit if there is no improvement for consecutive generations
+        if generations_without_change > 100:
+            print(f"No improvement for 100 generations. Early stopping at generation {generation + 1}.")
+            break
 
-        # Replace the two worse proteins in the population with the new offsprings
-        # But only id the new children are better, otherwise you would make it even worse
-
+    print(f"Final best protein stability: {best_protein[0].stability()}")
     return best_protein[0]
 
 
-
-    # Add stability to the already existing dictionary 
-            # Split the two best proteins in two -> and add these together -> based on stability (include weighted options)
-                # half 1.1 + half 2.2
-                # half 2.1 + half 1.2
-            # Keep it going until it can't be done anymore
-
-    # print(proteins_dict)
-    # visualise_protein(proteins_dict[0])
-    # visualise_protein(proteins_dict[1])
-    # visualise_protein(proteins_dict[2])
-    
-
 if __name__ == "__main__":
-    test = Protein("HHPHHHPHPHHHPH")
+    test = Protein("HPHPPHHPHPPHPHHPPHPH")
+    # prot = Random_fold(test)
+    # prot.run()
     best_protein = genetic(test)
     visualise_protein(best_protein)
