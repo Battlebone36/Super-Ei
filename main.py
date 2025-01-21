@@ -4,7 +4,7 @@ from code.algorithms.randomise import Random_fold
 from code.algorithms.breadth import BreadthFirst
 from code.algorithms.greedy import greedy
 from code.algorithms.hillclimb import Climbing_fold
-from code.algorithms.simulated_annealing import simulated_annealing
+# from code.algorithms.simulated_annealing import simulated_annealing
 import random
 random.seed(0)
 import csv
@@ -20,13 +20,18 @@ def write_output(protein: Protein):
 
 if __name__ == "__main__":
     test = Protein("HHPPCHHPHHHPH")
-    # visualise_protein(climbing_fold(test))
+    climb = Climbing_fold(test)
+    plot = climb.run()
+
+    # prot = Random_fold(test)
+    # plot = prot.run()
+
 
     # prot = Random_fold(test)
     # plot = prot.run()
     # plot = prot.run(shout=True)
 
 
-    # visualise_protein(plot)
+    visualise_protein(plot)
 
 
