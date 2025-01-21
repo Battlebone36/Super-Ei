@@ -3,7 +3,7 @@ from code.classes.protein import Protein
 from code.visualisation.visualisation import *
 import copy
 
-class BreadthFirst(Random_fold):
+class DepthFirst(Random_fold):
 
     def next_fold_sequence(self):
         """
