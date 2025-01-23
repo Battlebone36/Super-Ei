@@ -43,12 +43,54 @@ EXPLAIN THE CHOICES AND ASSUMPTIONS!!!
 * Hill climb algorithm
     - Bias for folding late on in the protein (???)
 * Simulated annealing
+    - Cooling rate 0.91 - 0.99
+    0.91
+    0.93
+    0.95
+    0.97
+    0.99
+    - Eind temperature 1 - 
+    - ranges temperature begin and end
+    50 - 0.5
+    100 - 1
+    200 - 2
+    500 - 5
+    - times of fold per temperature
+    3
+    4
+    5
+    6
+    7
+
+    100x draaien
     - Exponential formula
         We use an exponential formula for the cooling, because of previous research in simulated annealing algorithms. Specifically about Rosetta, a protein folding simulation (Wenlong et al., 2006) and a paper where exponential functions were mentioned to solve bio-informatic problems (Kirkpatrick et al., 1983). 
     - Initial- and end temperature
 * Genetic algorithm
     - Mutation probability
     - Mutation per protein instead of per amino acid 
+    population size
+    30
+    50
+    70
+    90
+
+    k
+    3/10
+    4/10
+    5/10
+    6/10
+    7/10
+
+    mutationchance
+    0.001
+    0.003
+    0.005
+    0.007
+    0.009
+    0.01
+
+    120x
 
 
 # Authors
