@@ -19,6 +19,7 @@ class SimulatedAnnealing(Algorithm):
         cooling_rate: int = 0.99
         min_temp: int = 1
         times: int = 10
+        iterations_limit = 1000
 
         # Track the best solution found
         random_protein = Random_fold(protein)
@@ -30,12 +31,12 @@ class SimulatedAnnealing(Algorithm):
         # Initialize the temperature
         current_temp = initial_temp
         
-        while current_temp > min_temp and self.iterations <= 1000:
+        while current_temp > min_temp and self.iterations <= iterations_limit:
             # Try random folding 10 times per temperature
             for i in range(times):
                 possible_folds = current_protein.possible_folds()
 
-                if not possible_folds and self.iterations <= 1000:
+                if not possible_folds or self.iterations >= iterations_limit:
                     break
                 else:
                     self.iterations += 1
@@ -68,9 +69,8 @@ class SimulatedAnnealing(Algorithm):
                         if current_stability < best_stability:
                             best_protein = copy.deepcopy(current_protein)
                             best_stability = current_stability
+                            self.protein = best_protein
 
             # Lower the current temperature
             current_temp *= cooling_rate
-        
-        self.protein = best_protein
         return best_protein

@@ -8,6 +8,8 @@ from code.algorithms.randomise import Random_fold
 from code.algorithms.depth import DepthFirst
 from code.algorithms.greedy import Greedy
 from code.algorithms.hillclimb import Climbing_fold
+from code.algorithms.simulated_annealing import SimulatedAnnealing
+from code.algorithms. genetic import Genetic
 
 def gather_data(algorithm) -> list[str, int, float]:
     """
@@ -63,7 +65,7 @@ def run_for_steps_and_stability(algorithms, times: int):
 
 
 if __name__ == "__main__":
-    a = [Climbing_fold]
-    run_for_steps_and_stability(a, 1)
+    algorithms = [Climbing_fold, SimulatedAnnealing, Genetic]
+    run_for_steps_and_stability(algorithms, 1)
     # store_data(greedy_fold)
     

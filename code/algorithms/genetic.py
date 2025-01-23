@@ -83,9 +83,10 @@ class Genetic(Algorithm):
         """
         print("Starting algorithm")
         population: dict[int, tuple[Protein, list[int]]] = {}
-        population_size: int = 3*len(self.protein.sequence)
+        population_size: int = 50
         generations: int = 1000
         mutation_probability: float = 0.02
+        iteration_limit = 5000
         # protein_id = 0
 
         # Create initial population - generation 0
@@ -95,11 +96,16 @@ class Genetic(Algorithm):
         # Track best solution
         best_protein = min(population.values(), key=lambda p: p[0].stability())
         generations_without_change = 0
+        store_max_protein = self.protein
+
 
         for generation in range(generations):
+            if self.iterations >= iteration_limit:
+                break
+
             print(f"Generation {generation + 1}/{generations}")
             # Create new population
-            new_population = {}
+            new_population: dict[int, tuple[Protein, list[int]]] = {}
             
             # Fill the new population with offsprings
             while len(new_population) < population_size:
@@ -108,8 +114,11 @@ class Genetic(Algorithm):
                 parent2 = self.tournament_selection(population)
                 
                 self.iterations += 2
+                if self.iterations >= iteration_limit:
+                    break
                 if store_step_stability:
                     self.store_steps_stability()
+                    
 
                 # Create the offsprings with crossover
                 child1_folds, child2_folds = self.build_offsprings(parent1, parent2)
@@ -131,6 +140,15 @@ class Genetic(Algorithm):
 
                 new_population[protein_id] = (folded_child2, child2_folds)
                 protein_id += 1
+                temporarily_best_protein = min(new_population.values(), key=lambda p: p[0].stability())
+
+                #
+                current_best_stability = store_max_protein.stability()
+                new_stability = temporarily_best_protein[0].stability()
+                if current_best_stability > new_stability:
+                    self.protein = copy.deepcopy(temporarily_best_protein[0])
+                
+
 
             population = new_population
 
@@ -145,7 +163,8 @@ class Genetic(Algorithm):
             print(f"Best protein stability at generation {generation + 1}: {best_protein[0].stability()}")
 
             # Early exit if there is no improvement for consecutive generations
-            if generations_without_change > 100:
+
+            if generations_without_change > 100 and not store_step_stability:
                 print(f"No improvement for 100 generations. Early stopping at generation {generation + 1}.")
                 break
 
