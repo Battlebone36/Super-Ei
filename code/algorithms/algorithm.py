@@ -12,7 +12,6 @@ class Algorithm:
         self.stability = protein.stability()
         self.steps = 0
 
-
     def visualise(self):
         """
         Visualises the protein made by the algorithm.
