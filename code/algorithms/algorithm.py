@@ -59,7 +59,7 @@ class Algorithm:
         """
         Gather the sequence, stability, steps of the protein and name of the algorithm and returns it.
         """
-        return [[self.protein.sequence, self.protein.stability(), self.steps, f"{self.__class__.__name__}"]]
+        return [[self.protein.sequence, self.protein.stability(), self.iterations, f"{self.__class__.__name__}"]]
     
     def store_steps_stability(self):
         """

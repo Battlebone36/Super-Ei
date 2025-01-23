@@ -57,11 +57,13 @@ def run_for_steps_and_stability(algorithms, times: int):
     test = Protein("PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP")
     for algorithm in algorithms:
         for i in range(times):
+            print(f"{i} of {times} of {algorithm.__name__}")
             temp_class = algorithm(test)
             temp_class.run(store_step_stability=True)
 
 
 if __name__ == "__main__":
-    a = 1
+    a = [Random_fold, Greedy, Climbing_fold]
+    run_for_steps_and_stability(a, 10)
     # store_data(greedy_fold)
     

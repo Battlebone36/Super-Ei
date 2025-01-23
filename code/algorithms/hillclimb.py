@@ -19,7 +19,7 @@ class Climbing_fold(Algorithm):
         self.protein = copy.deepcopy(prot)
         # visualise_protein(self.protein)
 
-        self.solve_protein(depth)
+        self.solve_protein(depth, store_step_stability)
         return self.protein
 
     def best_move(self, depth: str, store_step_stability: bool=False):
@@ -112,7 +112,7 @@ class Climbing_fold(Algorithm):
         """
         Check whether the given protein is the best up untill now.
         """
-        if stability < lowest_stability:
+        if stability <= lowest_stability:
             best_protein = copy.deepcopy(adjust_protein)
             lowest_stability = stability
         adjust_protein.fold_reverse(amino, p_folds)
