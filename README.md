@@ -37,6 +37,16 @@ The following list describes the main directories and files in the repository, a
 * **/data**: contains the generated csv files and scripts for storing and analyzing algorithm performance data.
 * **/static**: ???
 
+# Assumptions
+Assumptions of specific parameters in the different algorithms. --> uitleggen hoe en wat (waarom deze waarden)
+* Hill climb algorithm
+    - Bias for folding early on in the protein (???)
+* Simulated annealing
+    - Exponential formula
+    - Initial and end temperature
+* Genetic algorithm
+    - Mutation probability
+
 # Authors
 * Sydney Celie
 * Bryan Panken
