@@ -10,7 +10,7 @@ class Algorithm:
         self.fold_sequence: list[int] = []
         self.storage_fold_sequences:list[list[int]] = []
         self.stability = protein.stability()
-        self.steps = 0
+        self.iterations = 0
 
     def visualise(self):
         """
