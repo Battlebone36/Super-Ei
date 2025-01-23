@@ -74,7 +74,7 @@ class Genetic(Algorithm):
         return mutated_folds
 
 
-    def run(self) -> Protein:
+    def run(self, store_step_stability: bool=False) -> Protein:
         """
         Genetic algorithm that mimics natural selection to find the optimal folded protein.
         """
@@ -114,6 +114,9 @@ class Genetic(Algorithm):
             # Tournament selection
             parent1 = self.tournament_selection(population)
             parent2 = self.tournament_selection(population)
+            self.iterations += 2
+            if store_step_stability:
+                self.store_steps_stability()
 
             # Create the offsprings with crossover
             child1_folds, child2_folds = self.build_offsprings(parent1, parent2)
