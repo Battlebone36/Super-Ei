@@ -1,12 +1,13 @@
-from code.classes.protein import Protein
+
 from code.visualisation.visualisation import *
-from code.algorithms.randomise import Random_fold
-from code.algorithms.greedy import greedy_fold
-from code.algorithms.greedy import greedy_search_sequence
-# from code.algorithms.hillclimb import climbing_fold, better_climbing_fold, even_better_climbing_fold
-# from code.algorithms.simulated_annealing import simulated_annealing
 import csv 
 from pathlib import Path
+
+from code.classes.protein import Protein
+from code.algorithms.randomise import Random_fold
+from code.algorithms.depth import DepthFirst
+from code.algorithms.greedy import Greedy
+from code.algorithms.hillclimb import Climbing_fold
 
 def gather_data(algorithm) -> list[str, int, float]:
     """
@@ -38,7 +39,7 @@ def store_data(algorithm) -> None:
     data = gather_data(algorithm)
     fname = f"code/data/csv_data/{algorithm.__name__}.csv"
     write_mode = 'w'
-        
+     
     my_file = Path(fname)
     if my_file.is_file():
         write_mode = 'a'
@@ -49,6 +50,18 @@ def store_data(algorithm) -> None:
             my_writer.writerow(["protein", "stability", "time", "algorithm"])
         my_writer.writerows(data)
 
+def run_for_steps_and_stability(algorithms, times: int):
+    """
+    Run all algorithms an amount of times with the store the step stability command turned on.
+    """
+    test = Protein("PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP")
+    for algorithm in algorithms:
+        for i in range(times):
+            temp_class = algorithm(test)
+            temp_class.run(store_step_stability=True)
+
+
 if __name__ == "__main__":
-    store_data(greedy_fold)
+    a = 1
+    # store_data(greedy_fold)
     

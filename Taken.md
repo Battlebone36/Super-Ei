@@ -2,7 +2,7 @@
 
 ## Grote taken
 - HOE? -Bryan, Ronan
-- Algoritmes afstemmen -Bryan
+- 
 - Algoritmes runnen
 
 

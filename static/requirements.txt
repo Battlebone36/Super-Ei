@@ -3,3 +3,5 @@ numpy
 random
 timeit
 seaborn
+pathlib
+csv

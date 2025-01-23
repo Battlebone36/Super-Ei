@@ -1,9 +1,6 @@
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 from code.classes.protein import Protein
-<<<<<<< HEAD
-=======
-# from code.algorithms.randomise import Random_fold
->>>>>>> 19d440f8ff00bb40cef39628586b5b5ecd67feee
 import numpy as np
 from timeit import default_timer as timer
 import pandas as pd
@@ -68,11 +65,22 @@ def visualise_protein(protein: Protein) -> None:
     ax.set_aspect("equal", adjustable="box")
     ax.set_axis_off()
 
+    # Function to update the view for animation
+    def update(frame):
+        ax.view_init(elev= 45, azim=frame)
+        return ax,
+
     # Show plot
     stability = protein.stability()
     plt.title(f"Stability score: {stability}", fontsize=17, fontweight="bold")
     plt.legend()
+    # frames = 360  # Total frames for a full rotation
+    # anim = FuncAnimation(fig, update, frames=frames, interval=30, blit=False)
+    # anim.save("static/protein_rotation.gif", fps=30)
+
     plt.show()
+
+    
 
 def hist_of_algorithm(algorithm) -> tuple[list[int], int, int, float, float]:
     """
@@ -248,7 +256,6 @@ def make_plot(df, algorithms, axes=None, type="occurency-stability") -> None:
             df_filtered = df[df["algorithm"] == f"{algorithm.__name__}"]
             plot = sns.histplot(
                 df_filtered["stability"],
-                kde=True,
                 bins=bins,
                 stat="density",
                 discrete=True,

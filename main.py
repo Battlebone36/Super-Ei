@@ -1,10 +1,10 @@
 from code.classes.protein import Protein
-# from code.visualisation.visualisation import *
 from code.algorithms.randomise import Random_fold
 from code.algorithms.depth import DepthFirst
-from code.algorithms.greedy import greedy
+from code.algorithms.greedy import Greedy
 from code.algorithms.hillclimb import Climbing_fold
-from code.algorithms.simulated_annealing import simulated_annealing
+from code.algorithms.simulated_annealing import SimulatedAnnealing
+from code.visualisation.visualisation import *
 import random
 random.seed(0)
 import csv
@@ -17,16 +17,23 @@ def write_output(protein: Protein):
         my_writer = csv.writer(csvfile, delimiter = ',')
         my_writer.writerows(protein.output())
 
-
 if __name__ == "__main__":
-    test = Protein("PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP")
+    test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
+
+    alg = DepthFirst(test)
+    sim = SimulatedAnnealing(test)
+    climb = Climbing_fold(test)
     rand = Random_fold(test)
-    # breadth = DepthFirst(test)
-    # climb = Climbing_fold(test)
 
     rand.run()
     rand.visualise()
+    # visualise_protein(sim.run())
+    # alg.run()
+    # alg.visualise()
 
-    # breadth.run(shout=True)
+    # algorithms = [random_fold, greedy_fold, greedy_search_sequence]
+    # visualise_algorithm_data(algorithms)
+
+
 
 

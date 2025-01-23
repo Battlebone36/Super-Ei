@@ -66,7 +66,7 @@ class DepthFirst(Random_fold):
         if carry == 1:
             self.fold_sequence = [0 for i in range(len(self.protein.sequence) - 2)]
     
-    def load_possible_fold_sequences(self, shout: bool):
+    def load_possible_fold_sequences(self, verbose: bool):
         """
         Load all possible folds in a list.
         """
@@ -86,14 +86,14 @@ class DepthFirst(Random_fold):
                 self.prune(index=index)
             
             # Add the fold sequence to the list
-            self.list_fold_sequences.append(tuple(self.fold_sequence))
+            self.storage_fold_sequences.append(tuple(self.fold_sequence))
 
             # Print the status if asked for
-            if iterations % 2000 == 0 and shout:
+            if iterations % 2000 == 0 and verbose:
                 print(f"{iterations} possible folds added   max: {max}")
             iterations += 1
     
-    def loop_through_fold_sequences(self, shout: bool):
+    def loop_through_fold_sequences(self, verbose: bool):
         """
         Loop through the fold sequence and store the best protein.
         """
@@ -103,8 +103,9 @@ class DepthFirst(Random_fold):
         iterations = 0
 
         # Make every fold and look if the stability can be improved
-        for fold_sequence in self.list_fold_sequences:
-            temp_protein = self.fold_protein_by_sequence(fold_sequence=list(fold_sequence))
+        for fold_sequence in self.storage_fold_sequences:
+            self.fold_sequence = fold_sequence
+            temp_protein = self.fold_by_sequence()
             temp_stability = temp_protein.stability()
 
             # If there is an improvement store it
@@ -113,19 +114,20 @@ class DepthFirst(Random_fold):
                 max_stability = temp_stability
 
                 # Print status if asked
-                if shout == True:
+                if verbose == True:
                     print("New score:", max_stability)
-            if iterations % 2000 == 0 and shout:
-                print(f"{iterations} / {len(self.list_fold_sequences)} done")
+            if iterations % 2000 == 0 and verbose:
+                print(f"{iterations} / {len(self.storage_fold_sequences)} done")
             iterations +=1
 
         return max_protein
 
-    def run(self, shout=False):
+    def run(self, verbose: bool=False):
         """
         Runs the breadth first search.
         """
-        self.load_possible_fold_sequences(shout=shout)
-        print(len(self.list_fold_sequences))
-        max_protein = self.loop_through_fold_sequences(shout=shout)
-        return max_protein
+        # self.storage_fold_sequences = []
+        self.load_possible_fold_sequences(verbose=verbose)
+        self.protein = self.loop_through_fold_sequences(verbose=verbose)
+
+        return self.protein

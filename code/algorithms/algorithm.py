@@ -1,15 +1,19 @@
 from code.classes.protein import Protein
 from code.visualisation.visualisation import visualise_protein
+from pathlib import Path
+import csv
 
 class Algorithm:
     def __init__(self, protein: Protein):
         self.protein: Protein = Protein(protein.sequence)
         self.copy_protein: Protein = Protein(protein.sequence)
         self.fold_sequence: list[int] = []
-        self.list_fold_sequences: list[list[int]] = []
+        self.storage_fold_sequences:list[list[int]] = []
+        self.stability = protein.stability()
+        self.steps = 0
+
 
     def visualise(self):
-        # print(self.protein.give_data())
         visualise_protein(self.protein)
     
     def fold_sequence_is_valid(self):
@@ -26,17 +30,17 @@ class Algorithm:
                 return False
         return True
     
-    def fold_by_sequence(self, protein: Protein) -> Protein:
+    def fold_by_sequence(self, protein: Protein | None=None) -> Protein:
         """
         Randomly folds a protein 
         """
-        # sequence = protein.sequence
-        # copy_protein = Protein(sequence)
+        if protein is None:
+            protein = self.protein
 
         # Loop over the amino acids in the protein
-        for i in range(1, len(self.protein.data) - 1):
+        for i in range(1, len(protein.data) - 1):
             current_coord = (0, 0, 0)
-            for coordinate, (amino, index) in self.protein.data.items():
+            for coordinate, (amino, index) in protein.data.items():
                 if index == i:
                     current_coord = coordinate
                     break
@@ -44,9 +48,32 @@ class Algorithm:
             # Fold for index 
             fold_direction = self.fold_sequence[i - 1]
 
-            if self.protein.is_foldable(current_coord, self.protein.rotations[fold_direction]):
-                self.protein.fold(current_coord, fold_direction)
+            if protein.is_foldable(current_coord, protein.rotations[fold_direction]):
+                protein.fold(current_coord, fold_direction)
 
-        return self.protein
+        return protein
     
+    def gather_steps_stability(self) -> list[str, int, int, str]:
+        """
+        Gather the sequence, stability, steps of the protein and name of the algorithm and returns it.
+        """
+        return [[self.protein.sequence, self.protein.stability(), self.steps, f"{self.__class__.__name__}"]]
+    
+    def store_steps_stability(self):
+        """
+        Stores the steps and stability into a datafile.
+        """
+        data = self.gather_steps_stability()
+        fname = f"code/data/step_stability/{self.__class__.__name__}.csv"
+        write_mode = 'w'
+        my_file = Path(fname)
+
+        if my_file.is_file():
+            write_mode = 'a'
+
+        with open (fname, write_mode, newline = '') as csvfile:
+            my_writer = csv.writer(csvfile, delimiter = ',')
+            if write_mode == 'w':
+                my_writer.writerow(["protein", "stability", "steps", "algorithm"])
+            my_writer.writerows(data)
     

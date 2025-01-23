@@ -15,18 +15,8 @@ class Climbing_fold(Algorithm):
         """
         # Create the random protein
         protein_random = Random_fold(self.protein)
-<<<<<<< HEAD
-        print("3.2")
-        protein_random.run()
-        print("3.3")
-        self.protein = copy.deepcopy(protein_random.protein)
-        visualise_protein(self.protein)
-=======
         prot = protein_random.run()
         self.protein = copy.deepcopy(prot)
-        # visualise_protein(self.protein)
-
->>>>>>> 19d440f8ff00bb40cef39628586b5b5ecd67feee
         self.solve_protein(depth)
         return self.protein
 
@@ -102,7 +92,6 @@ class Climbing_fold(Algorithm):
         for i in range(20):
             stability = self.protein.stability()
             self.best_move(depth)
-            visualise_protein(self.protein)
             new_stability = self.protein.stability()
             if new_stability == stability:
                 print(f"The top of the hill has been found at {i} climbs")

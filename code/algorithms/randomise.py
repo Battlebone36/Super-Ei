@@ -9,11 +9,15 @@ class Random_fold(Algorithm):
         """
         return [random.randint(0, 6) for i in range(len(self.protein.sequence) - 2)]
 
-    def run(self):
+    def run(self, store_step_stability: bool=False):
         """
         Randomly folds a protein and returns the folded protein.
         """
         self.fold_sequence = self.random_sequence()
-        return self.fold_by_sequence(self.protein)
+        self.fold_by_sequence()
+        if store_step_stability:
+            self.store_steps_stability()
+        return self.protein
+    
 
     
