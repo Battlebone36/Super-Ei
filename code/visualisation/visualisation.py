@@ -1,9 +1,5 @@
 import matplotlib.pyplot as plt
 from code.classes.protein import Protein
-<<<<<<< HEAD
-=======
-# from code.algorithms.randomise import Random_fold
->>>>>>> 19d440f8ff00bb40cef39628586b5b5ecd67feee
 import numpy as np
 from timeit import default_timer as timer
 import pandas as pd

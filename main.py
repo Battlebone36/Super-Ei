@@ -19,7 +19,7 @@ def write_output(protein: Protein):
 
 
 if __name__ == "__main__":
-    test = Protein("PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP")
+    test = Protein("PC")
     rand = Random_fold(test)
     # breadth = DepthFirst(test)
     # climb = Climbing_fold(test)
