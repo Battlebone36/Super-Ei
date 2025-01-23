@@ -122,7 +122,7 @@ class DepthFirst(Random_fold):
 
         return max_protein
 
-    def run(self, verbose: bool=False):
+    def run(self, verbose: bool=False, store_step_stability: bool=False):
         """
         Runs the breadth first search.
         """

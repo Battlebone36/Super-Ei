@@ -28,7 +28,7 @@ class Greedy(Random_fold):
         self.protein.fold(*best_fold)
         return best_fold
 
-    def run(self) -> Protein:
+    def run(self, store_step_stability: bool=False) -> Protein:
         """
         A greedy algorithm that folds the protein in a short term way to maximise stability.
         """

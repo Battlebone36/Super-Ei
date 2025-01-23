@@ -7,7 +7,7 @@ import copy
 import math
 
 class SimulatedAnnealing(Algorithm):
-    def run(self) -> Protein:
+    def run(self, store_step_stability: bool=False) -> Protein:
         """
         Starts with a randomly folded protein that will try to apply random folds.
         Each fold that improves the stability score is accepted for the next iteration.

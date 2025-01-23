@@ -6,7 +6,7 @@ import copy
 
 
 class Climbing_fold(Algorithm):
-    def run(self, depth: int|None=None):
+    def run(self, depth: int|None=None, store_step_stability: bool=False):
         """
         Start from a random state which then receives small changes
         these small changes are the neighbouring states. The best neighbouring 
