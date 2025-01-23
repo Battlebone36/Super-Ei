@@ -39,6 +39,7 @@ The following list describes the main directories and files in the repository, a
 
 # Assumptions
 Assumptions of specific parameters in the different algorithms. --> uitleggen hoe en wat (waarom deze waarden)
+EXPLAIN THE CHOICES AND ASSUMPTIONS!!!
 * Hill climb algorithm
     - Bias for folding early on in the protein (???)
 * Simulated annealing
@@ -46,6 +47,8 @@ Assumptions of specific parameters in the different algorithms. --> uitleggen ho
     - Initial and end temperature
 * Genetic algorithm
     - Mutation probability
+    - Mutation per protein instead of per amino acid 
+
 
 # Authors
 * Sydney Celie
