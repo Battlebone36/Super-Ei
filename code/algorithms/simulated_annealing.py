@@ -37,8 +37,8 @@ class SimulatedAnnealing(Algorithm):
 
                 if not possible_folds:
                     break
-                # else:
-                #     self.iter
+                else:
+                    self.iterations += 1
 
                 # Select a random fold
                 pivot, direction = random.choice(possible_folds)
