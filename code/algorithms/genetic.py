@@ -6,28 +6,31 @@ from code.visualisation.visualisation import *
 import random
 
 class Genetic(Algorithm):
-    def weighted_choice_parents(self, population: dict[int, tuple[Protein, list[int]]]) -> list[int]: 
+    def create_initial_population(self, population_size: int) -> dict[int, tuple[Protein, list[int]]]:
         """
-        Selects the two "best" proteins based on their stability using a weighted choice.
-        Returns the index of the proteins in the dictionary.
+        Create the initial population (generation 0) of randomly folded proteins.
         """
-        # total_stability = sum(protein[0].stability() for protein in proteins.values())
+        init_population: dict[int, tuple[Protein, list[int]]] = {}
+        protein_id = 0
+
+        for i in range(population_size):
+            # Create random folds and apply it to the protein
+            random_protein = Random_fold(self.protein)
+            folded_protein = random_protein.run()
+            folds = random_protein.fold_sequence
+
+            copy_folded_protein = copy.deepcopy(folded_protein)
+
+            init_population[protein_id] = (copy_folded_protein, folds)
+            protein_id += 1
         
-        # protein stability / total stability -> chance of getting picked during the random choice
-        # The higher stability, the higher the chance of it getting picked
-        total_stability = 0
-        for protein in population.values():
-            total_stability += protein[0].stability()
-
-        weights = [protein[0].stability() / total_stability for protein in population.values()]
-
-        return random.choices(list(population.keys()), weights=weights, k=2)
+        return init_population, protein_id
 
     def tournament_selection(self, population: dict[int, tuple[Protein, list[int]]]):
         """
         Selects a parent using tournament selection. 
         """
-        tournament_size = len(population) // 2
+        tournament_size = len(population) // 4
         tournament = random.sample(list(population.values()), k=tournament_size)
         return min(tournament, key=lambda p: p[0].stability())
 
@@ -83,20 +86,10 @@ class Genetic(Algorithm):
         population_size: int = 3*len(self.protein.sequence)
         generations: int = 1000
         mutation_probability: float = 0.02
-        protein_id = 0
+        # protein_id = 0
 
         # Create initial population - generation 0
-        for i in range(population_size):
-            # Create random folds and apply it to the protein
-            random_protein = Random_fold(self.protein)
-            folded_protein = random_protein.run()
-            folds = random_protein.fold_sequence
-
-            copy_folded_protein = copy.deepcopy(folded_protein)
-
-            population[protein_id] = (copy_folded_protein, folds)
-            protein_id += 1
-
+        population, protein_id = self.create_initial_population(population_size)
         print("initial population created")
 
         # Track best solution
@@ -105,48 +98,41 @@ class Genetic(Algorithm):
 
         for generation in range(generations):
             print(f"Generation {generation + 1}/{generations}")
-
-            # # Select the two best proteins from the population based on stability
-            # selected_parents = weighted_choice_parents(population)
-            # parent1 = population[selected_parents[0]]
-            # parent2 = population[selected_parents[1]]
-
-            # Tournament selection
-            parent1 = self.tournament_selection(population)
-            parent2 = self.tournament_selection(population)
-            self.iterations += 2
-            if store_step_stability:
-                self.store_steps_stability()
-
-            # Create the offsprings with crossover
-            child1_folds, child2_folds = self.build_offsprings(parent1, parent2)
+            # Create new population
+            new_population = {}
             
-            # Apply mutations
-            child1_folds = self.mutation_on_sequence(child1_folds, mutation_probability)
-            child2_folds = self.mutation_on_sequence(child2_folds, mutation_probability)
+            # Fill the new population with offsprings
+            while len(new_population) < population_size:
+                # Select the "best" two proteins from the population based on stability
+                parent1 = self.tournament_selection(population)
+                parent2 = self.tournament_selection(population)
+                
+                self.iterations += 2
+                if store_step_stability:
+                    self.store_steps_stability()
 
-            # Apply the folds to the offsprings
-            child1 = Protein(self.protein.sequence)
-            child2 = Protein(self.protein.sequence)
+                # Create the offsprings with crossover
+                child1_folds, child2_folds = self.build_offsprings(parent1, parent2)
+            
+                # Apply mutations
+                child1_folds = self.mutation_on_sequence(child1_folds, mutation_probability)
+                child2_folds = self.mutation_on_sequence(child2_folds, mutation_probability)
 
-            folded_child1 = self.fold_protein_by_sequence(child1, child1_folds)
-            folded_child2 = self.fold_protein_by_sequence(child2, child2_folds)
+                # Apply the folds to the offsprings
+                child1 = Protein(self.protein.sequence)
+                child2 = Protein(self.protein.sequence)
 
-            population[protein_id] = (folded_child1, child1_folds)
-            protein_id += 1
+                folded_child1 = self.fold_protein_by_sequence(child1, child1_folds)
+                folded_child2 = self.fold_protein_by_sequence(child2, child2_folds)
 
-            population[protein_id] = (folded_child2, child2_folds)
-            protein_id += 1
+                # Add offsprings to the new population
+                new_population[protein_id] = (folded_child1, child1_folds)
+                protein_id += 1
 
-            # Find the worst two proteins in the population
-            sorted_population = sorted(population.items(), key=lambda p: p[1][0].stability(), reverse=True)
-            keys_worst_proteins = [sorted_population[0][0], sorted_population[1][0]]
+                new_population[protein_id] = (folded_child2, child2_folds)
+                protein_id += 1
 
-            # Replace the worst proteins with the offsprings if they're better
-            children = [(folded_child1, child1_folds), (folded_child2, child2_folds)]
-            for i in range(len(keys_worst_proteins)):
-                if children[i][0].stability() < population[keys_worst_proteins[i]][0].stability():
-                    population[keys_worst_proteins[i]] = children[i]
+            population = new_population
 
             # Update best solution
             current_best_protein = min(population.values(), key=lambda p: p[0].stability())
