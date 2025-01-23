@@ -74,13 +74,13 @@ class Genetic(Algorithm):
         return mutated_folds
 
 
-    def run(self, protein: Protein) -> Protein:
+    def run(self) -> Protein:
         """
         Genetic algorithm that mimics natural selection to find the optimal folded protein.
         """
         print("Starting algorithm")
         population: dict[int, tuple[Protein, list[int]]] = {}
-        population_size: int = 3*len(protein.sequence)
+        population_size: int = 3*len(self.protein.sequence)
         generations: int = 1000
         mutation_probability: float = 0.02
         protein_id = 0
@@ -88,7 +88,7 @@ class Genetic(Algorithm):
         # Create initial population - generation 0
         for i in range(population_size):
             # Create random folds and apply it to the protein
-            random_protein = Random_fold(protein)
+            random_protein = Random_fold(self.protein)
             folded_protein = random_protein.run()
             folds = random_protein.fold_sequence
 
@@ -123,8 +123,8 @@ class Genetic(Algorithm):
             child2_folds = self.mutation_on_sequence(child2_folds, mutation_probability)
 
             # Apply the folds to the offsprings
-            child1 = Protein(protein.sequence)
-            child2 = Protein(protein.sequence)
+            child1 = Protein(self.protein.sequence)
+            child2 = Protein(self.protein.sequence)
 
             folded_child1 = self.fold_protein_by_sequence(child1, child1_folds)
             folded_child2 = self.fold_protein_by_sequence(child2, child2_folds)
