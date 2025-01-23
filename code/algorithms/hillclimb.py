@@ -22,7 +22,7 @@ class Climbing_fold(Algorithm):
         self.solve_protein(depth)
         return self.protein
 
-    def best_move(self, depth: str):
+    def best_move(self, depth: str, store_step_stability: bool=False):
         """
         Find the best possible move at a certain configuration, but looks
         into 3 moves.
@@ -40,6 +40,8 @@ class Climbing_fold(Algorithm):
                 adjust_protein.fold(amino, p_folds)
                 stability = adjust_protein.stability()
                 self.iterations += 1
+                if store_step_stability:
+                    self.store_steps_stability()
                 if depth == 2 or depth == 3:
                     # Check another move
                     # -----------------------------------------------------------------
@@ -52,6 +54,8 @@ class Climbing_fold(Algorithm):
                             mid_adjust_protein.fold(mid_amino, mid_p_folds)
                             mid_stability = mid_adjust_protein.stability()
                             self.iterations += 1
+                            if store_step_stability:
+                                self.store_steps_stability()
                             if depth == 3:
                                 # Check another move
                                 # -----------------------------------------------------------------
@@ -64,6 +68,8 @@ class Climbing_fold(Algorithm):
                                         mid2_adjust_protein.fold(mid2_amino, mid2_p_folds)
                                         mid2_stability = mid2_adjust_protein.stability()
                                         self.iterations += 1
+                                        if store_step_stability:
+                                            self.store_steps_stability()
                                         best_protein, lowest_stability = self.most_stable_protein(
                                             mid2_stability,
                                             lowest_stability,
@@ -90,13 +96,13 @@ class Climbing_fold(Algorithm):
 
         self.protein = copy.deepcopy(best_protein)
 
-    def solve_protein(self, depth: int):
+    def solve_protein(self, depth: int, store_step_stability: bool=False):
         """
         Run the climbing algorithm at depth 1 2 or 3.
         """
         for i in range(20):
             stability = self.protein.stability()
-            self.best_move(depth)
+            self.best_move(depth, store_step_stability)
             new_stability = self.protein.stability()
             if new_stability == stability:
                 print(f"The top of the hill has been found at {i} climbs")

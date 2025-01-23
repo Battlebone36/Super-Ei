@@ -93,7 +93,7 @@ class DepthFirst(Random_fold):
                 print(f"{iterations} possible folds added   max: {max}")
             iterations += 1
     
-    def loop_through_fold_sequences(self, verbose: bool):
+    def loop_through_fold_sequences(self, verbose: bool, store_step_stability: bool=False):
         """
         Loop through the fold sequence and store the best protein.
         """
@@ -119,6 +119,8 @@ class DepthFirst(Random_fold):
             if iterations % 2000 == 0 and verbose:
                 print(f"{iterations} / {len(self.storage_fold_sequences)} done")
             iterations +=1
+            if store_step_stability:
+                self.store_steps_stability()
 
         return max_protein
 
@@ -128,6 +130,6 @@ class DepthFirst(Random_fold):
         """
         # self.storage_fold_sequences = []
         self.load_possible_fold_sequences(verbose=verbose)
-        self.protein = self.loop_through_fold_sequences(verbose=verbose)
+        self.protein = self.loop_through_fold_sequences(store_step_stability, verbose=verbose)
 
         return self.protein

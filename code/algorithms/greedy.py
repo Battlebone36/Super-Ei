@@ -6,7 +6,7 @@ import copy
 
 class Greedy(Random_fold):
 
-    def greedy_fold(self) -> tuple[tuple[int, int, int], int]:
+    def greedy_fold(self, store_step_stability: bool=False) -> tuple[tuple[int, int, int], int]:
         # Define the folds that are possible in this state
         folds = self.copy_protein.possible_folds()
         best_fold = folds[0]
@@ -17,6 +17,9 @@ class Greedy(Random_fold):
             # Fold it, calculate stability
             self.copy_protein.fold(*fold)
             stability = self.copy_protein.stability()
+            self.iterations += 1
+            if store_step_stability:
+                    self.store_steps_stability()
 
             # Store store protein and stability if stability is lower
             if self.stability > stability:
@@ -40,7 +43,7 @@ class Greedy(Random_fold):
 
         # Loop through the sequence and store the best folded protein
         for i in range(len(self.protein.sequence)):
-            best_fold = self.greedy_fold()
+            best_fold = self.greedy_fold(store_step_stability)
 
             # Return the protein if there is no better solution
             if old_stability == self.stability:

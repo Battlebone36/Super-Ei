@@ -39,6 +39,8 @@ class SimulatedAnnealing(Algorithm):
                     break
                 else:
                     self.iterations += 1
+                    if store_step_stability:
+                        self.store_steps_stability()
 
                 # Select a random fold
                 pivot, direction = random.choice(possible_folds)
