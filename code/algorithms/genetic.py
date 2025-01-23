@@ -22,10 +22,11 @@ def weighted_choice_parents(population: dict[int, tuple[Protein, list[int]]]) ->
 
     return random.choices(list(population.keys()), weights=weights, k=2)
 
-def tournament_selection(population: dict[int, tuple[Protein, list[int]]], tournament_size: int = 3):
+def tournament_selection(population: dict[int, tuple[Protein, list[int]]]):
     """
     Selects a parent using tournament selection. 
     """
+    tournament_size = len(population) // 2
     tournament = random.sample(list(population.values()), k=tournament_size)
     return min(tournament, key=lambda p: p[0].stability())
 
@@ -40,24 +41,7 @@ def build_offsprings(parent1: tuple[Protein, list[int]], parent2: tuple[Protein,
 
     return child1_folds, child2_folds
 
-# def fold_protein_on_sequence(protein: Protein, folds: list[int]) -> Protein:
-#     """
-#     Folds the protein by a sequence of integers.
-#     """
-#     copy_protein = Protein(protein.sequence)
-
-#     for i, (coordinate, amino) in enumerate(copy_protein.data.items()):
-#         # Skip the first and last amino acid
-#         if amino[1] == 0 or amino[1] == len(copy_protein.sequence) - 1:
-#             continue
-
-#         # Check if the fold is possible and fold it
-#         fold_direction = folds[i - 1]
-#         if copy_protein.is_foldable(coordinate, copy_protein.rotations[fold_direction]):
-#             copy_protein.fold(coordinate, fold_direction)
-#     return copy_protein
-
-def fold_protein_on_sequence(protein: Protein, folds: list[int]) -> Protein:
+def fold_protein_by_sequence(protein: Protein, folds: list[int]) -> Protein:
     """
     Folds the protein by a sequence of integers.
     """
@@ -95,19 +79,21 @@ def genetic(protein: Protein) -> Protein:
     """
     print("Starting algorithm")
     population: dict[int, tuple[Protein, list[int]]] = {}
-    population_size: int = 50
-    generations: int = 500
-    mutation_probability: float = 0.01
+    population_size: int = 3*len(protein.sequence)
+    generations: int = 1000
+    mutation_probability: float = 0.02
     protein_id = 0
 
     # Create initial population - generation 0
-    for i in range(50):
+    for i in range(population_size):
         # Create random folds and apply it to the protein
-        fold_generator = Random_fold(Protein(protein.sequence))
-        folds = fold_generator.random_sequence()
-        folded_protein = fold_generator.fold_protein_on_sequence(folds)
+        random_protein = Random_fold(protein)
+        folded_protein = random_protein.run()
+        folds = random_protein.fold_sequence
 
-        population[protein_id] = (folded_protein, folds)
+        copy_folded_protein = copy.deepcopy(folded_protein)
+
+        population[protein_id] = (copy_folded_protein, folds)
         protein_id += 1
 
     print("initial population created")
@@ -119,14 +105,14 @@ def genetic(protein: Protein) -> Protein:
     for generation in range(generations):
         print(f"Generation {generation + 1}/{generations}")
 
-        # Select the two best proteins from the population based on stability
-        selected_parents = weighted_choice_parents(population)
-        parent1 = population[selected_parents[0]]
-        parent2 = population[selected_parents[1]]
+        # # Select the two best proteins from the population based on stability
+        # selected_parents = weighted_choice_parents(population)
+        # parent1 = population[selected_parents[0]]
+        # parent2 = population[selected_parents[1]]
 
-        # # Tournament selection
-        # parent1 = tournament_selection(population)
-        # parent2 = tournament_selection(population)
+        # Tournament selection
+        parent1 = tournament_selection(population)
+        parent2 = tournament_selection(population)
 
         # Create the offsprings with crossover
         child1_folds, child2_folds = build_offsprings(parent1, parent2)
@@ -139,8 +125,8 @@ def genetic(protein: Protein) -> Protein:
         child1 = Protein(protein.sequence)
         child2 = Protein(protein.sequence)
 
-        folded_child1 = fold_protein_on_sequence(child1, child1_folds)
-        folded_child2 = fold_protein_on_sequence(child2, child2_folds)
+        folded_child1 = fold_protein_by_sequence(child1, child1_folds)
+        folded_child2 = fold_protein_by_sequence(child2, child2_folds)
 
         population[protein_id] = (folded_child1, child1_folds)
         protein_id += 1
@@ -169,7 +155,7 @@ def genetic(protein: Protein) -> Protein:
         print(f"Best protein stability at generation {generation + 1}: {best_protein[0].stability()}")
 
         # Early exit if there is no improvement for consecutive generations
-        if generations_without_change > 100:
+        if generations_without_change > 300:
             print(f"No improvement for 100 generations. Early stopping at generation {generation + 1}.")
             break
 
@@ -178,7 +164,7 @@ def genetic(protein: Protein) -> Protein:
 
 
 if __name__ == "__main__":
-    test = Protein("HPHPPHHPHPPHPHHPPHPH")
+    test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
     # prot = Random_fold(test)
     # prot.run()
     best_protein = genetic(test)
