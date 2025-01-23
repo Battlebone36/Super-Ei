@@ -5,6 +5,7 @@ from code.algorithms.algorithm import Algorithm
 import random
 import copy
 import math
+random.seed(2)
 
 class SimulatedAnnealing(Algorithm):
     def run(self, store_step_stability: bool=False) -> Protein:
@@ -15,10 +16,10 @@ class SimulatedAnnealing(Algorithm):
         """
         # Starting values 
         protein = self.protein
-        initial_temp: int = 5
+        initial_temp: int = 15
         cooling_rate: int = 0.99
-        min_temp: int = 1
-        times: int = 10
+        min_temp: int = 3
+        times: int = 5
         iterations_limit = 1000
 
         # Track the best solution found
@@ -67,10 +68,20 @@ class SimulatedAnnealing(Algorithm):
 
                         # Best solution is updated
                         if current_stability < best_stability:
-                            best_protein = copy.deepcopy(current_protein)
+                            best_protein = current_protein
                             best_stability = current_stability
                             self.protein = best_protein
 
             # Lower the current temperature
             current_temp *= cooling_rate
         return best_protein
+    
+
+if __name__ == "__main__":
+    test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
+    # prot = Random_fold(test)
+    # prot.run()
+    gen = SimulatedAnnealing(test)
+    gen.run()
+    gen.visualise()
+    # visualise_protein(best_protein)
