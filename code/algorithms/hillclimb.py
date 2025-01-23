@@ -56,6 +56,9 @@ class Climbing_fold(Algorithm):
                         for mid_p_folds in mid_possible_folds:
                             mid_adjust_protein.fold(mid_amino, mid_p_folds)
                             mid_stability = mid_adjust_protein.stability()
+                            self.iterations += 1
+                            if store_step_stability:
+                                self.store_steps_stability()
                             if depth == 3:
                                 # Check another move
                                 # -----------------------------------------------------------------
@@ -67,6 +70,9 @@ class Climbing_fold(Algorithm):
                                     for mid2_p_folds in mid2_possible_folds:
                                         mid2_adjust_protein.fold(mid2_amino, mid2_p_folds)
                                         mid2_stability = mid2_adjust_protein.stability()
+                                        self.iterations += 1
+                                        if store_step_stability:
+                                            self.store_steps_stability()
                                         best_protein, lowest_stability = self.most_stable_protein(
                                             mid2_stability,
                                             lowest_stability,
@@ -99,7 +105,7 @@ class Climbing_fold(Algorithm):
         """
         Run the climbing algorithm at depth 1 2 or 3.
         """
-        max_iterations = 1000
+        max_iterations = 100000
         for i in range(100):
             stability = self.protein.stability()
             self.best_move(depth,max_iterations, store_step_stability)
