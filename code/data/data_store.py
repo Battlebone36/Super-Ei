@@ -63,7 +63,7 @@ def run_for_steps_and_stability(algorithms, times: int):
 
 
 if __name__ == "__main__":
-    a = [Random_fold, Greedy, Climbing_fold]
-    run_for_steps_and_stability(a, 10)
+    a = [Climbing_fold]
+    run_for_steps_and_stability(a, 1)
     # store_data(greedy_fold)
     
