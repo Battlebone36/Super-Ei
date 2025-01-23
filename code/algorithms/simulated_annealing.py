@@ -30,12 +30,12 @@ class SimulatedAnnealing(Algorithm):
         # Initialize the temperature
         current_temp = initial_temp
         
-        while current_temp > min_temp:
+        while current_temp > min_temp and self.iterations <= 1000:
             # Try random folding 10 times per temperature
             for i in range(times):
                 possible_folds = current_protein.possible_folds()
 
-                if not possible_folds:
+                if not possible_folds and self.iterations <= 1000:
                     break
                 else:
                     self.iterations += 1

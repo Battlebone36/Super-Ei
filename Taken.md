@@ -1,9 +1,7 @@
 # Taken die nog volbracht moeten worden
 
 ## Grote taken
-- HOE? -Bryan, Ronan
-- 
-- Algoritmes runnen
+
 
 
 ## DONE:

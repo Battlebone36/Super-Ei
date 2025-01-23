@@ -41,10 +41,11 @@ The following list describes the main directories and files in the repository, a
 Assumptions of specific parameters in the different algorithms. --> uitleggen hoe en wat (waarom deze waarden)
 EXPLAIN THE CHOICES AND ASSUMPTIONS!!!
 * Hill climb algorithm
-    - Bias for folding early on in the protein (???)
+    - Bias for folding late on in the protein (???)
 * Simulated annealing
     - Exponential formula
-    - Initial and end temperature
+        We use an exponential formula for the cooling, because of previous research in simulated annealing algorithms. Specifically about Rosetta, a protein folding simulation (Wenlong et al., 2006) and a paper where exponential functions were mentioned to solve bio-informatic problems (Kirkpatrick et al., 1983). 
+    - Initial- and end temperature
 * Genetic algorithm
     - Mutation probability
     - Mutation per protein instead of per amino acid 
@@ -54,3 +55,8 @@ EXPLAIN THE CHOICES AND ASSUMPTIONS!!!
 * Sydney Celie
 * Bryan Panken
 * Ronan Philips
+
+# Bibliography
+Li, W., Wang, T., Li, E., Baker, D., Jin, L., Ge, S., ... & Zhang, Y. (2006, April). Parallelization and performance characterization of protein 3D structure prediction of Rosetta. In Proceedings 20th IEEE International Parallel & Distributed Processing Symposium (pp. 8-pp). IEEE. DOI: 10.1109/IPDPS.2006.1639296
+
+Kirkpatrick, S., Gelatt Jr, C. D., & Vecchi, M. P. (1983). Optimization by simulated annealing. science, 220(4598), 671-680. DOI:10.1126/science.220.4598.671
