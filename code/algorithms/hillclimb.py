@@ -17,6 +17,11 @@ class Climbing_fold(Algorithm):
         protein_random = Random_fold(self.protein)
         prot = protein_random.run()
         self.protein = copy.deepcopy(prot)
+<<<<<<< HEAD
+=======
+        # visualise_protein(self.protein)
+
+>>>>>>> 28c8d58137c17af7e52a05b590d3d0f1986098af
         self.solve_protein(depth)
         return self.protein
 
@@ -109,6 +114,6 @@ class Climbing_fold(Algorithm):
         return (best_protein, lowest_stability)
 
 # if __name__ == "__main__":
-#     protein1 = Protein("CPPCHPPCHPPCPPHCCPCHPPCPCHPPHPC")
+#     protein1 = Protein("HPHPPHHPHPPHPHHPPHPH")
 #     climb = Climbing_fold(protein1)
-#     climb.run(2)
+#     climb.run(3)

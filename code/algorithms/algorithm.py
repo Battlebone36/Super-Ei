@@ -14,11 +14,14 @@ class Algorithm:
 
 
     def visualise(self):
+        """
+        Visualises the protein made by the algorithm.
+        """
         visualise_protein(self.protein)
     
     def fold_sequence_is_valid(self):
         """
-        Checks if the foldsequence is doable.
+        Checks if the fold sequence is valid.
         """
         self.copy_protein.load_data()
         if len(self.fold_sequence) != len(self.protein.sequence) - 2:
@@ -32,7 +35,7 @@ class Algorithm:
     
     def fold_by_sequence(self, protein: Protein | None=None) -> Protein:
         """
-        Randomly folds a protein 
+        Randomly folds a protein.
         """
         if protein is None:
             protein = self.protein

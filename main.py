@@ -18,11 +18,7 @@ def write_output(protein: Protein):
         my_writer.writerows(protein.output())
 
 if __name__ == "__main__":
-    test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
-
-    alg = DepthFirst(test)
-    sim = SimulatedAnnealing(test)
-    climb = Climbing_fold(test)
+    test = Protein("PC")
     rand = Random_fold(test)
 
     rand.run()
