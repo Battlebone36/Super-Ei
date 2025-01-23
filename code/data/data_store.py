@@ -59,7 +59,7 @@ def run_for_steps_and_stability(algorithms, times: int):
         for i in range(times):
             print(f"{i} of {times} of {algorithm.__name__}")
             temp_class = algorithm(test)
-            temp_class.run(store_step_stability=True)
+            temp_class.run(depth=2,store_step_stability=True)
 
 
 if __name__ == "__main__":
