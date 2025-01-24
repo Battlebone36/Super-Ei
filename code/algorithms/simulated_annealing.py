@@ -5,7 +5,6 @@ from code.algorithms.algorithm import Algorithm
 import random
 import copy
 import math
-random.seed(2)
 
 class SimulatedAnnealing(Algorithm):
     def run(self, store_step_stability: bool=False) -> Protein:

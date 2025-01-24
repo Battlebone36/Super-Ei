@@ -14,15 +14,13 @@ from code.algorithms. genetic import Genetic
 def gather_data(algorithm) -> list[str, int, float]:
     """
     2nd generation helper function
-
     Test the algorithm 100 times and store the data into lists.
     Return the data.
     """
     sequence = "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP"
     test_protein = Protein(sequence)
-    data: list[list[str, int, float]] = []
-    
-    
+    data: list[str, int, float] = []
+
     # Test the algorithm 100 times and store the result
     for i in range(10):
         print(f"{i} of {algorithm.__name__}")
@@ -36,13 +34,14 @@ def gather_data(algorithm) -> list[str, int, float]:
 
     return data
 
-def store_data(algorithm, data: list[list[str, int, float]]) -> None:
+def store_data(algorithm) -> None:
     """
     Store the data into a csv file. 
     """
+    data = gather_data(algorithm)
     fname = f"code/data/csv_data/{algorithm.__name__}.csv"
     write_mode = 'w'
-     
+
     my_file = Path(fname)
     if my_file.is_file():
         write_mode = 'a'
@@ -53,7 +52,7 @@ def store_data(algorithm, data: list[list[str, int, float]]) -> None:
             my_writer.writerow(["Protein", "Stability", "Time", "Algorithm"])
         my_writer.writerows(data)
 
-def run_algorithms(algorithms, times: int=100, type_data:str ="step_stability"):
+def run_for_steps_and_stability(algorithms, times: int):
     """
     Run all algorithms an amount of times with the store the step stability command turned on.
     """
@@ -67,4 +66,5 @@ def run_algorithms(algorithms, times: int=100, type_data:str ="step_stability"):
 
 if __name__ == "__main__":
     algorithms = [Climbing_fold, SimulatedAnnealing, Genetic]
-    run_algorithms(algorithms, 1)
+    run_for_steps_and_stability(algorithms, 1)
+    # store_data(greedy_fold)
