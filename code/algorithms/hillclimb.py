@@ -110,9 +110,15 @@ class Climbing_fold(Algorithm):
             stability = self.protein.stability()
             self.best_move(depth,max_iterations, store_step_stability)
             new_stability = self.protein.stability()
-            if self.iterations >= max_iterations and stability == new_stability:
-                print(f"The top of the hill has been found at {i} climbs")
-                break
+            if store_step_stability:
+
+                if self.iterations >= max_iterations and stability == new_stability:
+                    print(f"The top of the hill has been found at {i} climbs")
+                    break
+            else:
+                if stability == new_stability:
+                    print(f"The top of the hill has been found at {i} climbs")
+                    break
 
     def most_stable_protein(self, stability, lowest_stability, adjust_protein, amino, p_folds, best_protein):
         """

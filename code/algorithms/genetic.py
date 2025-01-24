@@ -26,11 +26,11 @@ class Genetic(Algorithm):
         
         return init_population, protein_id
 
-    def tournament_selection(self, population: dict[int, tuple[Protein, list[int]]]):
+    def tournament_selection(self, population: dict[int, tuple[Protein, list[int]]], nominator: int):
         """
         Selects a parent using tournament selection. 
         """
-        tournament_size = len(population) // 4
+        tournament_size = len(population) * nominator // 100
         tournament = random.sample(list(population.values()), k=tournament_size)
         return min(tournament, key=lambda p: p[0].stability())
 
@@ -77,17 +77,14 @@ class Genetic(Algorithm):
         return mutated_folds
 
 
-    def run(self, store_step_stability: bool=False) -> Protein:
+    def run(self, store_step_stability: bool=False, population_size: int = 50, mutation_probability: float = 0.01, nominator: int = 25) -> Protein:
         """
         Genetic algorithm that mimics natural selection to find the optimal folded protein.
         """
         print("Starting algorithm")
         population: dict[int, tuple[Protein, list[int]]] = {}
-        population_size: int = 50
         generations: int = 1000
-        mutation_probability: float = 0.02
         iteration_limit = 5000
-        # protein_id = 0
 
         # Create initial population - generation 0
         population, protein_id = self.create_initial_population(population_size)
@@ -110,8 +107,8 @@ class Genetic(Algorithm):
             # Fill the new population with offsprings
             while len(new_population) < population_size:
                 # Select the "best" two proteins from the population based on stability
-                parent1 = self.tournament_selection(population)
-                parent2 = self.tournament_selection(population)
+                parent1 = self.tournament_selection(population, nominator)
+                parent2 = self.tournament_selection(population, nominator)
                 
                 self.iterations += 2
                 if self.iterations >= iteration_limit:
@@ -142,14 +139,12 @@ class Genetic(Algorithm):
                 protein_id += 1
                 temporarily_best_protein = min(new_population.values(), key=lambda p: p[0].stability())
 
-        
+                # Track solution for data store
                 current_best_stability = store_max_protein.stability()
                 new_stability = temporarily_best_protein[0].stability()
                 if current_best_stability > new_stability:
                     self.protein = copy.deepcopy(temporarily_best_protein[0])
                 
-
-
             population = new_population
 
             # Update best solution
