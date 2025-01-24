@@ -10,6 +10,7 @@ from code.algorithms.greedy import Greedy
 from code.algorithms.hillclimb import Climbing_fold
 from code.algorithms.simulated_annealing import SimulatedAnnealing
 from code.algorithms. genetic import Genetic
+from code.algorithms.mountainclimb import Mountain_fold
 
 def gather_data(algorithm) -> list[str, int, float]:
     """
