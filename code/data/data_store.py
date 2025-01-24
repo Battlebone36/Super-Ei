@@ -18,16 +18,18 @@ def gather_data(algorithm) -> list[str, int, float]:
     Test the algorithm 100 times and store the data into lists.
     Return the data.
     """
-    sequence = "PPCHHPPCHPPPPCHCPCHC"
+    sequence = "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP"
     test_protein = Protein(sequence)
     data: list[str, int, float] = []
     
 
     # Test the algorithm 100 times and store the result
-    for i in range(1000):
-        print(i)
+    for i in range(10):
+        print(f"{i} of {algorithm.__name__}")
         start = timer()
-        result_protein: Protein = algorithm(test_protein)
+        temp_class = algorithm(test_protein)
+        temp_class.run()
+        result_protein = temp_class.protein
         end = timer()
 
         data.append([sequence, result_protein.stability(), end - start, f"{algorithm.__name__}"])
