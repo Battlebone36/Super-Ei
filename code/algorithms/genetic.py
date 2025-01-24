@@ -91,7 +91,7 @@ class Genetic(Algorithm):
         # Initialize variables
         population: dict[int, tuple[Protein, list[int]]] = {}
         generations: int = 1000
-        iteration_limit = 5000
+        iteration_limit = self.max_iterations
 
         # Create initial population - generation 0
         population, protein_id = self.create_initial_population(population_size)

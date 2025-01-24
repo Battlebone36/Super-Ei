@@ -5,7 +5,6 @@ from code.algorithms.algorithm import Algorithm
 import random
 import copy
 import math
-random.seed(2)
 
 class SimulatedAnnealing(Algorithm):
     def run(self, store_step_stability: bool=False) -> Protein:
@@ -20,7 +19,7 @@ class SimulatedAnnealing(Algorithm):
         cooling_rate: int = 0.99
         min_temp: int = 3
         times: int = 5
-        iterations_limit = 1000
+        iterations_limit = self.max_iterations
 
         # Track the best solution found
         random_protein = Random_fold(protein)
