@@ -233,10 +233,10 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
     # Make a histogram by default and by type occurency-stability
     if type == "occurency_stability":
         for i, algorithm in enumerate(algorithms):
-            bins = df["stability"].max() - df["stability"].min()
-            df_filtered = df[df["algorithm"] == f"{algorithm.__name__}"]
+            bins = df["Stability"].max() - df["Stability"].min()
+            df_filtered = df[df["Algorithm"] == f"{algorithm.__name__}"]
             plot = sns.histplot(
-                df_filtered["stability"],
+                df_filtered["Stability"],
                 bins=bins,
                 stat="density",
                 discrete=True,
@@ -248,7 +248,7 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
             plot.text(-bins, 0.95, s=f'Trials: {len(df_filtered)}', fontsize=10, color='black')
             plot.set_xlabel("Stability")
         plot.set_ylabel("Chance")
-        plot.set_ylim(0, 1)
+        # plot.set_ylim(0, 1)
         
 
     # If type is time-stability make a line plot with mean time on y-axis

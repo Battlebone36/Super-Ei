@@ -23,7 +23,7 @@ def gather_data(algorithm) -> list[str, int, float]:
     data: list[str, int, float] = []
 
     # Test the algorithm 100 times and store the result
-    for i in range(10):
+    for i in range(9990):
         print(f"{i} of {algorithm.__name__}")
         start = timer()
         temp_class = algorithm(test_protein)
