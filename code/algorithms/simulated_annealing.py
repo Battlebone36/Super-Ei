@@ -6,8 +6,69 @@ import random
 import copy
 import math
 
+random.seed(1)
+
 class SimulatedAnnealing(Algorithm):
-    def run(self, store_step_stability: bool=False) -> Protein:
+    def run_hillclimb(self, store_step_stability: bool=False) -> Protein:
+        # Starting values 
+        initial_temp: int = 15
+        cooling_rate: int = 0.99
+        min_temp: int = 1
+        iterations_limit = self.max_iterations
+
+        # Track the best solution found
+        random_protein = Random_fold(self.protein)
+        current_protein = random_protein.run()
+        best_protein = copy.deepcopy(current_protein)
+        current_stability = current_protein.stability()
+        best_stability = current_stability
+
+        # Initialize the temperature
+        current_temp = initial_temp
+        
+        while current_temp > min_temp and self.iterations <= iterations_limit:
+            # Modified best move to ensure more exploration
+            if self.iterations >= iterations_limit:
+                break
+
+            possible_folds = current_protein.possible_folds()
+
+            for p_folds in possible_folds:
+                # Create a copy to experiment with
+                test_protein = copy.deepcopy(current_protein)
+                test_protein.fold(p_folds[0], p_folds[1])
+                new_stability = test_protein.stability()
+                
+                self.iterations += 1
+                if store_step_stability:
+                    self.store_steps_stability()
+
+                # Calculate the change in stability
+                delta_e = new_stability - current_stability
+
+                # Calculate the acceptance probability
+                probability = math.exp(-delta_e / current_temp)
+
+                # Accept improvement or probabilistically accept worse fold
+                if (delta_e < 0 or random.uniform(0, 1) < probability):
+                    current_protein = test_protein
+                    current_stability = new_stability
+
+                    # Update best solution
+                    if current_stability < best_stability:
+                        best_protein = current_protein
+                        best_stability = current_stability
+
+                # Undo the fold to reset
+                # test_protein.fold_reverse(amino, p_folds)
+
+            # Lower the current temperature
+            current_temp *= cooling_rate
+
+        return best_protein
+
+
+    def run_random(self, store_step_stability: bool=False) -> Protein:
         """
         Starts with a randomly folded protein that will try to apply random folds.
         Each fold that improves the stability score is accepted for the next iteration.
@@ -17,7 +78,7 @@ class SimulatedAnnealing(Algorithm):
         protein = self.protein
         initial_temp: int = 15
         cooling_rate: int = 0.99
-        min_temp: int = 3
+        min_temp: int = 1
         times: int = 5
         iterations_limit = self.max_iterations
 
@@ -75,12 +136,97 @@ class SimulatedAnnealing(Algorithm):
             current_temp *= cooling_rate
         return best_protein
     
+    def check_stability_change(self, fold, current_protein):
+        pivot, direction = fold
+
+        temp_protein = copy.deepcopy(current_protein)
+
+        temp_protein.fold(pivot, direction)
+
+        new_stability = temp_protein.stability()
+        current_stability = current_protein.stability()
+
+        return new_stability - current_stability
+    
+    def run_greedy(self, store_step_stability: bool=False) -> Protein:
+        """
+        Starts with a randomly folded protein that will try to apply random folds.
+        Each fold that improves the stability score is accepted for the next iteration.
+        Sometimes worse folds are accepted, depending on the current temperature.
+        """
+        # Starting values 
+        initial_temp: int = 15
+        cooling_rate: int = 0.99
+        min_temp: int = 1
+        times: int = 5
+        iterations_limit = self.max_iterations
+
+        # Track the best solution found
+        random_protein = Random_fold(self.protein)
+        current_protein = random_protein.run()
+        best_protein = copy.deepcopy(current_protein)
+        current_stability = current_protein.stability()
+        best_stability = current_stability
+
+        # Initialize the temperature
+        current_temp = initial_temp
+        
+        while current_temp > min_temp and self.iterations <= iterations_limit:
+            # Try random folding 10 times per temperature
+            for i in range(times):
+                possible_folds = current_protein.possible_folds()
+
+                if not possible_folds or self.iterations >= iterations_limit:
+                    break
+                else:
+                    self.iterations += 1
+                    if store_step_stability:
+                        self.store_steps_stability()
+
+                # Select the best fold
+                best_fold = max(possible_folds, key=lambda fold: self.check_stability_change(fold, current_protein))
+                pivot, direction = best_fold
+                
+                # Attempt to apply the best fold
+                new_protein = copy.deepcopy(current_protein)
+                
+                if new_protein.is_foldable(pivot, new_protein.rotations[direction]):
+                    new_protein.fold(pivot, direction)
+                    new_stability = new_protein.stability()
+
+                    # Calculate the change in stability
+                    delta_e = new_stability - current_stability
+
+                    # Calculate the acceptance probability
+                    probability = math.exp(-delta_e / current_temp)
+
+                    # Accept or deny the random fold
+                    if (delta_e < 0 or random.uniform(0, 1) < probability):
+                        # New configuration is accepted
+                        current_protein = new_protein
+                        current_stability = new_stability
+
+                        # Best solution is updated
+                        if current_stability < best_stability:
+                            best_protein = current_protein
+                            best_stability = current_stability
+                            self.protein = best_protein
+
+            # Lower the current temperature
+            current_temp *= cooling_rate
+            print(current_temp)
+        return best_protein
+    
 
 if __name__ == "__main__":
     test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
     # prot = Random_fold(test)
     # prot.run()
     gen = SimulatedAnnealing(test)
-    gen.run()
+    # gen.run_random()
+    # gen.visualise()
+    # gen.run_hillclimb()
+    # gen.visualise()
+    gen.run_greedy()
     gen.visualise()
     # visualise_protein(best_protein)
