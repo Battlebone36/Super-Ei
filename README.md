@@ -75,12 +75,12 @@ EXPLAIN THE CHOICES AND ASSUMPTIONS!!!
     70
     90
 
-    k
-    3/10
-    4/10
-    5/10
-    6/10
-    7/10
+    Nominator
+    30
+    40
+    50
+    60
+    70
 
     mutationchance
     0.001

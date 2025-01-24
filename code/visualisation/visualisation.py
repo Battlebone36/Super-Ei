@@ -65,19 +65,10 @@ def visualise_protein(protein: Protein) -> None:
     ax.set_aspect("equal", adjustable="box")
     ax.set_axis_off()
 
-    # Function to update the view for animation
-    def update(frame):
-        ax.view_init(elev= 45, azim=frame)
-        return ax,
-
     # Show plot
     stability = protein.stability()
     plt.title(f"Stability score: {stability}", fontsize=17, fontweight="bold")
     plt.legend()
-    # frames = 360  # Total frames for a full rotation
-    # anim = FuncAnimation(fig, update, frames=frames, interval=30, blit=False)
-    # anim.save("static/protein_rotation.gif", fps=30)
-
     plt.show()
 
     
@@ -98,7 +89,8 @@ def hist_of_algorithm(algorithm) -> tuple[list[int], int, int, float, float]:
     for i in range(1000):
         print(i)
         start = timer()
-        result_protein: Protein = algorithm(test_protein)
+        alg = algorithm(test_protein)
+        result_protein = alg.run()
         end = timer()
         stability_scores.append(result_protein.stability())
         time_scores.append(end - start)
@@ -159,11 +151,6 @@ def plot_algorithm_together(algorithm, ax, color: str) -> None:
         linewidth=5,
         histtype="step"
     )
-    # , mean: {mean_time:0.2}s ± {std_time:0.2}s
-    # histtype="barstacked",
-    
-            # density=True
-
 
 def plot_algorithm_line(algorithm, ax) -> None:
     """
@@ -206,13 +193,6 @@ def visualise_algorithm(algorithms, command: str="split") -> None:
     # Define total plot and dataframe
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    colors = {
-        "random_fold": "blue",
-        "greedy_search_sequence": "green",
-        "climbing_fold": "red",
-        "beter_climbing_fold": "orange",
-        "even_beter_climbing_fold": "yellow" 
-    }
 
     # Check commands
     if command == "split":
@@ -236,6 +216,7 @@ def visualise_algorithm(algorithms, command: str="split") -> None:
     plt.show()
 
 
+
 def import_algorithm_data(algorithm, df):
     """
     Import the data out of a certain algorithm csv files.
@@ -243,6 +224,7 @@ def import_algorithm_data(algorithm, df):
 
     df_data_gathered = pd.read_csv(f"code/data/csv_data/{algorithm.__name__}.csv")
     return pd.concat([df, df_data_gathered], axis=0)
+
 
 def make_plot(df, algorithms, axes=None, type="occurency-stability") -> None:
     """
@@ -275,8 +257,8 @@ def make_plot(df, algorithms, axes=None, type="occurency-stability") -> None:
     elif type == "time-stability":
         plot = sns.lineplot(
             data=df,
-            x="stability",
-            y="time",
+            x="Stability",
+            y="Time",
             hue="algorithm",
             marker="o",
         )
@@ -284,7 +266,6 @@ def make_plot(df, algorithms, axes=None, type="occurency-stability") -> None:
         plot.set_ylabel("Mean time")
         plot.set_xlim(right=1)
         plot.legend()
-
     plt.show()
 
 

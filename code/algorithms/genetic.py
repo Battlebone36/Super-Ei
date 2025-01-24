@@ -142,7 +142,7 @@ class Genetic(Algorithm):
                 protein_id += 1
                 temporarily_best_protein = min(new_population.values(), key=lambda p: p[0].stability())
 
-                #
+        
                 current_best_stability = store_max_protein.stability()
                 new_stability = temporarily_best_protein[0].stability()
                 if current_best_stability > new_stability:

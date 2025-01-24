@@ -18,11 +18,13 @@ def write_output(protein: Protein):
         my_writer.writerows(protein.output())
 
 if __name__ == "__main__":
-    test = Protein("PC")
-    rand = Random_fold(test)
+    
+    visualise_algorithm_data()
+    # test = Protein("HCPHCHHCH")
+    # rand = DepthFirst(test)
 
-    rand.run()
-    rand.visualise()
+    # rand.run(verbose=True)
+    # rand.visualise()
     # visualise_protein(sim.run())
     # alg.run()
     # alg.visualise()
