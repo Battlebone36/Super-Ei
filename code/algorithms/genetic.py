@@ -1,5 +1,5 @@
 from code.classes.protein import Protein
-from code.algorithms.randomise import Random_fold
+from code.algorithms.randomise import Random
 from code.algorithms.algorithm import Algorithm
 import copy
 from code.visualisation.visualisation import *
@@ -15,7 +15,7 @@ class Genetic(Algorithm):
 
         for i in range(population_size):
             # Create random folds and apply it to the protein
-            random_protein = Random_fold(self.protein)
+            random_protein = Random(self.protein)
             folded_protein = random_protein.run()
             folds = random_protein.fold_sequence
 

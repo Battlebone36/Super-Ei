@@ -1,11 +1,11 @@
 from code.classes.protein import Protein
 from code.visualisation.visualisation import *
-from code.algorithms.randomise import Random_fold
+from code.algorithms.randomise import Random
 from code.algorithms.algorithm import Algorithm
 import copy
 
 
-class Climbing_fold(Algorithm):
+class HillClimb(Algorithm):
     def run(self, store_step_stability: bool=False):
         """
         Start from a random state which then receives small changes
@@ -14,7 +14,7 @@ class Climbing_fold(Algorithm):
         no more good changes.
         """
         # Create the random protein
-        protein_random = Random_fold(self.protein)
+        protein_random = Random(self.protein)
         prot = protein_random.run()
         self.protein = copy.deepcopy(prot)
         # visualise_protein(self.protein)
@@ -84,8 +84,3 @@ class Climbing_fold(Algorithm):
         adjust_protein.fold_reverse(amino, p_folds)
 
         return (best_protein, lowest_stability)
-
-# if __name__ == "__main__":
-#     protein1 = Protein("HPHPPHHPHPPHPHHPPHPH")
-#     climb = Climbing_fold(protein1)
-#     climb.run(3)
