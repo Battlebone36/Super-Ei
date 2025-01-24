@@ -2,7 +2,6 @@ from code.classes.protein import Protein
 from code.algorithms.randomise import Random_fold
 from code.visualisation.visualisation import *
 from code.algorithms.algorithm import Algorithm
-from typing import Optional
 import random
 import copy
 import math
@@ -45,34 +44,15 @@ class SimulatedAnnealing(Algorithm):
                     if store_step_stability:
                         self.store_steps_stability()
 
-            # Attempt a random fold
-            new_protein, new_stability = self._attempt_random_fold(current_protein)
-            if new_protein and self._should_accept(current_stability, new_stability, current_temp):
-                current_protein = new_protein
-                current_stability = new_stability
-
-                # Update the best protein if a new best is found
-                if current_stability < self.best_stability:
-                    self._update_best_solution(current_protein, current_stability)
-
-        return current_protein, current_stability
-
-    def _attempt_random_fold(self, protein: Protein) -> tuple[Optional[Protein], Optional[float]]:
-        """
-        Tries to apply a random fold to the given protein.
-        Returns the new protein and its stability if successful, otherwise None.
-        """
-        possible_folds = protein.possible_folds()
-        if not possible_folds:
-            return None, None
-
-        pivot, direction = random.choice(possible_folds)
-        new_protein = copy.deepcopy(protein)
-        if new_protein.is_foldable(pivot, new_protein.rotations[direction]):
-            new_protein.fold(pivot, direction)
-            return new_protein, new_protein.stability()
-
-        return None, None
+                # Select a random fold
+                pivot, direction = random.choice(possible_folds)
+                
+                # Attempt to apply the random fold
+                new_protein = copy.deepcopy(current_protein)
+                
+                if new_protein.is_foldable(pivot, new_protein.rotations[direction]):
+                    new_protein.fold(pivot, direction)
+                    new_stability = new_protein.stability()
 
                     # Calculate the change in stability
                     delta_e = new_stability - current_stability
@@ -88,10 +68,20 @@ class SimulatedAnnealing(Algorithm):
 
                         # Best solution is updated
                         if current_stability < best_stability:
-                            best_protein = copy.deepcopy(current_protein)
+                            best_protein = current_protein
                             best_stability = current_stability
                             self.protein = best_protein
 
             # Lower the current temperature
             current_temp *= cooling_rate
         return best_protein
+    
+
+if __name__ == "__main__":
+    test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
+    # prot = Random_fold(test)
+    # prot.run()
+    gen = SimulatedAnnealing(test)
+    gen.run()
+    gen.visualise()
+    # visualise_protein(best_protein)
