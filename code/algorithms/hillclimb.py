@@ -6,7 +6,7 @@ import copy
 
 
 class Climbing_fold(Algorithm):
-    def run(self, depth: int|None=None, store_step_stability: bool=False):
+    def run(self, store_step_stability: bool=False):
         """
         Start from a random state which then receives small changes
         these small changes are the neighbouring states. The best neighbouring 
@@ -19,13 +19,12 @@ class Climbing_fold(Algorithm):
         self.protein = copy.deepcopy(prot)
         # visualise_protein(self.protein)
 
-        self.solve_protein(depth, store_step_stability)
+        self.solve_protein(store_step_stability)
         return self.protein
 
-    def best_move(self, depth: str, max_iterations: int, store_step_stability: bool=False):
+    def best_move(self, max_iterations: int, store_step_stability: bool=False):
         """
-        Find the best possible move at a certain configuration, but looks
-        into 3 moves.
+        Find the best possible move at a certain configuration.
         """
         # Loop over the randomized protein
         lowest_stability = self.protein.stability()
@@ -45,51 +44,6 @@ class Climbing_fold(Algorithm):
                     self.store_steps_stability()
                 if self.iterations >= max_iterations:
                     break
-                if depth == 2 or depth == 3:
-                    # Check another move
-                    # -----------------------------------------------------------------
-                    mid_adjust_protein = copy.deepcopy(adjust_protein)
-                    for mid_amino in adjust_protein.data:
-
-                        mid_possible_folds = adjust_protein.possible_folds_point(mid_amino)
-
-                        for mid_p_folds in mid_possible_folds:
-                            mid_adjust_protein.fold(mid_amino, mid_p_folds)
-                            mid_stability = mid_adjust_protein.stability()
-                            self.iterations += 1
-                            if store_step_stability:
-                                self.store_steps_stability()
-                            if depth == 3:
-                                # Check another move
-                                # -----------------------------------------------------------------
-                                mid2_adjust_protein = copy.deepcopy(mid_adjust_protein)
-                                for mid2_amino in mid_adjust_protein.data:
-
-                                    mid2_possible_folds = mid_adjust_protein.possible_folds_point(mid2_amino)
-
-                                    for mid2_p_folds in mid2_possible_folds:
-                                        mid2_adjust_protein.fold(mid2_amino, mid2_p_folds)
-                                        mid2_stability = mid2_adjust_protein.stability()
-                                        self.iterations += 1
-                                        if store_step_stability:
-                                            self.store_steps_stability()
-                                        best_protein, lowest_stability = self.most_stable_protein(
-                                            mid2_stability,
-                                            lowest_stability,
-                                            mid2_adjust_protein,
-                                            mid2_amino,
-                                            mid2_p_folds,
-                                            best_protein)
-                                # -----------------------------------------------------------------
-                            best_protein, lowest_stability = self.most_stable_protein(
-                                mid_stability,
-                                lowest_stability,
-                                mid_adjust_protein,
-                                mid_amino,
-                                mid_p_folds,
-                                best_protein)
-                            
-                    # -----------------------------------------------------------------
                 best_protein, lowest_stability = self.most_stable_protein(
                     stability,
                     lowest_stability,
@@ -101,14 +55,14 @@ class Climbing_fold(Algorithm):
 
         self.protein = copy.deepcopy(best_protein)
 
-    def solve_protein(self, depth: int, store_step_stability: bool=False):
+    def solve_protein(self, store_step_stability: bool=False):
         """
         Run the climbing algorithm at depth 1 2 or 3.
         """
         max_iterations = 100000
         for i in range(100):
             stability = self.protein.stability()
-            self.best_move(depth,max_iterations, store_step_stability)
+            self.best_move(max_iterations, store_step_stability)
             new_stability = self.protein.stability()
             if store_step_stability:
 
