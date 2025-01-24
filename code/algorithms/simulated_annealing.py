@@ -19,7 +19,7 @@ class SimulatedAnnealing(Algorithm):
         cooling_rate: int = 0.99
         min_temp: int = 3
         times: int = 5
-        iterations_limit = 1000
+        iterations_limit = self.max_iterations
 
         # Track the best solution found
         random_protein = Random_fold(protein)
