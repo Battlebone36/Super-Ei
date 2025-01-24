@@ -172,7 +172,6 @@ def plot_algorithm_line(algorithm, ax) -> None:
     ax.plot(x_positions,
             hist_values,
             label=f"{algorithm.__name__}")
-    # , mean: {mean_time:0.2}s ± {std_time:0.2}s
 
 
 def visualise_algorithm(algorithms, command: str="split") -> None:
@@ -216,28 +215,28 @@ def visualise_algorithm(algorithms, command: str="split") -> None:
     plt.show()
 
 
-
-def import_algorithm_data(algorithm, df):
+def import_algorithm_data(path, df):
     """
     Import the data out of a certain algorithm csv files.
     """
 
-    df_data_gathered = pd.read_csv(f"code/data/csv_data/{algorithm.__name__}.csv")
+    # df_data_gathered = pd.read_csv(f"code/data/csv_data/{algorithm.__name__}.csv")
+    df_data_gathered = pd.read_csv(path)
     return pd.concat([df, df_data_gathered], axis=0)
 
 
-def make_plot(df, algorithms, axes=None, type="occurency-stability") -> None:
+def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
     """
     Make the a histogram of the occurency-stability of all the algorithms in the dataset
     """
     
     # Make a histogram by default and by type occurency-stability
-    if type == "occurency-stability":
+    if type == "occurency_stability":
         for i, algorithm in enumerate(algorithms):
-            bins = df["stability"].max() - df["stability"].min()
-            df_filtered = df[df["algorithm"] == f"{algorithm.__name__}"]
+            bins = df["Stability"].max() - df["Stability"].min()
+            df_filtered = df[df["Algorithm"] == f"{algorithm.__name__}"]
             plot = sns.histplot(
-                df_filtered["stability"],
+                df_filtered["Stability"],
                 bins=bins,
                 stat="density",
                 discrete=True,
@@ -247,14 +246,14 @@ def make_plot(df, algorithms, axes=None, type="occurency-stability") -> None:
             plot.set_xticks(ticks=ticks)
             plot.set_title(f"{algorithm.__name__}")
             plot.text(-bins, 0.95, s=f'Trials: {len(df_filtered)}', fontsize=10, color='black')
-        plot.set_xlabel("Stability")
+            plot.set_xlabel("Stability")
         plot.set_ylabel("Chance")
-        plot.set_ylim(0, 1)
+        # plot.set_ylim(0, 1)
         
 
     # If type is time-stability make a line plot with mean time on y-axis
     # and stability on x-axis
-    elif type == "time-stability":
+    elif type == "time_stability":
         plot = sns.lineplot(
             data=df,
             x="Stability",
@@ -266,23 +265,86 @@ def make_plot(df, algorithms, axes=None, type="occurency-stability") -> None:
         plot.set_ylabel("Mean time")
         plot.set_xlim(right=1)
         plot.legend()
+
+    elif type == "step_stability":
+        grouped = (
+            df.groupby(["protein", "steps", "algorithm"])
+            .agg(
+                stability_mean=("stability", "mean"),
+                stability_std=("stability", "std"),
+                stability_max=("stability", "max"),
+                stability_min=("stability", "min"),
+            )
+            .reset_index()
+        )
+
+        for i, algorithm in enumerate(algorithms):
+            df_filtered = df[df["algorithm"] == f"{algorithm.__name__}"]
+            # grouped = (
+            #     df_filtered.groupby(["protein", "steps", "algorithm"])
+            #     .agg(
+            #         stability_mean=("stability", "mean"),
+            #         stability_std=("stability", "std"),
+            #         stability_max=("stability", "max"),
+            #         stability_min=("stability", "min"),
+            #         stability_25=("stability", lambda x: x.quantile(0.25)),
+            #         stability_75=("stability", lambda x: x.quantile(0.75))
+            #     )
+            #     .reset_index()
+            # )
+
+            plot = sns.lineplot(
+                data=df_filtered,
+                x="steps",
+                y="stability",
+                ax=axes[i]
+            )
+            # plot = sns.lineplot(
+            #     data=grouped,
+            #     x="steps",
+            #     y="stability_25",
+            #     ax=axes[i]
+            # )
+
+            # plot = sns.lineplot(
+            #     data=grouped,
+            #     x="steps",
+            #     y="stability_75",
+            #     ax=axes[i]
+            # )
+            # plot.legend(["mean", "lower 25%", "upper 75%"])
+            plot.set_title(f"{algorithm.__name__}")
+            plot.set_xlabel("Steps") 
+            plot.set_ylabel("Mean Stability")
     plt.show()
 
 
-def visualise_algorithm_data(algorithms, type: str="occurency-stability") -> None:
+def visualise_algorithm_data(algorithms, type: str="occurency_stability") -> None:
     """
     Import all data and make the plot for the data.
     """
     # Make DataFrame and import data from files
     type = type.lower()
     df = pd.DataFrame()
-    for algorithm in algorithms:
-        df = import_algorithm_data(algorithm=algorithm, df=df)
+    if type == "occurency_stability" or type == "time_stability":
+        for algorithm in algorithms:
+            path = f"code/data/csv_data/{algorithm.__name__}.csv"
+            df = import_algorithm_data(path=path, df=df)
+    elif type == "step_stability":
+        for algorithm in algorithms:
+            path = f"code/data/step_stability/{algorithm.__name__}.csv"
+            df = import_algorithm_data(path=path, df=df)
+
     
     # Make specific plot
-    if type == "occurency-stability":
+    if type == "occurency_stability":
         fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True, sharey=True)
         make_plot(df=df, algorithms=algorithms, axes=axes)
-    elif type == "time-stability":
+    elif type == "time_stability":
         grouped = df.groupby(["algorithm", "protein", "stability"]).mean().reset_index()
         make_plot(df=grouped, algorithms=algorithms, type=type)
+    elif type == "step_stability":
+        fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True, sharey=True)
+        make_plot(df=df, algorithms=algorithms, axes=axes, type=type)
+
+

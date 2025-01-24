@@ -23,7 +23,7 @@ def gather_data(algorithm) -> list[str, int, float]:
     data: list[str, int, float] = []
 
     # Test the algorithm 100 times and store the result
-    for i in range(10):
+    for i in range(9990):
         print(f"{i} of {algorithm.__name__}")
         start = timer()
         temp_class = algorithm(test_protein)
@@ -62,10 +62,10 @@ def run_for_steps_and_stability(algorithms, times: int):
         for i in range(times):
             print(f"{i} of {times} of {algorithm.__name__}")
             temp_class = algorithm(test)
-            temp_class.run(depth=2,store_step_stability=True)
+            temp_class.run(store_step_stability=True)
 
 
 if __name__ == "__main__":
     algorithms = [Climbing_fold, SimulatedAnnealing, Genetic]
-    run_for_steps_and_stability(algorithms, 1)
+    run_for_steps_and_stability(algorithms, 3)
     # store_data(greedy_fold)

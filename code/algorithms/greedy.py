@@ -36,8 +36,8 @@ class Greedy(Random_fold):
         A greedy algorithm that folds the protein in a short term way to maximise stability.
         """
         # Make a random protein to explore the different stabilities in the loop
-        random_protein = Random_fold(self.protein)
-        self.protein = random_protein.run()
+        # random_protein = Random_fold(self.protein)
+        # self.protein = random_protein.run()
         self.copy_protein = copy.deepcopy(self.protein)
         old_stability = 0
 

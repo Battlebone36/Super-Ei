@@ -61,6 +61,8 @@ EXPLAIN THE CHOICES AND ASSUMPTIONS!!!
     5
     6
     7
+    cooling_rate, eind_T, begin_T, times_of_fold
+    ()
 
     100x draaien
     - Exponential formula
