@@ -30,9 +30,27 @@ class Genetic(Algorithm):
         """
         Selects a parent using tournament selection. 
         """
+        # Determine the amount of proteins in the tournament
         tournament_size = len(population) * nominator // 100
         tournament = random.sample(list(population.values()), k=tournament_size)
+
         return min(tournament, key=lambda p: p[0].stability())
+    
+    def weigthed_tournament_selection(self, population: dict[int, tuple[Protein, list[int]]], nominator: int):
+        """
+        Selects a parent using tournament selection. 
+        """
+        # Determine the amount of proteins in the tournament
+        tournament_size = len(population) * nominator // 100
+
+        # 
+        total_stability = sum(protein[0].stability() for protein in population.values())
+        weights = [protein[0].stability() / total_stability for protein in population.values()]
+
+        # Select proteins for the tournament using weigthed selection
+        tournament_pool = random.choices(list(population.values()), weights=weights, k=tournament_size)
+
+        return min(tournament_pool, key=lambda p: p[0].stability())
 
     def build_offsprings(self, parent1: tuple[Protein, list[int]], parent2: tuple[Protein, list[int]]) -> tuple[list[int], list[int]]:
         """
