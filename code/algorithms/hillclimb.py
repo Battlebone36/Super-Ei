@@ -57,7 +57,7 @@ class Climbing_fold(Algorithm):
 
     def solve_protein(self, store_step_stability: bool=False):
         """
-        Run the climbing algorithm at depth 1 2 or 3.
+        Run the climbing algorithm.
         """
         max_iterations = self.max_iterations
         for i in range(100):
@@ -76,7 +76,7 @@ class Climbing_fold(Algorithm):
 
     def most_stable_protein(self, stability, lowest_stability, adjust_protein, amino, p_folds, best_protein):
         """
-        Check whether the given protein is the best up untill now.
+        Check whether the given protein is the best up until now.
         """
         if stability < lowest_stability:
             best_protein = copy.deepcopy(adjust_protein)
