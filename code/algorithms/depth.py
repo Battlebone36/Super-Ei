@@ -4,7 +4,6 @@ from code.visualisation.visualisation import *
 import copy
 
 class DepthFirst(Random_fold):
-
     def next_fold_sequence(self):
         """
         Adds one to the fold sequence like a clock to get the next sequence.
@@ -20,7 +19,7 @@ class DepthFirst(Random_fold):
             carry = self.fold_sequence[i] // 7
             self.fold_sequence[i] = self.fold_sequence[i] % 7
 
-    def index_of_error_in_fold_sequence(self) -> int:
+    def index_of_invalid_fold(self) -> int:
         """
         Gives back the index of where the impossible fold occurs or
         -1 if every fold is possible.
@@ -40,7 +39,7 @@ class DepthFirst(Random_fold):
         # If there is no error return -1
         return -1
 
-    def prune(self, index: int) -> None:
+    def prune_sequence(self, index: int) -> None:
         """
         Cut a branch from the sequence and skip to the next branch.
         """
@@ -64,72 +63,73 @@ class DepthFirst(Random_fold):
 
         # If there is an overload at the end the fold sequence is set to zero's
         if carry == 1:
-            self.fold_sequence = [0 for i in range(len(self.protein.sequence) - 2)]
+            self.fold_sequence = [0] * (len(self.protein.sequence) - 2)
     
-    def load_possible_fold_sequences(self, verbose: bool):
+    def load_possible_folds(self, verbose: bool):
         """
         Load all possible folds in a list.
         """
         # Define the first fold sequence and variables
         self.fold_sequence = [0 for i in range(len(self.protein.sequence) - 2)]
         self.next_fold_sequence()
-        iterations = 0
-        max = 7 ** len(self.protein.sequence)
+        self.iterations = 0
 
         # Loop through all the possible fold sequences
         while self.fold_sequence != [0 for i in range(len(self.protein.sequence) - 2)]:
             
-            # Pick the next fold seguence and prune if there is an error
+            # Pick the next fold seguence and prune_sequence if there is an error
             self.next_fold_sequence()
-            index = self.index_of_error_in_fold_sequence()
+            index = self.index_of_invalid_fold()
             if index != -1:
-                self.prune(index=index)
+                self.prune_sequence(index=index)
             
             # Add the fold sequence to the list
             self.storage_fold_sequences.append(tuple(self.fold_sequence))
 
             # Print the status if asked for
-            if iterations % 2000 == 0 and verbose:
-                print(f"{iterations} possible folds added   max: {max}")
-            iterations += 1
-    
-    def loop_through_fold_sequences(self, verbose: bool, store_step_stability: bool=False):
-        """
-        Loop through the fold sequence and store the best protein.
-        """
-        # Define variables
-        max_protein: Protein = self.protein
-        max_stability = 0
-        iterations = 0
+            if self.iterations % 2000 == 0 and verbose:
+                print(f"Loaded {self.iterations} sequences")
+            self.iterations += 1
 
-        # Make every fold and look if the stability can be improved
+    def evaluate_fold_sequences(self, verbose: bool = False, store_step_stability: bool = False) -> Protein:
+        """
+        Evaluates all fold sequences and returns the protein with the best stability.
+        """
+        best_protein = self.protein
+        best_stability = 0
+        self.iterations = 0
+
         for fold_sequence in self.storage_fold_sequences:
             self.fold_sequence = fold_sequence
-            temp_protein = self.fold_by_sequence()
-            temp_stability = temp_protein.stability()
+            candidate_protein = self.fold_by_sequence()
+            candidate_stability = candidate_protein.stability()
 
-            # If there is an improvement store it
-            if temp_stability < max_stability:
-                max_protein = copy.deepcopy(temp_protein)
-                max_stability = temp_stability
+            if candidate_stability < best_stability:
+                best_protein = copy.deepcopy(candidate_protein)
+                best_stability = candidate_stability
+                if verbose:
+                    print(f"New best stability: {best_stability}")
 
-                # Print status if asked
-                if verbose == True:
-                    print("New score:", max_stability)
-            if iterations % 2000 == 0 and verbose:
-                print(f"{iterations} / {len(self.storage_fold_sequences)} done")
-            iterations +=1
+            if verbose and self.iterations % 2000 == 0:
+                status = 0
+                for i, item in enumerate(reversed(self.fold_sequence[:-3])):
+                    status += item * 6 ** i
+                max = 0
+                for i in range(len(self.fold_sequence[:-3])):
+                    max += 6 * 6 ** i
+                print(f"{status * 100 // max}%")
+            self.iterations += 1
+
             if store_step_stability:
                 self.store_steps_stability()
 
-        return max_protein
+        return best_protein
 
-    def run(self, verbose: bool=False, store_step_stability: bool=False):
+    def run(self, verbose: bool = False, store_step_stability: bool = False) -> Protein:
         """
-        Runs the breadth first search.
+        Runs the Depth First Search algorithm to find the best protein fold.
         """
-        # self.storage_fold_sequences = []
-        self.load_possible_fold_sequences(verbose=verbose)
-        self.protein = self.loop_through_fold_sequences(store_step_stability, verbose=verbose)
-
+        self.storage_fold_sequences = []
+        self.load_possible_folds(verbose=verbose)
+        self.protein = self.evaluate_fold_sequences(verbose=verbose, store_step_stability=store_step_stability)
         return self.protein
