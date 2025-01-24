@@ -280,38 +280,42 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
 
         for i, algorithm in enumerate(algorithms):
             df_filtered = df[df["algorithm"] == f"{algorithm.__name__}"]
-            grouped = (
-                df_filtered.groupby(["protein", "steps", "algorithm"])
-                .agg(
-                    stability_mean=("stability", "mean"),
-                    stability_std=("stability", "std"),
-                    stability_max=("stability", "max"),
-                    stability_min=("stability", "min"),
-                )
-                .reset_index()
-            )
-            plot = sns.scatterplot(
-                data=grouped,
+            # grouped = (
+            #     df_filtered.groupby(["protein", "steps", "algorithm"])
+            #     .agg(
+            #         stability_mean=("stability", "mean"),
+            #         stability_std=("stability", "std"),
+            #         stability_max=("stability", "max"),
+            #         stability_min=("stability", "min"),
+            #         stability_25=("stability", lambda x: x.quantile(0.25)),
+            #         stability_75=("stability", lambda x: x.quantile(0.75))
+            #     )
+            #     .reset_index()
+            # )
+
+            plot = sns.lineplot(
+                data=df_filtered,
                 x="steps",
-                y="stability_mean",
+                y="stability",
                 ax=axes[i]
             )
+            # plot = sns.lineplot(
+            #     data=grouped,
+            #     x="steps",
+            #     y="stability_25",
+            #     ax=axes[i]
+            # )
+
+            # plot = sns.lineplot(
+            #     data=grouped,
+            #     x="steps",
+            #     y="stability_75",
+            #     ax=axes[i]
+            # )
+            # plot.legend(["mean", "lower 25%", "upper 75%"])
             plot.set_title(f"{algorithm.__name__}")
             plot.set_xlabel("Steps") 
             plot.set_ylabel("Mean Stability")
-
-        # plot = sns.scatterplot(
-        #     data=grouped,
-        #     x="steps",
-        #     y="stability_mean",
-        #     hue="algorithm",
-        #     marker="o",
-        # )
-        # # plot.set_xlabel("Stability")
-        # # plot.set_ylabel("Mean time")
-        # plot.legend()
-
-
     plt.show()
 
 

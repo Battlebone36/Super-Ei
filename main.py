@@ -21,17 +21,17 @@ def write_output(protein: Protein):
 if __name__ == "__main__":
     
     # visualise_algorithm_data()
-    # test = Protein("HCPHCHHCH")
-    # rand = DepthFirst(test)
-
-    # rand.run(verbose=True)
-    # rand.visualise()
+    test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
+    rand = Genetic(test)
+    rand.run(verbose=True)
+    rand.visualise()
     # visualise_protein(sim.run())
     # alg.run()
     # alg.visualise()
 
-    algorithms = [Climbing_fold, SimulatedAnnealing,  Genetic]
-    visualise_algorithm_data(algorithms, type="step_stability")
+
+    # algorithms = [Climbing_fold, SimulatedAnnealing,  Genetic]
+    # visualise_algorithm_data(algorithms, type="step_stability")
 
 
 
