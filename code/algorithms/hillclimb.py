@@ -59,7 +59,7 @@ class Climbing_fold(Algorithm):
         """
         Run the climbing algorithm at depth 1 2 or 3.
         """
-        max_iterations = 5000
+        max_iterations = self.max_iterations
         for i in range(100):
             stability = self.protein.stability()
             self.best_move(max_iterations, store_step_stability)

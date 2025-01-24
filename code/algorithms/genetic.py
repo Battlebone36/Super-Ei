@@ -32,26 +32,12 @@ class Genetic(Algorithm):
         """
         # Determine the amount of proteins in the tournament
         tournament_size = len(population) * nominator // 100
+
+        # Create the tournament pool 
         tournament = random.sample(list(population.values()), k=tournament_size)
 
         return min(tournament, key=lambda p: p[0].stability())
     
-    def weigthed_tournament_selection(self, population: dict[int, tuple[Protein, list[int]]], nominator: int):
-        """
-        Selects a parent using tournament selection. 
-        """
-        # Determine the amount of proteins in the tournament
-        tournament_size = len(population) * nominator // 100
-
-        # 
-        total_stability = sum(protein[0].stability() for protein in population.values())
-        weights = [protein[0].stability() / total_stability for protein in population.values()]
-
-        # Select proteins for the tournament using weigthed selection
-        tournament_pool = random.choices(list(population.values()), weights=weights, k=tournament_size)
-
-        return min(tournament_pool, key=lambda p: p[0].stability())
-
     def build_offsprings(self, parent1: tuple[Protein, list[int]], parent2: tuple[Protein, list[int]]) -> tuple[list[int], list[int]]:
         """
         Create two new folded proteins (offsprings) by mixing the fold sequences of the two parents.
@@ -95,18 +81,22 @@ class Genetic(Algorithm):
         return mutated_folds
 
 
-    def run(self, store_step_stability: bool=False, population_size: int = 50, mutation_probability: float = 0.01, nominator: int = 25) -> Protein:
+    def run(self, store_step_stability: bool=False, population_size: int = 50, mutation_probability: float = 0.01, nominator: int = 25, verbose: bool = False) -> Protein:
         """
         Genetic algorithm that mimics natural selection to find the optimal folded protein.
         """
-        print("Starting algorithm")
+        if verbose:
+            print("Starting algorithm")
+
+        # Initialize variables
         population: dict[int, tuple[Protein, list[int]]] = {}
         generations: int = 1000
-        iteration_limit = 5000
+        iteration_limit = self.max_iterations
 
         # Create initial population - generation 0
         population, protein_id = self.create_initial_population(population_size)
-        print("initial population created")
+        if verbose:
+            print("initial population created")
 
         # Track best solution
         best_protein = min(population.values(), key=lambda p: p[0].stability())
@@ -117,8 +107,10 @@ class Genetic(Algorithm):
         for generation in range(generations):
             if self.iterations >= iteration_limit:
                 break
+            
+            if verbose:
+                print(f"Generation {generation + 1}/{generations}")
 
-            print(f"Generation {generation + 1}/{generations}")
             # Create new population
             new_population: dict[int, tuple[Protein, list[int]]] = {}
             
@@ -134,7 +126,6 @@ class Genetic(Algorithm):
                 if store_step_stability:
                     self.store_steps_stability()
                     
-
                 # Create the offsprings with crossover
                 child1_folds, child2_folds = self.build_offsprings(parent1, parent2)
             
@@ -173,15 +164,18 @@ class Genetic(Algorithm):
             else:
                 generations_without_change += 1
 
-            print(f"Best protein stability at generation {generation + 1}: {best_protein[0].stability()}")
+            if verbose:
+                print(f"Best protein stability at generation {generation + 1}: {best_protein[0].stability()}")
 
             # Early exit if there is no improvement for consecutive generations
 
             if generations_without_change > 100 and not store_step_stability:
-                print(f"No improvement for 100 generations. Early stopping at generation {generation + 1}.")
+                if verbose:
+                    print(f"No improvement for 100 generations. Early stopping at generation {generation + 1}.")
                 break
-
-        print(f"Final best protein stability: {best_protein[0].stability()}")
+        
+        if verbose:
+            print(f"Final best protein stability: {best_protein[0].stability()}")
 
         self.protein = best_protein[0]
         return best_protein[0]
@@ -189,9 +183,6 @@ class Genetic(Algorithm):
 
 if __name__ == "__main__":
     test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
-    # prot = Random_fold(test)
-    # prot.run()
     gen = Genetic(test)
     gen.run()
     gen.visualise()
-    # visualise_protein(best_protein)

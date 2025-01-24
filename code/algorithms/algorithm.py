@@ -11,6 +11,7 @@ class Algorithm:
         self.storage_fold_sequences:list[list[int]] = []
         self.stability = protein.stability()
         self.iterations = 0
+        self.max_iterations = 5000
 
     def visualise(self):
         """
