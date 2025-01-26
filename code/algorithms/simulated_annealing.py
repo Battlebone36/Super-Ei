@@ -7,7 +7,7 @@ import copy
 import math
 
 class SimulatedAnnealing(Algorithm):
-    def run_random(self, store_step_stability: bool=False) -> Protein:
+    def run(self, store_step_stability: bool=False) -> Protein:
         """
         Starts with a randomly folded protein that will try to apply random folds.
         Each fold that improves the stability score is accepted for the next iteration.
@@ -15,10 +15,10 @@ class SimulatedAnnealing(Algorithm):
         """
         # Starting values 
         protein = self.protein
-        initial_temp: int = 15
-        cooling_rate: int = 0.99
-        min_temp: int = 1
-        times: int = 50
+        initial_temp: float = 50.0
+        cooling_rate: float = 0.99
+        min_temp: float = 0.000001
+        times: int = 3
         iterations_limit = self.max_iterations
 
         # Track the best solution found
@@ -57,7 +57,10 @@ class SimulatedAnnealing(Algorithm):
                     delta_e = new_stability - current_stability
 
                     # Calculate the acceptance probability
-                    probability = math.exp(-delta_e / current_temp)
+                    try:
+                        probability = math.exp(-delta_e / current_temp)
+                    except OverflowError:
+                        probability = 0.
 
                     # Accept or deny the random fold
                     if (delta_e < 0 or random.uniform(0, 1) < probability):
@@ -81,6 +84,6 @@ if __name__ == "__main__":
     # prot = Random(test)
     # prot.run()
     gen = SimulatedAnnealing(test)
-    gen.run_random()
+    gen.run()
     gen.visualise()
     # visualise_protein(best_protein)

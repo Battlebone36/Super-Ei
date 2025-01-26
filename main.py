@@ -25,8 +25,9 @@ if __name__ == "__main__":
     # rand = Greedy(test)
     # rand.run(verbose=True)
     # rand.visualise()
-    algorithms= [Greedy, HillClimb]
-    visualise_algorithm(algorithms)
+    algorithms= [HillClimb, SimulatedAnnealing, Genetic]
+    # visualise_algorithm(algorithms)
+    visualise_algorithm_data(algorithms, type="step_stability")
 
 
 

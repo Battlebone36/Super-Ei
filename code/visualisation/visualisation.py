@@ -266,14 +266,23 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
         plot.legend()
 
     elif type == "step_stability":
+        
         for i, algorithm in enumerate(algorithms):
             df_filtered = df[df["algorithm"] == f"{algorithm.__name__}"]
-            plot = sns.lineplot(
-                data=df_filtered,
-                x="steps",
-                y="stability",
-                ax=axes[i]
-            )
+
+            if len(algorithms) > 1:
+                plot = sns.lineplot(
+                    data=df_filtered,
+                    x="steps",
+                    y="stability",
+                    ax=axes[i]
+                )
+            else:
+                plot = sns.lineplot(
+                    data=df_filtered,
+                    x="steps",
+                    y="stability"
+                )
 
             plot.set_title(f"{algorithm.__name__}")
             plot.set_xlabel("Steps") 

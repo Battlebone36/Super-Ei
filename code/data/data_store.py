@@ -4,10 +4,10 @@ import csv
 from pathlib import Path
 
 from code.classes.protein import Protein
-from code.algorithms.randomise import Random_fold
+from code.algorithms.randomise import Random
 from code.algorithms.depth import DepthFirst
 from code.algorithms.greedy import Greedy
-from code.algorithms.hillclimb import Climbing_fold
+from code.algorithms.hillclimb import HillClimb
 from code.algorithms.simulated_annealing import SimulatedAnnealing
 from code.algorithms. genetic import Genetic
 from code.algorithms.mountainclimb import Mountain_fold
@@ -66,5 +66,5 @@ def run_for_steps_and_stability(algorithms, times: int):
 
 
 if __name__ == "__main__":
-    algorithms = [Climbing_fold]
-    run_for_steps_and_stability(algorithms, 100)
+    algorithms = [SimulatedAnnealing]
+    run_for_steps_and_stability(algorithms, 80)
