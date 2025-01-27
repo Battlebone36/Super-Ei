@@ -268,7 +268,10 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
     elif type == "step_stability":
         
         for i, algorithm in enumerate(algorithms):
-            df_filtered = df[df["algorithm"] == f"{algorithm.__name__}"]
+            if algorithm.__name__ == "HillClimb":
+                df_filtered = df[(df["algorithm"] == f"{algorithm.__name__}") & (df["steps"] <= 1000)]
+            else:
+                df_filtered = df[(df["algorithm"] == f"{algorithm.__name__}") & (df["steps"] <= 1000)]
 
             if len(algorithms) > 1:
                 plot = sns.lineplot(
@@ -285,10 +288,13 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
                 )
 
             plot.set_title(f"{algorithm.__name__}")
-            plot.set_xlabel("Steps") 
-            plot.set_ylabel("Mean Stability")
-            plot.set_xlim(0, 5000)
+            plot.set_xlabel("Iterations") 
+            plot.set_ylabel("Stability")
+            plot.set_xlim(0, 1000)
+            plot.set_ylim(-22, 0)
+            plot.set_yticks(np.arange(-22, 1, 2))
             print(f"{algorithm.__name__} is done")
+        plot.legend(["Mean Stability", "Inner 95%"])
     plt.show()
 
 def visualise_algorithm_data(algorithms, type: str="occurency_stability") -> None:
@@ -306,7 +312,6 @@ def visualise_algorithm_data(algorithms, type: str="occurency_stability") -> Non
         for algorithm in algorithms:
             path = f"code/data/step_stability/{algorithm.__name__}.csv"
             df = import_algorithm_data(path=path, df=df)
-
     
     # Make specific plot
     if type == "occurency_stability":

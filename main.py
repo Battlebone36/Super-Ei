@@ -26,8 +26,8 @@ if __name__ == "__main__":
     # rand.run(verbose=True)
     # rand.visualise()
     algorithms= [HillClimb, SimulatedAnnealing, Genetic]
-    # visualise_algorithm(algorithms)
     visualise_algorithm_data(algorithms, type="step_stability")
+
 
 
 
