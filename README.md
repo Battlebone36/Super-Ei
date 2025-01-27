@@ -95,7 +95,9 @@ EXPLAIN THE CHOICES AND ASSUMPTIONS!!!
     120x
 
 # Experiment
-Concrete instructies voor het draaien van de scripts en hoe de verschillende experimenten gereproduceerd kunnen worden.
+An experiment has been set up to find the best possible solution in a set amount of time. This experiment will run an algorithm for 1 hour and display the results that have been found. The reason for only running 1 hour is that faster algorithms will have a slight edge because they can run more times but the slower algorithms should compensate for this through their better performance.
+How to run the time experiment:
+- python3 script1.py
 
 # Authors
 * Sydney Celie
