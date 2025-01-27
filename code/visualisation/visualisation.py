@@ -253,38 +253,35 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
     # If type is time-stability make a line plot with mean time on y-axis
     # and stability on x-axis
     elif type == "time_stability":
-        plot = sns.lineplot(
+        plot = sns.boxplot(
             data=df,
-            x="Stability",
+            x="Algorithm",
             y="Time",
-            hue="Algorithm",
-            marker="o",
         )
-        plot.set_xlabel("Stability")
-        plot.set_ylabel("Mean time")
-        plot.set_xlim(right=1)
-        plot.legend()
+        plot.set_ylabel("Time (s)")
+        plot.set_ylim(0, 30)
+        plot.set_title("Run Time of the Algorithms")
 
     elif type == "step_stability":
         
         for i, algorithm in enumerate(algorithms):
             if algorithm.__name__ == "HillClimb":
-                df_filtered = df[(df["algorithm"] == f"{algorithm.__name__}") & (df["steps"] <= 1000)]
+                df_filtered = df[(df["Algorithm"] == f"{algorithm.__name__}") & (df["Iteration"] <= 1000)]
             else:
-                df_filtered = df[(df["algorithm"] == f"{algorithm.__name__}") & (df["steps"] <= 1000)]
+                df_filtered = df[(df["Algorithm"] == f"{algorithm.__name__}") & (df["Iteration"] <= 1000)]
 
             if len(algorithms) > 1:
                 plot = sns.lineplot(
                     data=df_filtered,
-                    x="steps",
-                    y="stability",
+                    x="Iteration",
+                    y="Stability",
                     ax=axes[i]
                 )
             else:
                 plot = sns.lineplot(
                     data=df_filtered,
-                    x="steps",
-                    y="stability"
+                    x="Iteration",
+                    y="Stability"
                 )
 
             plot.set_title(f"{algorithm.__name__}")
@@ -306,7 +303,7 @@ def visualise_algorithm_data(algorithms, type: str="occurency_stability") -> Non
     df = pd.DataFrame()
     if type == "occurency_stability" or type == "time_stability":
         for algorithm in algorithms:
-            path = f"code/data/csv_data/{algorithm.__name__}.csv"
+            path = f"code/data/experiment_data/{algorithm.__name__}.csv"
             df = import_algorithm_data(path=path, df=df)
     elif type == "step_stability":
         for algorithm in algorithms:
@@ -318,7 +315,7 @@ def visualise_algorithm_data(algorithms, type: str="occurency_stability") -> Non
         fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True, sharey=True)
         make_plot(df=df, algorithms=algorithms, axes=axes)
     elif type == "time_stability":
-        grouped = df.groupby(["algorithm", "protein", "stability"]).mean().reset_index()
+        grouped = df.groupby(["Algorithm", "Protein", "Stability"]).mean().reset_index()
         make_plot(df=grouped, algorithms=algorithms, type=type)
     elif type == "step_stability":
         fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True, sharey=True)

@@ -77,6 +77,6 @@ class Algorithm:
         with open (fname, write_mode, newline = '') as csvfile:
             my_writer = csv.writer(csvfile, delimiter = ',')
             if write_mode == 'w':
-                my_writer.writerow(["protein", "stability", "steps", "algorithm"])
+                my_writer.writerow(["Protein", "Stability", "Iteration", "Algorithm"])
             my_writer.writerows(data)
     
