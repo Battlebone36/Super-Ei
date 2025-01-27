@@ -94,6 +94,8 @@ EXPLAIN THE CHOICES AND ASSUMPTIONS!!!
 
     120x
 
+# Experiment
+Concrete instructies voor het draaien van de scripts en hoe de verschillende experimenten gereproduceerd kunnen worden.
 
 # Authors
 * Sydney Celie

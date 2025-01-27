@@ -6,6 +6,9 @@ import copy
 
 class Greedy(Algorithm):
     def greedy_fold(self, store_step_stability: bool=False) -> tuple[tuple[int, int, int], int]:
+        """
+        Use a greedy algorithm to fold a protein from a standard sequence.
+        """
         # Define the folds that are possible in this state
         folds = self.copy_protein.possible_folds()
         folds_same_score: list[tuple[tuple[int, int, int], int], int] = []
