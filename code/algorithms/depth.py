@@ -1,9 +1,9 @@
-from code.algorithms.randomise import Random_fold
+from code.algorithms.randomise import Random
 from code.classes.protein import Protein
 from code.visualisation.visualisation import *
 import copy
 
-class DepthFirst(Random_fold):
+class DepthFirst(Random):
     def next_fold_sequence(self):
         """
         Adds one to the fold sequence like a clock to get the next sequence.

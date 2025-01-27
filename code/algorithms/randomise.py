@@ -2,7 +2,7 @@ from code.classes.protein import Protein
 from code.algorithms.algorithm import Algorithm
 import random
 
-class Random_fold(Algorithm):
+class Random(Algorithm):
     def random_sequence(self) -> list[int]:
         """
         Returns a list of random integers that represent folds.

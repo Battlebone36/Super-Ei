@@ -1,8 +1,8 @@
 from code.classes.protein import Protein
-from code.algorithms.randomise import Random_fold
+from code.algorithms.randomise import Random
 from code.algorithms.depth import DepthFirst
 from code.algorithms.greedy import Greedy
-from code.algorithms.hillclimb import Climbing_fold
+from code.algorithms.hillclimb import HillClimb
 from code.algorithms.simulated_annealing import SimulatedAnnealing
 from code.algorithms.genetic import Genetic
 from code.visualisation.visualisation import *
@@ -21,17 +21,13 @@ def write_output(protein: Protein):
 if __name__ == "__main__":
     
     # visualise_algorithm_data()
-    test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
-    rand = Genetic(test)
-    rand.run(verbose=True)
-    rand.visualise()
-    # visualise_protein(sim.run())
-    # alg.run()
-    # alg.visualise()
-
-
-    # algorithms = [Climbing_fold, SimulatedAnnealing,  Genetic]
-    # visualise_algorithm_data(algorithms, type="step_stability")
+    # test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
+    # rand = Greedy(test)
+    # rand.run(verbose=True)
+    # rand.visualise()
+    algorithms= [HillClimb, SimulatedAnnealing, Genetic]
+    # visualise_algorithm(algorithms)
+    visualise_algorithm_data(algorithms, type="step_stability")
 
 
 

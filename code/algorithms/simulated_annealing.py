@@ -1,5 +1,5 @@
 from code.classes.protein import Protein
-from code.algorithms.randomise import Random_fold
+from code.algorithms.randomise import Random
 from code.visualisation.visualisation import *
 from code.algorithms.algorithm import Algorithm
 import random
@@ -15,14 +15,14 @@ class SimulatedAnnealing(Algorithm):
         """
         # Starting values 
         protein = self.protein
-        initial_temp: int = 50
-        cooling_rate: int = 0.99
-        min_temp: int = 0.5
+        initial_temp: float = 50.0
+        cooling_rate: float = 0.99
+        min_temp: float = 0.000001
         times: int = 3
         iterations_limit = self.max_iterations
 
         # Track the best solution found
-        random_protein = Random_fold(protein)
+        random_protein = Random(protein)
         current_protein = random_protein.run()
         best_protein = copy.deepcopy(current_protein)
         current_stability = current_protein.stability()
@@ -57,7 +57,10 @@ class SimulatedAnnealing(Algorithm):
                     delta_e = new_stability - current_stability
 
                     # Calculate the acceptance probability
-                    probability = math.exp(-delta_e / current_temp)
+                    try:
+                        probability = math.exp(-delta_e / current_temp)
+                    except OverflowError:
+                        probability = 0.
 
                     # Accept or deny the random fold
                     if (delta_e < 0 or random.uniform(0, 1) < probability):
@@ -78,7 +81,7 @@ class SimulatedAnnealing(Algorithm):
 
 if __name__ == "__main__":
     test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
-    # prot = Random_fold(test)
+    # prot = Random(test)
     # prot.run()
     gen = SimulatedAnnealing(test)
     gen.run()
