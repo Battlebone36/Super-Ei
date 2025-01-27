@@ -9,7 +9,8 @@ import seaborn as sns
 
 # class Visualise:
 def filter_data(data: dict[tuple[int, int, int], tuple[str, int]], amino: str) -> tuple[list[int], list[int], list[int]]:
-    """"
+    """
+    Helper function for visualise_protein().
     Filters the coordinates of amino acids from a dataset, optionally filtering by type.
     """
     if amino == "all":
@@ -24,8 +25,12 @@ def filter_data(data: dict[tuple[int, int, int], tuple[str, int]], amino: str) -
 
 def visualise_protein(protein: Protein) -> None:
     """
-    Makes a plot of the protein.
+    Visualizes the 3D structure of a protein using matplotlib using filter_data().
+    This function generates a 3D plot of the protein structure, where different types of amino acids 
+    (Polar, Hydrophobic, Cysteine) are represented by different colors. It also marks non-sequential 
+    bonds with different colors and line styles based on their bond type.
     """
+
     # Filter the points out of the data
     data: dict[tuple[int, int, int], tuple[str, int]] = protein.give_data()
     x_p, y_p, z_p = filter_data(data, "P")
@@ -75,10 +80,24 @@ def visualise_protein(protein: Protein) -> None:
 
 def hist_of_algorithm(algorithm) -> tuple[list[int], int, int, float, float]:
     """
-    2nd generation helper function
+    Tests the given algorithm 100 times and collects performance data.
+    This function runs the provided algorithm on a predefined protein sequence
+    100 times, recording the stability scores and execution times for each run.
+    It then calculates and returns the maximum stability score, minimum stability
+    score, mean execution time, and standard deviation of the execution times.
+    
+    Args
+    ----------
+    algorithm: A callable that takes a Protein object and returns an object
+                with a `run` method which, when called, returns a Protein object
+                with a `stability` method.
 
-    Test the algorithm 100 times and store the data into lists.
-    Return the data with some calculated time variables.
+    Returns:
+    ----------
+    tuple: A tuple containing:
+        - list[int]: A list of stability scores from each run.
+        - int: The maximum stability score.
+        - int: The minimum stability score.
     """
     sequence = "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP"
     test_protein = Protein(sequence)
@@ -98,12 +117,32 @@ def hist_of_algorithm(algorithm) -> tuple[list[int], int, int, float, float]:
     # Define variables for making the plot
     max_score = max(stability_scores)
     min_score = min(stability_scores)
-    mean_time = np.mean(time_scores)
-    std_time = np.std(time_scores)
-    return (stability_scores, max_score, min_score, mean_time, std_time)
+    return (stability_scores, max_score, min_score)
 
 
 def plot_algorithm_split(algorithm, ax, width: float, offset: float) -> None:
+    """
+    Plots a histogram of the stability scores for a given algorithm with bars split.
+    This function generates a histogram of the stability scores obtained from the 
+    specified algorithm and plots it on the provided Axes object. The bars in the 
+    histogram are split and offset for better visualization.
+
+    Notes:
+    ----------
+    This function relies on the `hist_of_algorithm` function to obtain the stability 
+    scores and the range of scores (min and max). Ensure that `hist_of_algorithm` is 
+    defined and accessible in the scope where this function is used.
+
+    Example:
+    ----------
+    >>> fig, ax = plt.subplots()
+    >>> plot_algorithm_split(my_algorithm, ax, width=0.4, offset=0.1)
+    >>> plt.show()
+    """
+
+
+
+
     """
     Helper function
     Plot the gathered data as a histogram in the total plot with bars split.
@@ -112,7 +151,7 @@ def plot_algorithm_split(algorithm, ax, width: float, offset: float) -> None:
     - hist_of_algorithm()
     """
     # Define variables
-    stability_scores, max_score, min_score, mean_time, std_time = hist_of_algorithm(algorithm)
+    stability_scores, max_score, min_score = hist_of_algorithm(algorithm)
 
     # Define locations and heights of the bars
     bins = np.arange(min_score, max_score + 1)
@@ -136,7 +175,7 @@ def plot_algorithm_together(algorithm, ax, color: str) -> None:
     - hist_of_algorithm()
     """
     # Define variables
-    stability_scores, max_score, min_score, mean_time, std_time = hist_of_algorithm(algorithm)
+    stability_scores, max_score, min_score = hist_of_algorithm(algorithm)
 
     # Make plot with bars together
     ax.hist(
@@ -151,28 +190,6 @@ def plot_algorithm_together(algorithm, ax, color: str) -> None:
         histtype="step"
     )
 
-def plot_algorithm_line(algorithm, ax) -> None:
-    """
-    Helper function
-    Plot the gathered data as histogram in a line plot.
-
-    Uses:
-    - hist_of_algorithm()
-    """
-    # Define variables
-    stability_scores, max_score, min_score, mean_time, std_time = hist_of_algorithm(algorithm)
-    
-    # Define locations and heights of the line
-    bins = np.arange(min_score, max_score + 1)
-    hist_values, bin_edges = np.histogram(stability_scores, bins=bins)
-    x_positions = (bin_edges[:-1] + bin_edges[1:]) / 2 + 0.5
-
-    # Make the line plot
-    ax.plot(x_positions,
-            hist_values,
-            label=f"{algorithm.__name__}")
-
-
 def visualise_algorithm(algorithms, command: str="split") -> None:
     """
     Visualise the distribution of stability scores of the given algorithms. 
@@ -186,7 +203,6 @@ def visualise_algorithm(algorithms, command: str="split") -> None:
     Uses:
     - plot_algorithm_split()
     - plot_algorithm_together()
-    - plot_algorithm_line()
     """
     # Define total plot and dataframe
     fig = plt.figure()
@@ -200,9 +216,6 @@ def visualise_algorithm(algorithms, command: str="split") -> None:
     elif command == "together":
         for algorithm in algorithms:
             plot_algorithm_together(algorithm=algorithm, ax=ax)
-    elif command == "line":
-        for algorithm in algorithms:
-            plot_algorithm_line(algorithm=algorithm, ax=ax)
     else:
         raise ValueError
 
@@ -260,7 +273,7 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
         plot.set_ylim(0, 30)
         plot.set_title("Run Time of the Algorithms")
 
-    elif type == "step_stability":
+    elif type == "iterations_stability":
         
         for i, algorithm in enumerate(algorithms):
             if algorithm.__name__ == "HillClimb":
