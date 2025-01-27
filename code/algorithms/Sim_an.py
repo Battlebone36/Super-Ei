@@ -1,5 +1,5 @@
 from code.classes.protein import Protein
-from code.algorithms.randomise import Random_fold
+from code.algorithms.randomise import Random
 from code.visualisation.visualisation import *
 from code.algorithms.algorithm import Algorithm
 import random
@@ -22,7 +22,7 @@ class SimulatedAnnealing1(Algorithm):
         iterations_limit = self.max_iterations
 
         # Track the best solution found
-        random_protein = Random_fold(protein)
+        random_protein = Random(protein)
         current_protein = random_protein.run()
         best_protein = copy.deepcopy(current_protein)
         current_stability = current_protein.stability()
@@ -91,7 +91,7 @@ class SimulatedAnnealing2(Algorithm):
         iterations_limit = self.max_iterations
 
         # Track the best solution found
-        random_protein = Random_fold(protein)
+        random_protein = Random(protein)
         current_protein = random_protein.run()
         best_protein = copy.deepcopy(current_protein)
         current_stability = current_protein.stability()
@@ -160,7 +160,7 @@ class SimulatedAnnealing3(Algorithm):
         iterations_limit = self.max_iterations
 
         # Track the best solution found
-        random_protein = Random_fold(protein)
+        random_protein = Random(protein)
         current_protein = random_protein.run()
         best_protein = copy.deepcopy(current_protein)
         current_stability = current_protein.stability()
@@ -229,7 +229,7 @@ class SimulatedAnnealing4(Algorithm):
         iterations_limit = self.max_iterations
 
         # Track the best solution found
-        random_protein = Random_fold(protein)
+        random_protein = Random(protein)
         current_protein = random_protein.run()
         best_protein = copy.deepcopy(current_protein)
         current_stability = current_protein.stability()
@@ -298,7 +298,7 @@ class SimulatedAnnealing5(Algorithm):
         iterations_limit = self.max_iterations
 
         # Track the best solution found
-        random_protein = Random_fold(protein)
+        random_protein = Random(protein)
         current_protein = random_protein.run()
         best_protein = copy.deepcopy(current_protein)
         current_stability = current_protein.stability()
@@ -367,7 +367,7 @@ class SimulatedAnnealing6(Algorithm):
         iterations_limit = self.max_iterations
 
         # Track the best solution found
-        random_protein = Random_fold(protein)
+        random_protein = Random(protein)
         current_protein = random_protein.run()
         best_protein = copy.deepcopy(current_protein)
         current_stability = current_protein.stability()
@@ -436,7 +436,7 @@ class SimulatedAnnealing7(Algorithm):
         iterations_limit = self.max_iterations
 
         # Track the best solution found
-        random_protein = Random_fold(protein)
+        random_protein = Random(protein)
         current_protein = random_protein.run()
         best_protein = copy.deepcopy(current_protein)
         current_stability = current_protein.stability()
@@ -505,7 +505,7 @@ class SimulatedAnnealing8(Algorithm):
         iterations_limit = self.max_iterations
 
         # Track the best solution found
-        random_protein = Random_fold(protein)
+        random_protein = Random(protein)
         current_protein = random_protein.run()
         best_protein = copy.deepcopy(current_protein)
         current_stability = current_protein.stability()
@@ -574,7 +574,7 @@ class SimulatedAnnealing9(Algorithm):
         iterations_limit = self.max_iterations
 
         # Track the best solution found
-        random_protein = Random_fold(protein)
+        random_protein = Random(protein)
         current_protein = random_protein.run()
         best_protein = copy.deepcopy(current_protein)
         current_stability = current_protein.stability()

@@ -257,7 +257,7 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
             data=df,
             x="Stability",
             y="Time",
-            hue="algorithm",
+            hue="Algorithm",
             marker="o",
         )
         plot.set_xlabel("Stability")

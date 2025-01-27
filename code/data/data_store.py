@@ -26,8 +26,8 @@ def gather_data(algorithm) -> list[str, int, float]:
     data: list[str, int, float] = []
 
     # Test the algorithm 100 times and store the result
-    for i in range(100):
-        print(f"{i} of {algorithm.__name__}")
+    for i in range(1):
+        # print(f"{i} of {algorithm.__name__}")
         start = timer()
         temp_class = algorithm(test_protein)
         temp_class.run()
@@ -66,6 +66,24 @@ def run_for_steps_and_stability(algorithms, times: int):
             print(f"{i + 1} of {times} of {algorithm.__name__}")
             temp_class = algorithm(test)
             temp_class.run(store_step_stability=True)
+
+def experiment_data(algorithm) -> None:
+    """
+    Store the data into a csv file for the experiment. 
+    """
+    data = gather_data(algorithm)
+    fname = f"code/data/experiment_data/{algorithm.__name__}.csv"
+    write_mode = 'w'
+
+    my_file = Path(fname)
+    if my_file.is_file():
+        write_mode = 'a'
+
+    with open (fname, write_mode, newline = '') as csvfile:
+        my_writer = csv.writer(csvfile, delimiter = ',')
+        if write_mode == 'w':
+            my_writer.writerow(["Protein", "Stability", "Time", "Algorithm"])
+        my_writer.writerows(data)
 
 
 if __name__ == "__main__":
