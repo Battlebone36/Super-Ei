@@ -320,9 +320,13 @@ def visualise_algorithm_data(algorithms, type: str="occurency_stability") -> Non
         for algorithm in algorithms:
             path = f"code/data/step_stability/{algorithm.__name__}.csv"
             df = import_algorithm_data(path=path, df=df)
+    elif type == "many_runs":
+        for algorithm in algorithms:
+            path = f"code/data/csv_data/{algorithm.__name__}.csv"
+            df = import_algorithm_data(path=path, df=df)
     
     # Make specific plot
-    if type == "occurency_stability":
+    if type == "occurency_stability" or type == "many_runs":
         fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True, sharey=True)
         make_plot(df=df, algorithms=algorithms, axes=axes)
     elif type == "time_stability":
