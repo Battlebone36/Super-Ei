@@ -14,17 +14,10 @@ class Mountain_fold(Climbing_fold):
         for amino in self.protein.data:
             # Copy the first protein and find the possible folds at a point
             possible_folds = self.protein.possible_folds_point(amino)
-            if self.iterations >= max_iterations:
-                break
             # Find the stability for each of the moves and save the best
             for p_folds in possible_folds:
                 adjust_protein.fold(amino, p_folds)
                 stability = adjust_protein.stability()
-                self.iterations += 1
-                if store_step_stability:
-                    self.store_steps_stability()
-                if self.iterations >= max_iterations:
-                    break
                 # Check another move
                 # -----------------------------------------------------------------
                 mid_adjust_protein = copy.deepcopy(adjust_protein)
@@ -35,9 +28,6 @@ class Mountain_fold(Climbing_fold):
                     for mid_p_folds in mid_possible_folds:
                         mid_adjust_protein.fold(mid_amino, mid_p_folds)
                         mid_stability = mid_adjust_protein.stability()
-                        self.iterations += 1
-                        if store_step_stability:
-                            self.store_steps_stability()
                         best_protein, lowest_stability = self.most_stable_protein(
                             mid_stability,
                             lowest_stability,

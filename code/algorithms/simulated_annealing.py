@@ -15,10 +15,10 @@ class SimulatedAnnealing(Algorithm):
         """
         # Starting values 
         protein = self.protein
-        initial_temp: int = 15
+        initial_temp: int = 50
         cooling_rate: int = 0.99
-        min_temp: int = 1
-        times: int = 5
+        min_temp: int = 0.5
+        times: int = 3
         iterations_limit = self.max_iterations
 
         # Track the best solution found

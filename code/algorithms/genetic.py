@@ -81,7 +81,7 @@ class Genetic(Algorithm):
         return mutated_folds
 
 
-    def run(self, store_step_stability: bool=False, population_size: int = 50, mutation_probability: float = 0.01, nominator: int = 25, verbose: bool = False) -> Protein:
+    def run(self, store_step_stability: bool=False, population_size: int = 30, mutation_probability: float = 0.01, nominator: int = 30, verbose: bool = False) -> Protein:
         """
         Genetic algorithm that mimics natural selection to find the optimal folded protein.
         """

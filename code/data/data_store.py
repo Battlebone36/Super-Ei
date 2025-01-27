@@ -11,6 +11,9 @@ from code.algorithms.hillclimb import Climbing_fold
 from code.algorithms.simulated_annealing import SimulatedAnnealing
 from code.algorithms. genetic import Genetic
 from code.algorithms.mountainclimb import Mountain_fold
+from code.algorithms.Sim_an import *
+from code.algorithms.Gen import *
+
 
 def gather_data(algorithm) -> list[str, int, float]:
     """
@@ -23,7 +26,7 @@ def gather_data(algorithm) -> list[str, int, float]:
     data: list[str, int, float] = []
 
     # Test the algorithm 100 times and store the result
-    for i in range(9990):
+    for i in range(100):
         print(f"{i} of {algorithm.__name__}")
         start = timer()
         temp_class = algorithm(test_protein)
