@@ -79,4 +79,11 @@ class Algorithm:
             if write_mode == 'w':
                 my_writer.writerow(["Protein", "Stability", "Iteration", "Algorithm"])
             my_writer.writerows(data)
-    
+
+    def write_output(self):
+        """
+        Writes the configuration of a folded protein to a CSV file in a specific format.
+        """
+        with open ('output.csv','w',newline = '') as csvfile:
+            my_writer = csv.writer(csvfile, delimiter = ',')
+            my_writer.writerows(self.protein.output())
