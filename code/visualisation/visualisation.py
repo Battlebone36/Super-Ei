@@ -247,8 +247,6 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
             plot.text(-bins, 0.95, s=f'Trials: {len(df_filtered)}', fontsize=10, color='black')
             plot.set_xlabel("Stability")
         plot.set_ylabel("Chance")
-        # plot.set_ylim(0, 1)
-        
 
     # If type is time-stability make a line plot with mean time on y-axis
     # and stability on x-axis
