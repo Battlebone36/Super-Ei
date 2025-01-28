@@ -9,6 +9,7 @@ if __name__ == "__main__":
                   MountainClimb,
                   SimulatedAnnealing,
                   Genetic]
+    # ------------------------------------------------------------
     # for algorithm in algorithms:
     #     start = time.time()
     #     n_runs = 0
@@ -17,5 +18,7 @@ if __name__ == "__main__":
     #         print(f"run: {n_runs}")
     #         experiment_data(algorithm)
     #         n_runs += 1
-    visualise_algorithm_data(algorithms)
+    # ------------------------------------------------------------
+    visualise_algorithm_data(algorithms, type="one_hour_run")
+    visualise_algorithm_data(algorithms, type="time_stability")
     

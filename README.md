@@ -51,9 +51,22 @@ EXPLAIN THE CHOICES AND ASSUMPTIONS!!!
     - Mutation per protein instead of per amino acid
 
 # Experiment
+time_experiment:
 An experiment has been set up to find the best possible solution in a set amount of time. This experiment will run an algorithm for 1 hour and display the results that have been found. The reason for only running 1 hour is that faster algorithms will have a slight edge because they can run more times but the slower algorithms should compensate for this through their better performance.
 How to run the time experiment:
-- python3 script1.py
+- python3 time_experiment.py
+
+To run the whole experiment uncomment the lines in between the ------
+Otherwise it will just show the data of the experiment we ran.
+
+run_experiment:
+Another experiment that has been set up is one that runs all the algorithms a certain amount of times. This will result in a distribution of scores which show the occurence of higher and lower scores. Some algorithms might take longer to run than others.
+How to run the run experiment:
+- python3 run_experiment.py
+
+To run the whole experiment uncomment the lines in between the ------
+Otherwise it will just show the data of the experiment we ran.
+There is also an option to increase or decrease the amount of runs. This can be done by changing the range in the for loop with i.
 
 # Authors
 * Sydney Celie
