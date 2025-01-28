@@ -64,12 +64,12 @@ def run_for_steps_and_stability(algorithms, times: int):
             temp_class = algorithm(test)
             temp_class.run(store_step_stability=True)
 
-def experiment_data(algorithm) -> None:
+def one_hour_run(algorithm) -> None:
     """
     Store the data into a csv file for the experiment. 
     """
     data = gather_data(algorithm)
-    fname = f"code/data/experiment_data/{algorithm.__name__}.csv"
+    fname = f"code/data/one_hour_run/{algorithm.__name__}.csv"
     write_mode = 'w'
 
     my_file = Path(fname)
