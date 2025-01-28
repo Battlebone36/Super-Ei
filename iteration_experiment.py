@@ -3,16 +3,14 @@ from code.data.data_store import *
 
 if __name__ == "__main__":
 
-    algorithms = [Random,
-                  HillClimb,
+    algorithms = [HillClimb,
                   MountainClimb,
                   SimulatedAnnealing,
                   Genetic]
     
     # -------------------------------------------
     # for algorithm in algorithms:
-    #     for i in range(100):
-    #         store_data(algorithm)
+    #     run_for_iterations_and_stability(algorithm, 5000)
     # -------------------------------------------
 
-    visualise_algorithm_data(algorithms)
+    visualise_algorithm_data(algorithms,type="iteration_stability")
