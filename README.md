@@ -68,6 +68,15 @@ To run the whole experiment uncomment the lines in between the ------
 Otherwise it will just show the data of the experiment we ran.
 There is also an option to increase or decrease the amount of runs. This can be done by changing the range in the for loop with i.
 
+iteration_experiment:
+Another experiment that has been set up is one that runs all the algorithms with a certain amount of iterations. An iteration is a single state that is being checked. A state is a configuration of the protein. This will result in a graph which shows the amount of steps next to the stability. Allowing for the insight of a how the solutions becomes better over different states.
+How to run the iteration experiment:
+- python3 iteration_experiment.py
+
+To run the whole experiment uncomment the lines in between the ------
+Otherwise it will just show the data of the experiment we ran.
+The amount of iterations can be changed with this experiment by changing the second parameter of the run_for_iterations_and_stability function.
+
 # Authors
 * Sydney Celie
 * Bryan Panken
