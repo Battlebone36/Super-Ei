@@ -55,6 +55,7 @@ def visualise_protein(protein: Protein) -> None:
             if friend in data and abs(acid[1][1] - data[friend][1]) != 1:
                 score = protein.type_bond(acid[0], friend)
                 if score in line_info:
+
                     # Create a label for in the legend
                     label = f"{score} bond" if score not in labeled_scores else ""
                     ax.plot([acid[0][0], friend[0]], 
@@ -81,23 +82,11 @@ def visualise_protein(protein: Protein) -> None:
 def hist_of_algorithm(algorithm) -> tuple[list[int], int, int, float, float]:
     """
     Tests the given algorithm 100 times and collects performance data.
+
     This function runs the provided algorithm on a predefined protein sequence
     100 times, recording the stability scores and execution times for each run.
     It then calculates and returns the maximum stability score, minimum stability
-    score, mean execution time, and standard deviation of the execution times.
-    
-    Args
-    ----------
-    algorithm: A callable that takes a Protein object and returns an object
-                with a `run` method which, when called, returns a Protein object
-                with a `stability` method.
-
-    Returns:
-    ----------
-    tuple: A tuple containing:
-        - list[int]: A list of stability scores from each run.
-        - int: The maximum stability score.
-        - int: The minimum stability score.
+    score.
     """
     sequence = "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP"
     test_protein = Protein(sequence)
@@ -121,28 +110,6 @@ def hist_of_algorithm(algorithm) -> tuple[list[int], int, int, float, float]:
 
 
 def plot_algorithm_split(algorithm, ax, width: float, offset: float) -> None:
-    """
-    Plots a histogram of the stability scores for a given algorithm with bars split.
-    This function generates a histogram of the stability scores obtained from the 
-    specified algorithm and plots it on the provided Axes object. The bars in the 
-    histogram are split and offset for better visualization.
-
-    Notes:
-    ----------
-    This function relies on the `hist_of_algorithm` function to obtain the stability 
-    scores and the range of scores (min and max). Ensure that `hist_of_algorithm` is 
-    defined and accessible in the scope where this function is used.
-
-    Example:
-    ----------
-    >>> fig, ax = plt.subplots()
-    >>> plot_algorithm_split(my_algorithm, ax, width=0.4, offset=0.1)
-    >>> plt.show()
-    """
-
-
-
-
     """
     Helper function
     Plot the gathered data as a histogram in the total plot with bars split.
@@ -180,11 +147,9 @@ def plot_algorithm_together(algorithm, ax, color: str) -> None:
     # Make plot with bars together
     ax.hist(
         stability_scores,
-        # edgecolor="black",
         bins= max_score - min_score + 1,
         range=(min_score - 0.5, max_score + 0.5),
         density=True,
-        # alpha=0.8,
         label=f"{algorithm.__name__}",
         linewidth=5,
         histtype="step"
@@ -231,8 +196,6 @@ def import_algorithm_data(path, df):
     """
     Import the data out of a certain algorithm csv files.
     """
-
-    # df_data_gathered = pd.read_csv(f"code/data/csv_data/{algorithm.__name__}.csv")
     df_data_gathered = pd.read_csv(path)
     return pd.concat([df, df_data_gathered], axis=0)
 
@@ -274,13 +237,16 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
         plot.set_title("Run Time of the Algorithms")
 
     elif type == "iterations_stability":
-        
+        # Plot every algorithm        
         for i, algorithm in enumerate(algorithms):
-            if algorithm.__name__ == "HillClimb":
-                df_filtered = df[(df["Algorithm"] == f"{algorithm.__name__}") & (df["Iteration"] <= 1000)]
-            else:
-                df_filtered = df[(df["Algorithm"] == f"{algorithm.__name__}") & (df["Iteration"] <= 1000)]
 
+            # Filter the data per algorithm
+            if algorithm.__name__ == "HillClimb":
+                df_filtered = df[(df["Algorithm"] == f"{algorithm.__name__}") & (df["Iteration"] <= 4500)] # Data after 4500 is not succesfull
+            else:
+                df_filtered = df[df["Algorithm"] == f"{algorithm.__name__}"]
+
+            # Make the multiple plots or single plot
             if len(algorithms) > 1:
                 plot = sns.lineplot(
                     data=df_filtered,
@@ -295,12 +261,15 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
                     y="Stability"
                 )
 
+            # Set the plot settings
             plot.set_title(f"{algorithm.__name__}")
             plot.set_xlabel("Iterations") 
             plot.set_ylabel("Stability")
             plot.set_xlim(0, 1000)
             plot.set_ylim(-22, 0)
             plot.set_yticks(np.arange(-22, 1, 2))
+
+            # Verbose
             print(f"{algorithm.__name__} is done")
         plot.legend(["Mean Stability", "Inner 95%"])
     plt.show()
@@ -314,7 +283,7 @@ def visualise_algorithm_data(algorithms, type: str="occurency_stability") -> Non
     df = pd.DataFrame()
     if type == "occurency_stability" or type == "time_stability":
         for algorithm in algorithms:
-            path = f"code/data/experiment_data/{algorithm.__name__}.csv"
+            path = f"code/data/csv_data/{algorithm.__name__}.csv"
             df = import_algorithm_data(path=path, df=df)
     elif type == "step_stability":
         for algorithm in algorithms:

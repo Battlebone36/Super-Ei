@@ -11,8 +11,6 @@ from code.algorithms.hillclimb import HillClimb
 from code.algorithms.simulated_annealing import SimulatedAnnealing
 from code.algorithms. genetic import Genetic
 from code.algorithms.mountainclimb import Mountain_fold
-from code.algorithms.Sim_an import *
-from code.algorithms.Gen import *
 
 
 def gather_data(algorithm) -> list[str, int, float]:
@@ -88,4 +86,4 @@ def experiment_data(algorithm) -> None:
 
 if __name__ == "__main__":
     algorithms = [SimulatedAnnealing]
-    run_for_steps_and_stability(algorithms, 80)
+    run_for_steps_and_stability(algorithms, 100)
