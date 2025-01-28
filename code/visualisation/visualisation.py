@@ -247,9 +247,14 @@ def make_plot(df, algorithms, axes=None, type="many_runs") -> None:
             # Filter the data per algorithm
             if algorithm.__name__ == "HillClimb":
                 df_filtered = df[(df["Algorithm"] == f"{algorithm.__name__}") & (df["Iteration"] <= 4500)] # Data after 4500 is not succesfull
+                print(df_filtered[df_filtered["Iteration"] == 4500]["Stability"].mean())
             else:
                 df_filtered = df[df["Algorithm"] == f"{algorithm.__name__}"]
-                print(df_filtered.head(10))
+                df_filtered_4999 = df_filtered[df_filtered["Iteration"] == 4999]
+                mean = df_filtered_4999["Stability"].mean()
+                minimum = df_filtered_4999["Stability"].min()
+
+                print(f"{algorithm.__name__:<20} mean: {mean:<20} min: {minimum:<20}")
             
 
             # Make the multiple plots or single plot
