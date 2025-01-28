@@ -10,5 +10,5 @@ from code.visualisation.visualisation import *
 
 
 if __name__ == "__main__":
-    algorithms= [MountainClimb, SimulatedAnnealing, Genetic]
+    algorithms= [SimulatedAnnealing]
     visualise_algorithm_data(algorithms, type="iteration_stability")

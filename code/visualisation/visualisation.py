@@ -200,16 +200,17 @@ def import_algorithm_data(path, df):
     return pd.concat([df, df_data_gathered], axis=0)
 
 
-def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
+def make_plot(df, algorithms, axes=None, type="many_runs") -> None:
     """
     Make the a histogram of the occurency-stability of all the algorithms in the dataset
     """
     
     # Make a histogram by default and by type occurency-stability
-    if type == "occurency_stability":
+    if type == "many_runs":
         for i, algorithm in enumerate(algorithms):
             bins = df["Stability"].max() - df["Stability"].min()
             df_filtered = df[df["Algorithm"] == f"{algorithm.__name__}"]
+            print(f"{algorithm.__name__:<20} mean: {df_filtered['Stability'].mean():<25} min: {df_filtered['Stability'].min()}")
             plot = sns.histplot(
                 df_filtered["Stability"],
                 bins=bins,
@@ -227,6 +228,9 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
     # If type is time-stability make a line plot with mean time on y-axis
     # and stability on x-axis
     elif type == "time_stability":
+        for algorithm in algorithms:
+            df_filtered = df[df["Algorithm"] == f"{algorithm.__name__}"]
+            print(f"{algorithm.__name__:<20} mean: {df_filtered['Time'].mean():<20} min: {df_filtered['Time'].min():<20} max: {df_filtered['Time'].max()}")
         plot = sns.boxplot(
             data=df,
             x="Algorithm",
@@ -236,7 +240,7 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
         plot.set_ylim(0, 30)
         plot.set_title("Run Time of the Algorithms")
 
-    elif type == "iterations_stability":
+    elif type == "iteration_stability":
         # Plot every algorithm        
         for i, algorithm in enumerate(algorithms):
 
@@ -245,6 +249,8 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
                 df_filtered = df[(df["Algorithm"] == f"{algorithm.__name__}") & (df["Iteration"] <= 4500)] # Data after 4500 is not succesfull
             else:
                 df_filtered = df[df["Algorithm"] == f"{algorithm.__name__}"]
+                print(df_filtered.head(10))
+            
 
             # Make the multiple plots or single plot
             if len(algorithms) > 1:
@@ -271,7 +277,7 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
 
             # Verbose
             print(f"{algorithm.__name__} is done")
-        plot.legend(["Mean Stability", "Inner 95%"])
+        plot.legend(["Mean Stability", "95% Confidence Interval"])
     plt.show()
 
 def visualise_algorithm_data(algorithms, type: str="many_runs") -> None:
@@ -304,6 +310,7 @@ def visualise_algorithm_data(algorithms, type: str="many_runs") -> None:
         make_plot(df=grouped, algorithms=algorithms, type=type)
     elif type == "iteration_stability":
         fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True, sharey=True)
+        # print("lukt")
         make_plot(df=df, algorithms=algorithms, axes=axes, type=type)
 
 
