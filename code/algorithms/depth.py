@@ -91,7 +91,7 @@ class DepthFirst(Random):
                 print(f"Loaded {self.iterations} sequences")
             self.iterations += 1
 
-    def evaluate_fold_sequences(self, verbose: bool = False, store_step_stability: bool = False) -> Protein:
+    def evaluate_fold_sequences(self, verbose: bool = False, store_iteration_stability: bool = False) -> Protein:
         """
         Evaluates all fold sequences and returns the protein with the best stability.
         """
@@ -120,16 +120,16 @@ class DepthFirst(Random):
                 print(f"{status * 100 // max}%")
             self.iterations += 1
 
-            if store_step_stability:
-                self.store_steps_stability()
+            if store_iteration_stability:
+                self.store_iteration_stability()
 
         return best_protein
 
-    def run(self, verbose: bool = False, store_step_stability: bool = False) -> Protein:
+    def run(self, verbose: bool = False, store_iteration_stability: bool = False) -> Protein:
         """
         Runs the Depth First Search algorithm to find the best protein fold.
         """
         self.storage_fold_sequences = []
         self.load_possible_folds(verbose=verbose)
-        self.protein = self.evaluate_fold_sequences(verbose=verbose, store_step_stability=store_step_stability)
+        self.protein = self.evaluate_fold_sequences(verbose=verbose, store_iteration_stability=store_iteration_stability)
         return self.protein

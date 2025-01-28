@@ -56,18 +56,18 @@ class Algorithm:
 
         return protein
     
-    def gather_steps_stability(self) -> list[str, int, int, str]:
+    def gather_iteration_stability(self) -> list[str, int, int, str]:
         """
         Gather the sequence, stability, steps of the protein and name of the algorithm and returns it.
         """
         return [[self.protein.sequence, self.protein.stability(), self.iterations, f"{self.__class__.__name__}"]]
     
-    def store_steps_stability(self):
+    def store_iteration_stability(self):
         """
         Stores the steps and stability into a datafile.
         """
-        data = self.gather_steps_stability()
-        fname = f"code/data/step_stability/{self.__class__.__name__}.csv"
+        data = self.gather_iteration_stability()
+        fname = f"code/data/iteration_stability/{self.__class__.__name__}.csv"
         write_mode = 'w'
         my_file = Path(fname)
 

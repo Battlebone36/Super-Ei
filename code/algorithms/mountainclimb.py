@@ -2,7 +2,7 @@ from code.algorithms.hillclimb import HillClimb
 import copy
 
 class MountainClimb(HillClimb):
-    def best_move(self, max_iterations: int, store_step_stability: bool=False):
+    def best_move(self, max_iterations: int, store_iteration_stability: bool=False):
         """
         Find the best possible move at a certain configuration, but looks
         into 3 moves.
@@ -11,9 +11,10 @@ class MountainClimb(HillClimb):
         lowest_stability = self.protein.stability()
         adjust_protein = copy.deepcopy(self.protein)
         best_protein = copy.deepcopy(self.protein)
-        for amino in self.protein.data:
+        loop_protein = copy.deepcopy(self.protein)
+        for amino in loop_protein.data:
             # Copy the first protein and find the possible folds at a point
-            possible_folds = self.protein.possible_folds_point(amino)
+            possible_folds = loop_protein.possible_folds_point(amino)
             # Find the stability for each of the moves and save the best
             for p_folds in possible_folds:
                 adjust_protein.fold(amino, p_folds)
@@ -35,6 +36,12 @@ class MountainClimb(HillClimb):
                             mid_amino,
                             mid_p_folds,
                             best_protein)
+                        self.iterations += 1
+                        if self.iterations >= max_iterations:
+                            break
+                        if store_iteration_stability:
+                            self.protein = best_protein
+                            self.store_iteration_stability()
                             
                     # -----------------------------------------------------------------
                 best_protein, lowest_stability = self.most_stable_protein(

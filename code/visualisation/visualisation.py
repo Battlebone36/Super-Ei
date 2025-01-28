@@ -274,34 +274,35 @@ def make_plot(df, algorithms, axes=None, type="occurency_stability") -> None:
         plot.legend(["Mean Stability", "Inner 95%"])
     plt.show()
 
-def visualise_algorithm_data(algorithms, type: str="occurency_stability") -> None:
+def visualise_algorithm_data(algorithms, type: str="many_runs") -> None:
     """
     Import all data and make the plot for the data.
     """
     # Make DataFrame and import data from files
     type = type.lower()
     df = pd.DataFrame()
-    if type == "occurency_stability" or type == "time_stability":
+    if type == "iteration_stability":
         for algorithm in algorithms:
-            path = f"code/data/csv_data/{algorithm.__name__}.csv"
+            path = f"code/data/iteration_stability/{algorithm.__name__}.csv"
             df = import_algorithm_data(path=path, df=df)
-    elif type == "step_stability":
+    elif type == "many_runs" or type == "time_stability":
         for algorithm in algorithms:
-            path = f"code/data/step_stability/{algorithm.__name__}.csv"
+            path = f"code/data/many_runs/{algorithm.__name__}.csv"
             df = import_algorithm_data(path=path, df=df)
-    elif type == "many_runs":
+    elif type == "one_hour_run":
         for algorithm in algorithms:
-            path = f"code/data/csv_data/{algorithm.__name__}.csv"
+            path = f"code/data/one_hour_run/{algorithm.__name__}.csv"
             df = import_algorithm_data(path=path, df=df)
+
     
     # Make specific plot
-    if type == "occurency_stability" or type == "many_runs":
+    if type == "many_runs" or type == "one_hour_run":
         fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True, sharey=True)
         make_plot(df=df, algorithms=algorithms, axes=axes)
     elif type == "time_stability":
         grouped = df.groupby(["Algorithm", "Protein", "Stability"]).mean().reset_index()
         make_plot(df=grouped, algorithms=algorithms, type=type)
-    elif type == "step_stability":
+    elif type == "iteration_stability":
         fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True, sharey=True)
         make_plot(df=df, algorithms=algorithms, axes=axes, type=type)
 

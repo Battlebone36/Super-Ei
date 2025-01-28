@@ -6,7 +6,7 @@ import copy
 
 
 class HillClimb(Algorithm):
-    def run(self, store_step_stability: bool=False):
+    def run(self, store_iteration_stability: bool=False):
         """
         Start from a random state which then receives small changes
         these small changes are the neighbouring states. The best neighbouring 
@@ -19,10 +19,10 @@ class HillClimb(Algorithm):
         self.protein = copy.deepcopy(prot)
         # visualise_protein(self.protein)
 
-        self.solve_protein(store_step_stability)
+        self.solve_protein(store_iteration_stability)
         return self.protein
 
-    def best_move(self, max_iterations: int, store_step_stability: bool=False):
+    def best_move(self, max_iterations: int, store_iteration_stability: bool=False):
         """
         Find the best possible move at a certain configuration.
         """
@@ -30,9 +30,10 @@ class HillClimb(Algorithm):
         lowest_stability = self.protein.stability()
         adjust_protein = copy.deepcopy(self.protein)
         best_protein = copy.deepcopy(self.protein)
-        for amino in self.protein.data:
+        loop_protein = copy.deepcopy(self.protein)
+        for amino in loop_protein.data:
             # Copy the first protein and find the possible folds at a point
-            possible_folds = self.protein.possible_folds_point(amino)
+            possible_folds = loop_protein.possible_folds_point(amino)
             if self.iterations >= max_iterations:
                 break
             # Find the stability for each of the moves and save the best
@@ -40,8 +41,8 @@ class HillClimb(Algorithm):
                 adjust_protein.fold(amino, p_folds)
                 stability = adjust_protein.stability()
                 self.iterations += 1
-                if store_step_stability:
-                    self.store_steps_stability()
+                if store_iteration_stability:
+                    self.store_iteration_stability()
                 if self.iterations >= max_iterations:
                     break
                 best_protein, lowest_stability = self.most_stable_protein(
@@ -55,16 +56,16 @@ class HillClimb(Algorithm):
 
         self.protein = copy.deepcopy(best_protein)
 
-    def solve_protein(self, store_step_stability: bool=False):
+    def solve_protein(self, store_iteration_stability: bool=False):
         """
         Run the climbing algorithm.
         """
         max_iterations = self.max_iterations
         for i in range(100):
             stability = self.protein.stability()
-            self.best_move(max_iterations, store_step_stability)
+            self.best_move(max_iterations, store_iteration_stability)
             new_stability = self.protein.stability()
-            if store_step_stability:
+            if store_iteration_stability:
 
                 if self.iterations >= max_iterations and stability == new_stability:
                     print(f"The top of the hill has been found at {i} climbs")

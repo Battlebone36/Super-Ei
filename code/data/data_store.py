@@ -8,9 +8,10 @@ from code.algorithms.randomise import Random
 from code.algorithms.depth import DepthFirst
 from code.algorithms.greedy import Greedy
 from code.algorithms.hillclimb import HillClimb
+from code.algorithms.mountainclimb import MountainClimb
 from code.algorithms.simulated_annealing import SimulatedAnnealing
 from code.algorithms. genetic import Genetic
-from code.algorithms.mountainclimb import MountainClimb
+
 
 
 def gather_data(algorithm) -> list[str, int, float]:
@@ -53,7 +54,7 @@ def store_data(algorithm) -> None:
             my_writer.writerow(["Protein", "Stability", "Time", "Algorithm"])
         my_writer.writerows(data)
 
-def run_for_steps_and_stability(algorithms, times: int):
+def run_for_iterations_and_stability(algorithms, times: int):
     """
     Run all algorithms an amount of times with the store the step stability command turned on.
     """
@@ -62,7 +63,7 @@ def run_for_steps_and_stability(algorithms, times: int):
         for i in range(times):
             print(f"{i + 1} of {times} of {algorithm.__name__}")
             temp_class = algorithm(test)
-            temp_class.run(store_step_stability=True)
+            temp_class.run(store_iteration_stability=True)
 
 def one_hour_run(algorithm) -> None:
     """
@@ -84,5 +85,5 @@ def one_hour_run(algorithm) -> None:
 
 
 if __name__ == "__main__":
-    algorithms = [SimulatedAnnealing]
-    run_for_steps_and_stability(algorithms, 100)
+    algorithms = [MountainClimb]
+    run_for_iterations_and_stability(algorithms, 100)

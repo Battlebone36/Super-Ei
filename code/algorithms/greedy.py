@@ -5,7 +5,7 @@ import random
 import copy
 
 class Greedy(Algorithm):
-    def greedy_fold(self, store_step_stability: bool=False) -> tuple[tuple[int, int, int], int]:
+    def greedy_fold(self, store_iteration_stability: bool=False) -> tuple[tuple[int, int, int], int]:
         """
         Use a greedy algorithm to fold a protein from a standard sequence.
         """
@@ -31,8 +31,8 @@ class Greedy(Algorithm):
                 folds_same_score.append(fold)
 
             # Store the steps and stability if asked
-            if store_step_stability:
-                self.store_steps_stability()
+            if store_iteration_stability:
+                self.store_iteration_stability()
             
             # Pop the protein back to previous state
             self.copy_protein.fold_reverse(*fold)
@@ -44,7 +44,7 @@ class Greedy(Algorithm):
         self.protein.fold(*best_fold)
         return best_fold
 
-    def run(self, verbose: bool = False, store_step_stability: bool=False) -> Protein:
+    def run(self, verbose: bool = False, store_iteration_stability: bool=False) -> Protein:
         """
         A greedy algorithm that folds the protein in a short term way to maximise stability.
         """
@@ -55,7 +55,7 @@ class Greedy(Algorithm):
 
         # Loop through the sequence and make the best fold possible
         for i in range(20):
-            best_fold = self.greedy_fold(store_step_stability)
+            best_fold = self.greedy_fold(store_iteration_stability)
 
             # Give the status
             if verbose and (i + 1) % 10 == 0:

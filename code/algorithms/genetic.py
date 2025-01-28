@@ -81,7 +81,7 @@ class Genetic(Algorithm):
         return mutated_folds
 
 
-    def run(self, store_step_stability: bool=False, population_size: int = 30, mutation_probability: float = 0.01, nominator: int = 70, verbose: bool = False) -> Protein:
+    def run(self, store_iteration_stability: bool=False, population_size: int = 30, mutation_probability: float = 0.01, nominator: int = 70, verbose: bool = False) -> Protein:
         """
         Genetic algorithm that mimics natural selection to find the optimal folded protein.
         """
@@ -123,8 +123,8 @@ class Genetic(Algorithm):
                 self.iterations += 2
                 if self.iterations >= iteration_limit:
                     break
-                if store_step_stability:
-                    self.store_steps_stability()
+                if store_iteration_stability:
+                    self.store_iteration_stability()
                     
                 # Create the offsprings with crossover
                 child1_folds, child2_folds = self.build_offsprings(parent1, parent2)
@@ -169,7 +169,7 @@ class Genetic(Algorithm):
 
             # Early exit if there is no improvement for consecutive generations
 
-            if generations_without_change > 100 and not store_step_stability:
+            if generations_without_change > 100 and not store_iteration_stability:
                 if verbose:
                     print(f"No improvement for 100 generations. Early stopping at generation {generation + 1}.")
                 break
