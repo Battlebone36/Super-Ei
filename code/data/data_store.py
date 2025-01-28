@@ -24,8 +24,7 @@ def gather_data(algorithm) -> list[str, int, float]:
     data: list[str, int, float] = []
 
     # Test the algorithm 100 times and store the result
-    for i in range(1):
-        # print(f"{i} of {algorithm.__name__}")
+    for i in range(100):
         start = timer()
         temp_class = algorithm(test_protein)
         temp_class.run()
@@ -41,7 +40,7 @@ def store_data(algorithm) -> None:
     Store the data into a csv file. 
     """
     data = gather_data(algorithm)
-    fname = f"code/data/csv_data/{algorithm.__name__}.csv"
+    fname = f"code/data/many_runs/{algorithm.__name__}.csv"
     write_mode = 'w'
 
     my_file = Path(fname)
