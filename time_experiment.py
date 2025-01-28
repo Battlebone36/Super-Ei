@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     algorithms = [Random,
                   HillClimb,
-                  Mountain_fold,
+                  MountainClimb,
                   SimulatedAnnealing,
                   Genetic]
     # for algorithm in algorithms:
@@ -17,5 +17,5 @@ if __name__ == "__main__":
     #         print(f"run: {n_runs}")
     #         experiment_data(algorithm)
     #         n_runs += 1
-    visualise_algorithm_data(algorithms, type="time_stability")
+    visualise_algorithm_data(algorithms)
     

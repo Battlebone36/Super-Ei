@@ -1,7 +1,7 @@
 from code.algorithms.hillclimb import HillClimb
 import copy
 
-class Mountain_fold(HillClimb):
+class MountainClimb(HillClimb):
     def best_move(self, max_iterations: int, store_step_stability: bool=False):
         """
         Find the best possible move at a certain configuration, but looks
