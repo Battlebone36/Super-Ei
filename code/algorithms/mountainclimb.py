@@ -4,8 +4,18 @@ import copy
 class MountainClimb(HillClimb):
     def best_move(self, max_iterations: int, store_iteration_stability: bool=False):
         """
-        Find the best possible move at a certain configuration, but looks
-        into 2 moves.
+        Find the best possible move for the protein configuration by evaluating 
+        the stability of potential folds over two moves.
+        This method iterates over each amino acid in the protein, evaluates all 
+        possible folds at that point, and then evaluates all possible folds for 
+        the next move. It keeps track of the configuration with the lowest 
+        stability and updates the protein accordingly.
+
+        Args:
+        -------
+        max_iterations (int): The maximum number of iterations to perform.
+        store_iteration_stability (bool, optional): If True, store the stability 
+        of the protein at each iteration. Defaults to False.
         """
         # Loop over the randomized protein
         lowest_stability = self.protein.stability()

@@ -7,7 +7,20 @@ import copy
 class Greedy(Algorithm):
     def greedy_fold(self, store_iteration_stability: bool=False) -> tuple[tuple[int, int, int], int]:
         """
-        Use a greedy algorithm to fold a protein from a standard sequence.
+        This method attempts to fold a protein by evaluating all possible folds and 
+        selecting the one that results in the lowest stability. If multiple folds 
+        result in the same stability, one of them is chosen at random.
+
+        Args:
+        ------
+        store_iteration_stability (bool): If True, stores the stability at each 
+                                            iteration of the folding process.
+
+        Returns:
+        ---------
+        tuple[tuple[int, int, int], int]: A tuple containing the best fold 
+                                            (represented as a tuple of three integers) 
+                                            and the corresponding stability score.
         """
         # Define the folds that are possible in this state
         folds = self.copy_protein.possible_folds()

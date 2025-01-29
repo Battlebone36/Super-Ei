@@ -17,12 +17,23 @@ class HillClimb(Algorithm):
         protein_random = Random(self.protein)
         prot = protein_random.run()
         self.protein = copy.deepcopy(prot)
-        # visualise_protein(self.protein)
 
         self.solve_protein(store_iteration_stability)
         return self.protein
 
     def best_move(self, max_iterations: int, store_iteration_stability: bool=False):
+        """
+        Find the best possible move for the protein configuration using a hill climbing algorithm.
+
+        Parameters:
+        -----------
+        max_iterations (int): The maximum number of iterations to perform.
+        store_iteration_stability (bool): If True, store the stability at each iteration. Default is False.
+
+        The method iterates over the amino acids in the protein and evaluates possible folds at each point.
+        It calculates the stability for each possible fold and keeps track of the configuration with the lowest stability.
+        The process stops if the maximum number of iterations is reached.
+        """
         """
         Find the best possible move at a certain configuration.
         """
@@ -58,7 +69,24 @@ class HillClimb(Algorithm):
 
     def solve_protein(self, store_iteration_stability: bool=False):
         """
-        Run the climbing algorithm.
+        Executes the hill climbing algorithm to optimize the protein structure.
+
+        Parameters:
+        store_iteration_stability (bool): If True, the algorithm will stop if the maximum 
+                          number of iterations is reached and the stability 
+                          value remains unchanged.
+
+        The algorithm runs for a minimum of 100 iterations or until the stability value 
+        remains unchanged for two consecutive iterations. If `store_iteration_stability` 
+        is set to True, the algorithm will also stop if the maximum number of iterations 
+        is reached and the stability value remains unchanged.
+        During each iteration, the algorithm:
+        1. Calculates the current stability of the protein.
+        2. Executes the best move to potentially improve stability.
+        3. Recalculates the stability of the protein.
+        If the stability value remains unchanged for two consecutive iterations, 
+        the algorithm concludes that the top of the hill has been found and stops.
+        Prints a message indicating the number of climbs taken to find the top of the hill.
         """
         max_iterations = self.max_iterations
         # Run the program for at least 100 times or if the same stability value has been

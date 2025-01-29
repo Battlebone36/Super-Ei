@@ -51,17 +51,18 @@ The following list describes the main directories and files in the repository, a
         * **/static/presentation/protein explenation** Contains pictures of how proteins work.
 
 # Assumptions
-Assumptions of specific parameters in the different algorithms. --> uitleggen hoe en wat (waarom deze waarden)
-EXPLAIN THE CHOICES AND ASSUMPTIONS!!!
+Assumptions of specific parameters in the different algorithms.
 * Hill climb algorithm
-    - Bias for folding late on in the protein (???)
+    - Bias for folding at the end of the protein
+        The algorithm loops through the protein and stores the folds that are bennificial but if two folds have the best effect, the latter is stored. This means that the algorithm has a bias for folding at the end of the protein
 * Simulated annealing
     - Exponential formula
         We use an exponential formula for the cooling, because of previous research in simulated annealing algorithms. Specifically about Rosetta, a protein folding simulation (Wenlong et al., 2006) and a paper where exponential functions were mentioned to solve bio-informatic problems (Kirkpatrick et al., 1983). 
-    - Initial- and end temperature
+    - Initial-, end temperature
+        Initial temperature, end temperature, cooling rate rate and trials per temperature have been found by a looking at multiple sets of values for the parameters.
 * Genetic algorithm
     - Mutation probability
-    - Mutation per protein instead of per amino acid
+    - Mutation per protein
 
 # Usage of the program
 To run every file in the root you need to type in the file name and then the Algorithms that you want to use:

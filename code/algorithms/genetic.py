@@ -83,7 +83,22 @@ class Genetic(Algorithm):
 
     def run(self, store_iteration_stability: bool=False, population_size: int = 30, mutation_probability: float = 0.01, nominator: int = 70, verbose: bool = False) -> Protein:
         """
-        Genetic algorithm that mimics natural selection to find the optimal folded protein.
+        Executes the genetic algorithm to find the optimal folded protein structure.
+
+        Parameters:
+        ------------
+        store_iteration_stability (bool): If True, stores the stability of each iteration into a csv file.
+        population_size (int): The number of proteins in the population. Default is 30.
+        mutation_probability (float): The probability of mutation occurring in offspring. Default is 0.01.
+        nominator (int): The number of candidates considered in the tournament selection. Default is 70.
+        verbose (bool): If True, prints detailed logs of the algorithm's progress. Default is False.
+
+        Returns:
+        ---------
+        Protein: The best protein found by the genetic algorithm.
+        The algorithm mimics natural selection by iteratively creating generations of proteins, selecting the best candidates, 
+        performing crossover to create offspring, and applying mutations. The process continues until the maximum number of 
+        iterations is reached or no improvement is observed for 100 consecutive generations.
         """
         if verbose:
             print("Starting algorithm")

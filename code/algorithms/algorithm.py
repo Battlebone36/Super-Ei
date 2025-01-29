@@ -35,8 +35,27 @@ class Algorithm:
     
     def fold_by_sequence(self, protein: Protein | None=None) -> Protein:
         """
-        Randomly folds a protein.
+        Folds the protein according to a predefined fold sequence.
+        This method iterates over the amino acids in the protein and folds them
+        based on the specified fold sequence. If no protein is provided, it uses
+        the instance's protein attribute.
+
+        Args:
+        ---------
+        protein (Protein, optional): The protein to be folded. If None, the instance's protein attribute is used.
+        
+        Returns:
+        ----------
+        Protein: The folded protein.
+        
+        Notes:
+        ---------
+            - The fold sequence is assumed to be a list of directions that 
+              correspond to the order of amino acids in the protein.
+            - The method checks if each fold is possible using the `is_foldable` 
+              method before performing the fold.
         """
+
         if protein is None:
             protein = self.protein
 
@@ -64,7 +83,23 @@ class Algorithm:
     
     def store_iteration_stability(self):
         """
-        Stores the steps and stability into a datafile.
+        Stores the steps and stability data into a CSV file.
+        This method gathers the iteration stability data using the 
+        `gather_iteration_stability` method and writes it to a CSV file 
+        located in the `code/data/iteration_stability/` directory. The 
+        filename is based on the class name of the instance. If the file 
+        already exists, the data is add to the file; otherwise, a new file is created 
+        with headers.
+
+        The CSV file contains the following columns:
+        - Protein
+        - Stability
+        - Iteration
+        - Algorithm
+
+        Raises:
+        --------
+            IOError: If there is an issue writing to the file.
         """
         data = self.gather_iteration_stability()
         fname = f"code/data/iteration_stability/{self.__class__.__name__}.csv"
