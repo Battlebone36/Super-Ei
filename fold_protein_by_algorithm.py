@@ -8,15 +8,18 @@ from code.algorithms.simulated_annealing import SimulatedAnnealing
 from code.algorithms.randomise import Random
 
 import sys
+
+# Check for possible algorithms
 if "--Print_Possible_Algorithms" in sys.argv:
     print("Possible algorithms are: Random, DepthFirst, Greedy, HillClimb, MountainClimb, SimulatedAnnealing, Genetic")
     sys.exit(0)
 
+# Check for proper usage
 if len(sys.argv) < 2:
     print("Usage: python3 fold_by_algorithm.py <Algorithm1> [<Algorithm2> ...] [--Protein_sequence <str=HHPCHHHPCHPHHCHPH> --Print_Possible_Algorithms <bool=False>]")
     raise ValueError("No algorithm given")
 
-
+# Define the protein sequence
 sequence = "HHPCHHHPCHPHHCHPH"
 if "--Protein_sequence" in sys.argv:
     index = sys.argv.index("--Protein_sequence")
@@ -44,10 +47,14 @@ for i in range(len(algorithms)):
         algorithms[i] = Random
     else:
         algorithm_limit -= 1
+
+# Filter the algorithms out of the arguments
 algorithms = algorithms[:algorithm_limit]
 
 
 if __name__ == "__main__":
+
+    # Run all algorithms on the protein sequence and visualise the results
     for algorithm in algorithms:
         protein = Protein(sequence)
         temp_alg = algorithm(protein)
