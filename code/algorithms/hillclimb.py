@@ -4,7 +4,6 @@ from code.algorithms.randomise import Random
 from code.algorithms.algorithm import Algorithm
 import copy
 
-
 class HillClimb(Algorithm):
     def run(self, store_iteration_stability: bool=False):
         """
@@ -33,9 +32,6 @@ class HillClimb(Algorithm):
         The method iterates over the amino acids in the protein and evaluates possible folds at each point.
         It calculates the stability for each possible fold and keeps track of the configuration with the lowest stability.
         The process stops if the maximum number of iterations is reached.
-        """
-        """
-        Find the best possible move at a certain configuration.
         """
         # Loop over the randomized protein
         lowest_stability = self.protein.stability()
@@ -80,10 +76,12 @@ class HillClimb(Algorithm):
         remains unchanged for two consecutive iterations. If `store_iteration_stability` 
         is set to True, the algorithm will also stop if the maximum number of iterations 
         is reached and the stability value remains unchanged.
+        
         During each iteration, the algorithm:
         1. Calculates the current stability of the protein.
         2. Executes the best move to potentially improve stability.
         3. Recalculates the stability of the protein.
+        
         If the stability value remains unchanged for two consecutive iterations, 
         the algorithm concludes that the top of the hill has been found and stops.
         Prints a message indicating the number of climbs taken to find the top of the hill.
