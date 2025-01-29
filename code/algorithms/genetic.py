@@ -194,10 +194,3 @@ class Genetic(Algorithm):
 
         self.protein = best_protein[0]
         return best_protein[0]
-
-
-if __name__ == "__main__":
-    test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
-    gen = Genetic(test)
-    gen.run()
-    gen.visualise()

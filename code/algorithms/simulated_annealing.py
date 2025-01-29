@@ -91,13 +91,3 @@ class SimulatedAnnealing(Algorithm):
             # Lower the current temperature
             current_temp *= cooling_rate
         return best_protein
-    
-
-if __name__ == "__main__":
-    test = Protein("HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH")
-    # prot = Random(test)
-    # prot.run()
-    gen = SimulatedAnnealing(test)
-    gen.run()
-    gen.visualise()
-    # visualise_protein(best_protein)
