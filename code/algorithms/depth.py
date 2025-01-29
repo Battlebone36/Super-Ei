@@ -6,11 +6,22 @@ import copy
 class DepthFirst(Random):
     def next_fold_sequence(self):
         """
-        Adds one to the fold sequence like a clock to get the next sequence.
-        For instance 0, 0, 1 will turn into 0, 0, 2 and
-        0, 0, 6 will turn into 0, 1, 0.
-        If the fold sequence is 6, 6, 6, 6, ... the next sequence will be 0, 0, 0, 0, ....
+        Advances the fold sequence by one step, similar to a clock increment.
+
+        The fold sequence is a list of integers where each integer can range from 0 to 6.
+        This method increments the sequence by one, handling overflow such that if an 
+        element exceeds 6, it resets to 0 and the overflow is added to the next element 
+        to the left.
+
+        For example:
+        - [0, 0, 1] will turn into [0, 0, 2]
+        - [0, 0, 6] will turn into [0, 1, 0]
+        - [6, 6, 6] will turn into [0, 0, 0]
+
+        If the entire sequence is at its maximum value (all elements are 6), the next 
+        sequence will reset all elements to 0.
         """
+
         # Add 1 to the last integer in the sequence and loop back to the beginning 
         # add the overload to the following integers
         carry = 1
@@ -40,6 +51,18 @@ class DepthFirst(Random):
         return -1
 
     def prune_sequence(self, index: int) -> None:
+        """
+        Prunes the fold sequence at the specified index and adjusts the sequence accordingly.
+        This method modifies the fold sequence by incrementing the value at the specified index
+        and resetting subsequent values. If the increment results in a carry-over beyond the 
+        maximum allowed value (6), it propagates the carry to the preceding elements. If the 
+        carry reaches the beginning of the sequence, the entire fold sequence is reset to zeros.
+
+        Args:
+        ------
+        index (int): The index at which to prune the fold sequence. Must be within the range 
+        of the sequence length minus two.
+        """
         """
         Cut a branch from the sequence and skip to the next branch.
         """
@@ -92,6 +115,22 @@ class DepthFirst(Random):
             self.iterations += 1
 
     def evaluate_fold_sequences(self, verbose: bool = False, store_iteration_stability: bool = False) -> Protein:
+        """
+        Evaluates all fold sequences stored in the object and returns the protein with the best stability.
+
+        Args:
+        -------
+        verbose (bool): If True, prints detailed information about the evaluation process. Default is False.
+        store_iteration_stability (bool): If True, stores the stability of the protein at each iteration. Default is False.
+
+        Returns:
+        ----------
+        Protein: The protein object with the best (lowest) stability found during the evaluation.
+        The method iterates over all fold sequences stored in `self.storage_fold_sequences`, evaluates the stability of 
+        each resulting protein, and keeps track of the protein with the best stability. If `verbose` is enabled, it prints 
+        the new best stability whenever a better protein is found and periodically prints the progress percentage. If 
+        `store_iteration_stability` is enabled, it stores the stability of the protein at each iteration.
+        """
         """
         Evaluates all fold sequences and returns the protein with the best stability.
         """

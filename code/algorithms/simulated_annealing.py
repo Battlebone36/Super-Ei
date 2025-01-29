@@ -9,9 +9,23 @@ import math
 class SimulatedAnnealing(Algorithm):
     def run(self, store_iteration_stability: bool=False) -> Protein:
         """
-        Starts with a randomly folded protein that will try to apply random folds.
-        Each fold that improves the stability score is accepted for the next iteration.
-        Sometimes worse folds are accepted, depending on the current temperature.
+        Executes the simulated annealing algorithm to find an optimal protein folding configuration.
+        The algorithm starts with a randomly folded protein and iteratively applies random folds.
+        Occasionally, worse folds are accepted based on the current temperature to escape local minima.
+        
+        Args:
+        ------
+        store_iteration_stability (bool): If True, stores the stability score at each iteration.
+        
+        Returns:
+        --------
+        Protein: The best protein configuration found with the lowest stability score.
+        
+        Attributes:
+        -----------
+        protein (Protein): The initial protein configuration.
+        max_iterations (int): The maximum number of iterations allowed.
+        iterations (int): The current iteration count.
         """
         # Starting values 
         protein = self.protein

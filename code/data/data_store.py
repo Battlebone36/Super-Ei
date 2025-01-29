@@ -56,7 +56,7 @@ def store_data(algorithm) -> None:
 
 def run_for_iterations_and_stability(algorithms, times: int):
     """
-    Run all algorithms an amount of times with the store the step stability command turned on.
+    Run all algorithms an amount of times with the store_iteration_stability command turned on.
     """
     test = Protein("PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP")
     for algorithm in algorithms:
@@ -67,7 +67,7 @@ def run_for_iterations_and_stability(algorithms, times: int):
 
 def one_hour_run(algorithm) -> None:
     """
-    Store the data into a csv file for the experiment. 
+    Store the data into a csv file for the one hour experiment. 
     """
     data = gather_data(algorithm)
     fname = f"code/data/one_hour_run/{algorithm.__name__}.csv"
