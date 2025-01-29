@@ -61,10 +61,14 @@ class HillClimb(Algorithm):
         Run the climbing algorithm.
         """
         max_iterations = self.max_iterations
+        # Run the program for at least 100 times or if the same stability value has been
+        # found twice.
         for i in range(100):
             stability = self.protein.stability()
             self.best_move(max_iterations, store_iteration_stability)
             new_stability = self.protein.stability()
+            # If store iteration stability is true it will stop if the max iteration
+            # has been reached.
             if store_iteration_stability:
 
                 if self.iterations >= max_iterations and stability == new_stability:

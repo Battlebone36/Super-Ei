@@ -242,6 +242,7 @@ def make_plot(df, algorithms, axes=None, type="many_runs") -> None:
             plot.set_title(f"{algorithm.__name__}")
             plot.text(-bins, 0.95, s=f'Trials: {len(df_filtered)}', fontsize=10, color='black')
             plot.set_xlabel("Stability")
+            plot.set_ylim(0, 0.16)
         plot.set_ylabel("Chance")
 
     # If type is time-stability make a line plot with mean time on y-axis
