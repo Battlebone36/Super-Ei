@@ -1,7 +1,14 @@
 # Taken die nog volbracht moeten worden
 
 ## Grote taken
-Command interfase files
+- presentatie tabel
+- presentatie layout
+- presentatie opnieuw verdelen
+- opschonen van static map in repository
+- README aanpassen
+- alles runnen op laptop Rick
+- final check codes
+- functie in simulated annealing
 
 
 ## DONE:
