@@ -2,7 +2,7 @@ from code.data.data_store import *
 import sys
 if len(sys.argv) < 2:
     print("Usage: python3 iteration_experiment.py <Algorithm1> [<Algorithm2> ...]")
-    print("       [--Run <bool=False> --Iterations <int=5000> --Print_Possible_Algorithms <bool=False>]")
+    print("       [--Run_experiment <bool=False> --Iterations <int=5000> --Print_Possible_Algorithms <bool=False>]")
     print("Example: python3 iteration_experiment.py HillClimb MountainClimb SimulatedAnnealing Genetic")
     sys.exit(1)
 
@@ -15,11 +15,11 @@ times = 5000
 possible_algorithms = ["hillclimb", "mountainclimb", "simulatedannealing", "genetic"]
 limit_to_algorithms = 1
 
-# Check if there is a Run parameter with a boolean
-if "--Run" in sys.argv:
-    index = sys.argv.index("--Run")
+# Check if there is a Run_experiment parameter with a boolean
+if "--Run_experiment" in sys.argv:
+    index = sys.argv.index("--Run_experiment")
     if sys.argv[index+1] != "True" and sys.argv[index+1] != "False":
-        raise ValueError("Run parameter must be a boolean")
+        raise ValueError("Run_experiment parameter must be a boolean")
     elif sys.argv[index+1] != "True":
         run_experiment = True
 
