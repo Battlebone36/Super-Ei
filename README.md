@@ -33,8 +33,8 @@ The following list describes the main directories and files in the repository, a
 * **/code**: contains all the code for this project.
     * **/code/algorithms**: contains the code for the algorithms.
     * **/code/classes**: contains the needed classes for this case.
+    * **/code/data**: contains the data of the experiments in csv files
     * **/code/visualisation**: contains the code for the visualisation.
-* **/data**: contains the generated csv files and scripts for storing and analyzing algorithm performance data.
 * **/static**: ???
 
 # Assumptions
@@ -71,7 +71,12 @@ There is also an option to increase or decrease the amount of runs. This can be 
 iteration_experiment:
 Another experiment that has been set up is one that runs all the algorithms with a certain amount of iterations. An iteration is a single state that is being checked. A state is a configuration of the protein. This will result in a graph which shows the amount of steps next to the stability. Allowing for the insight of a how the solutions becomes better over different states.
 How to run the iteration experiment:
-- python3 iteration_experiment.py
+- Usage: python3 iteration_experiment.py 
+- <Algorithm1> [<Algorithm2> ...]:
+- Optional:
+    --Run <bool=False> 
+    --Iterations <int=5000> 
+    --Print_Possible_Algorithms <bool=False>]
 
 To run the whole experiment uncomment the lines in between the ------
 Otherwise it will just show the data of the experiment we ran.

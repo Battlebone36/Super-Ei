@@ -1,7 +1,4 @@
 matplotlib
 numpy
-random
-timeit
 seaborn
-pathlib
-csv
+pandas

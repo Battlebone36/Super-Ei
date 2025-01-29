@@ -38,7 +38,7 @@ def gather_data(algorithm) -> list[str, int, float]:
 
 def store_data(algorithm) -> None:
     """
-    Store the data into a csv file. 
+    Store Time and stability data into a csv file. 
     """
     data = gather_data(algorithm)
     fname = f"code/data/many_runs/{algorithm.__name__}.csv"

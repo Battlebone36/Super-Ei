@@ -161,11 +161,13 @@ def visualise_algorithm(algorithms, command: str="split") -> None:
     The plot style can be altered using the command parameter.
 
     command:
+    ----------------
     - "split" (default): gives a histogram with the bars split.
     - "together": gives a histogram with the bars together.
     - "line": gives a histogram in a line plot.
 
     Uses:
+    ----------------
     - plot_algorithm_split()
     - plot_algorithm_together()
     """
@@ -202,7 +204,24 @@ def import_algorithm_data(path, df):
 
 def make_plot(df, algorithms, axes=None, type="many_runs") -> None:
     """
-    Make the a histogram of the occurency-stability of all the algorithms in the dataset
+    Generate various types of plots to visualize the performance of different algorithms.
+
+    Parameters:
+    -----------
+    df (pd.DataFrame): The dataframe containing the data to be plotted. It must include columns 'Algorithm', 'Stability', 'Time', and 'Iteration'.
+    algorithms (list): A list of algorithm functions whose performance is to be visualized.
+    axes (list, optional): A list of matplotlib axes objects for plotting subplots. Defaults to None.
+    type (str, optional): The type of plot to generate. Options are 'many_runs', 'time', and 'iteration_stability'. Defaults to 'many_runs'.
+
+    Plot Types:
+    ------------
+    - 'many_runs': Generates histograms showing the stability distribution of each algorithm.
+    - 'time': Generates a boxplot showing the run time distribution of each algorithm.
+    - 'iteration_stability': Generates line plots showing the stability over iterations for each algorithm.
+
+    Example:
+    --------
+    make_plot(df, [algorithm1, algorithm2], axes=axes, type="many_runs")
     """
     
     # Make a histogram by default and by type occurency-stability
@@ -227,14 +246,18 @@ def make_plot(df, algorithms, axes=None, type="many_runs") -> None:
 
     # If type is time-stability make a line plot with mean time on y-axis
     # and stability on x-axis
-    elif type == "time_stability":
+    elif type == "time":
+        order = []
         for algorithm in algorithms:
+            order.append(f"{algorithm.__name__}")
             df_filtered = df[df["Algorithm"] == f"{algorithm.__name__}"]
             print(f"{algorithm.__name__:<20} mean: {df_filtered['Time'].mean():<20} min: {df_filtered['Time'].min():<20} max: {df_filtered['Time'].max()}")
+        # print(df.head(20))
         plot = sns.boxplot(
             data=df,
             x="Algorithm",
             y="Time",
+            order=order
         )
         plot.set_ylabel("Time (s)")
         plot.set_ylim(0, 30)
@@ -247,12 +270,15 @@ def make_plot(df, algorithms, axes=None, type="many_runs") -> None:
             # Filter the data per algorithm
             if algorithm.__name__ == "HillClimb":
                 df_filtered = df[(df["Algorithm"] == f"{algorithm.__name__}") & (df["Iteration"] <= 4500)] # Data after 4500 is not succesfull
-                print(df_filtered[df_filtered["Iteration"] == 4500]["Stability"].mean())
+                df_filtered_4500 = df_filtered[df_filtered["Iteration"] == 4500]
+                mean = df_filtered_4500["Stability"].mean()
+                minimum = df_filtered_4500["Stability"].min()
+                print(f"{algorithm.__name__:<20} mean: {mean:<20} min: {minimum:<20}")
             else:
                 df_filtered = df[df["Algorithm"] == f"{algorithm.__name__}"]
-                df_filtered_4999 = df_filtered[df_filtered["Iteration"] == 4999]
-                mean = df_filtered_4999["Stability"].mean()
-                minimum = df_filtered_4999["Stability"].min()
+                df_filtered_4998 = df_filtered[df_filtered["Iteration"] == 4998]
+                mean = df_filtered_4998["Stability"].mean()
+                minimum = df_filtered_4998["Stability"].min()
 
                 print(f"{algorithm.__name__:<20} mean: {mean:<20} min: {minimum:<20}")
             
@@ -287,7 +313,16 @@ def make_plot(df, algorithms, axes=None, type="many_runs") -> None:
 
 def visualise_algorithm_data(algorithms, type: str="many_runs") -> None:
     """
-    Import all data and make the plot for the data.
+    Imports data and makes plots for the given algorithms.
+
+    Parameters:
+    ----------------
+    algorithms (list): A list of algorithm classes to visualize.
+    type (str): The type of visualization to create. Options are:
+        - "iteration_stability": Visualizes the stability of iterations.
+        - "many_runs": Visualizes the results of many runs.
+        - "time": Visualizes the time-based performance.
+        - "one_hour_run": Visualizes the results of a one-hour run.
     """
     # Make DataFrame and import data from files
     type = type.lower()
@@ -296,7 +331,7 @@ def visualise_algorithm_data(algorithms, type: str="many_runs") -> None:
         for algorithm in algorithms:
             path = f"code/data/iteration_stability/{algorithm.__name__}.csv"
             df = import_algorithm_data(path=path, df=df)
-    elif type == "many_runs" or type == "time_stability":
+    elif type == "many_runs" or type == "time":
         for algorithm in algorithms:
             path = f"code/data/many_runs/{algorithm.__name__}.csv"
             df = import_algorithm_data(path=path, df=df)
@@ -310,12 +345,11 @@ def visualise_algorithm_data(algorithms, type: str="many_runs") -> None:
     if type == "many_runs" or type == "one_hour_run":
         fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True, sharey=True)
         make_plot(df=df, algorithms=algorithms, axes=axes)
-    elif type == "time_stability":
+    elif type == "time":
         grouped = df.groupby(["Algorithm", "Protein", "Stability"]).mean().reset_index()
         make_plot(df=grouped, algorithms=algorithms, type=type)
     elif type == "iteration_stability":
         fig, axes = plt.subplots(1, len(algorithms), figsize=(15, 5), sharex=True, sharey=True)
-        # print("lukt")
         make_plot(df=df, algorithms=algorithms, axes=axes, type=type)
 
 
