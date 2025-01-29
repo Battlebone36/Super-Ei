@@ -50,6 +50,8 @@ EXPLAIN THE CHOICES AND ASSUMPTIONS!!!
     - Mutation probability
     - Mutation per protein instead of per amino acid
 
+# 
+
 # Experiment
 ## time_experiment
 An experiment has been set up to find the best possible solution in a set amount of time. This experiment will run an algorithm for 1 hour and display the results that have been found. The reason for only running 1 hour is that faster algorithms will have a slight edge because they can run more times but the slower algorithms should compensate for this through their better performance.\
@@ -92,7 +94,7 @@ Arguments:
 ## iteration_experiment
 Another experiment that has been set up is one that runs all the algorithms with a certain amount of iterations. An iteration is a single state that is being checked. A state is a configuration of the protein. This will result in a graph which shows the amount of steps next to the stability. Allowing for the insight of a how the solutions becomes better over different states.\
 How to run the iteration experiment:\
-Usage: python3 iteration_experiment.py <Algorithm1> [<Algorithm2> ...] [--Run <bool=False> --Iterations <int=5000> --Print_Possible_Algorithms <bool=False>]\
+Usage: python3 iteration_experiment.py \<Algorithm1> [\<Algorithm2> ...] [--Run_experiment \<bool=False> --Times \<int=5000> --Print_Possible_Algorithms \<bool=False>]\
 Arguments:
 Arguments:
 - \<Algorithm1> [\<Algorithm2> ...]: one or more algorithms

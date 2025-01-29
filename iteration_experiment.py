@@ -2,7 +2,7 @@ from code.data.data_store import *
 import sys
 if len(sys.argv) < 2:
     print("Usage: python3 iteration_experiment.py <Algorithm1> [<Algorithm2> ...]")
-    print("       [--Run_experiment <bool=False> --Iterations <int=5000> --Print_Possible_Algorithms <bool=False>]")
+    print("       [--Run_experiment <bool=False> --times <int=5000> --Print_Possible_Algorithms <bool=False>]")
     print("Example: python3 iteration_experiment.py HillClimb MountainClimb SimulatedAnnealing Genetic")
     sys.exit(1)
 
@@ -23,14 +23,14 @@ if "--Run_experiment" in sys.argv:
     elif sys.argv[index+1] != "True":
         run_experiment = True
 
-# Check if there is an Iterations parameter with a positive integer
-if "--Iterations" in sys.argv:
-    index = sys.argv.index("--Iterations")
+# Check if there is an times parameter with a positive integer
+if "--times" in sys.argv:
+    index = sys.argv.index("--times")
     if type(sys.argv[index+1]) != type(1):
-        raise ValueError("Iterations parameter must be an integer")
+        raise ValueError("times parameter must be an integer")
     times = int(sys.argv[index+1])
     if times < 1:
-        raise ValueError("Iterations parameter must be a positive integer")
+        raise ValueError("times parameter must be a positive integer")
 
 # Check if all algorithms are valid
 for argument in sys.argv:
