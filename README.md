@@ -50,37 +50,63 @@ EXPLAIN THE CHOICES AND ASSUMPTIONS!!!
     - Mutation probability
     - Mutation per protein instead of per amino acid
 
+# 
+
 # Experiment
-time_experiment:
-An experiment has been set up to find the best possible solution in a set amount of time. This experiment will run an algorithm for 1 hour and display the results that have been found. The reason for only running 1 hour is that faster algorithms will have a slight edge because they can run more times but the slower algorithms should compensate for this through their better performance.
-How to run the time experiment:
-- python3 time_experiment.py
+## time_experiment
+An experiment has been set up to find the best possible solution in a set amount of time. This experiment will run an algorithm for 1 hour and display the results that have been found. The reason for only running 1 hour is that faster algorithms will have a slight edge because they can run more times but the slower algorithms should compensate for this through their better performance.\
+How to run the time experiment:\
+Usage: python3 time_experiment.py \<Algorithm1> [\<Algorithm2> ...] [--Run_experiment \<bool=False> --Times \<int=100> --Print_Possible_Algorithms \<bool=False>]\
+Arguments:
+- \<Algorithm1> [\<Algorithm2> ...]: one or more algorithms
+- flaggs:
+    - Print_Possible_Algorithms \<bool=False>: prints all Algorithm options to visualise.\
+        options:
+        - Random
+        - Greedy
+        - HillClimb
+        - MountainClimb
+        - SimulatedAnnealing
+        - Genetic
+    - Type_plot \<str=one_hour_run>: The type of plot that needs to be visualised.\
+        options:
+        - one_hour_run
+        - time
 
-To run the whole experiment uncomment the lines in between the ------
-Otherwise it will just show the data of the experiment we ran.
-
-run_experiment:
+## run_many_times_experiment
 Another experiment that has been set up is one that runs all the algorithms a certain amount of times. This will result in a distribution of scores which show the occurence of higher and lower scores. Some algorithms might take longer to run than others.
-How to run the run experiment:
-- python3 run_experiment.py
+How to run the run experiment:\
+Usage: Usage: python3 run_many_times_experiment.py \<Algorithm1> [\<Algorithm2> ...] [--Run_experiment \<bool=False> --Times \<int=100> --Print_Possible_Algorithms \<bool=False>]\
+Arguments:
+- \<Algorithm1> [\<Algorithm2> ...]: one or more algorithms
+    - flaggs:
+        - Run_experiment \<bool=False>: Runs experiment
+        - Times \<int=100>: The amount of times that every Algorithms must be run
+        - Print_Possible_Algorithms \<bool=False>: prints all Algorithm options to visualise
+            options:
+            - Random
+            - Greedy
+            - HillClimb
+            - MountainClimb
+            - SimulatedAnnealing
+            - Genetic
 
-To run the whole experiment uncomment the lines in between the ------
-Otherwise it will just show the data of the experiment we ran.
-There is also an option to increase or decrease the amount of runs. This can be done by changing the range in the for loop with i.
-
-iteration_experiment:
-Another experiment that has been set up is one that runs all the algorithms with a certain amount of iterations. An iteration is a single state that is being checked. A state is a configuration of the protein. This will result in a graph which shows the amount of steps next to the stability. Allowing for the insight of a how the solutions becomes better over different states.
-How to run the iteration experiment:
-- Usage: python3 iteration_experiment.py 
-- <Algorithm1> [<Algorithm2> ...]:
-- Optional:
-    --Run <bool=False> 
-    --Iterations <int=5000> 
-    --Print_Possible_Algorithms <bool=False>]
-
-To run the whole experiment uncomment the lines in between the ------
-Otherwise it will just show the data of the experiment we ran.
-The amount of iterations can be changed with this experiment by changing the second parameter of the run_for_iterations_and_stability function.
+## iteration_experiment
+Another experiment that has been set up is one that runs all the algorithms with a certain amount of iterations. An iteration is a single state that is being checked. A state is a configuration of the protein. This will result in a graph which shows the amount of steps next to the stability. Allowing for the insight of a how the solutions becomes better over different states.\
+How to run the iteration experiment:\
+Usage: python3 iteration_experiment.py \<Algorithm1> [\<Algorithm2> ...] [--Run_experiment \<bool=False> --Times \<int=5000> --Print_Possible_Algorithms \<bool=False>]\
+Arguments:
+Arguments:
+- \<Algorithm1> [\<Algorithm2> ...]: one or more algorithms
+    - flaggs:
+        - Run_experiment \<bool=False>: Runs experiment
+        - Times \<int=100>: The amount of times that every Algorithms must be run
+        - Print_Possible_Algorithms \<bool=False>: prints all Algorithm options to visualise
+            options:
+            - HillClimb
+            - MountainClimb
+            - SimulatedAnnealing
+            - Genetic
 
 # Authors
 * Sydney Celie

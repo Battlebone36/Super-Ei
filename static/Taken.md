@@ -10,7 +10,6 @@
 - final check codes
 - functie in simulated annealing
 
-
 ## DONE:
 - Present file nieuwe naam - Bryan
 - Fold functie rotate_coord afmaken - Bryan

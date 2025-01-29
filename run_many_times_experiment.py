@@ -2,8 +2,8 @@ from code.data.data_store import *
 import sys
 if len(sys.argv) < 2:
     print("Usage: python3 run_many_times_experiment.py <Algorithm1> [<Algorithm2> ...]")
-    print("       [--Run_experiment <bool=False> --Iterations <int=100> --Print_Possible_Algorithms <bool=False>]")
-    print("Example: python3 run_many_times_experiment.py HillClimb MountainClimb SimulatedAnnealing Genetic --Run_experiment True --Iterations 300")
+    print("       [--Run_experiment <bool=False> --Times <int=100> --Print_Possible_Algorithms <bool=False>]")
+    print("Example: python3 run_many_times_experiment.py HillClimb MountainClimb SimulatedAnnealing Genetic --Run_experiment True --Times 300")
     sys.exit(1)
 
 if "--Print_Possible_Algorithms" in sys.argv:
@@ -24,13 +24,13 @@ if "--Run_experiment" in sys.argv:
         run_experiment = True
 
 # Check if there is an Iterations parameter with a positive integer
-if "--Iterations" in sys.argv:
-    index = sys.argv.index("--Iterations")
+if "--Times" in sys.argv:
+    index = sys.argv.index("--Times")
     if type(sys.argv[index+1]) != type(1):
-        raise ValueError("Iterations parameter must be an integer")
+        raise ValueError("Times parameter must be an integer")
     times = int(sys.argv[index+1])
     if times < 1:
-        raise ValueError("Iterations parameter must be a positive integer")
+        raise ValueError("Times parameter must be a positive integer")
 
 # Check if all algorithms are valid
 for argument in sys.argv:
@@ -65,16 +65,10 @@ for i in range(len(algorithms)):
 
 
 if __name__ == "__main__":
-
-    # algorithms = [Random,
-    #               HillClimb,
-    #               MountainClimb,
-    #               SimulatedAnnealing,
-    #               Genetic]
     
     if run_experiment:
         for algorithm in algorithms:
-            for i in range(100):
+            for i in range(times):
                 store_data(algorithm)
 
     visualise_algorithm_data(algorithms)
