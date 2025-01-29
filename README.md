@@ -34,7 +34,6 @@ The requirements.txt file contains all necessary packages to run the code succes
 pip install -r requirements.txt
 ```
 
-
 ## Repository structure
 The following list describes the main directories and files in the repository, and where to find them:
 * **/code**: Contains all the code for this project.
@@ -73,7 +72,6 @@ Some algorithms run with specific parameters, which are explained along with the
         - Mutation probability = 0.01
         - Population size during tournament selection = 70% of the population size
 
-
 # Usage of the program
 To run every file in the root, you need to type in the file name and then the algorithms that you want to use:
 `python3 <filename> <Algorithm1> [<Algorithm2> ...]`.
@@ -86,7 +84,7 @@ python3 fold_by_algorithm.py HillClimb SimulatedAnnealing
 ## Fold Protein
 The file fold_protein_by_algorithm.py can fold a protein according to a given algorithm and will visualise it. The file can be used the following way: 
 ```
-python3 fold_by_algorithm.py <Algorithm1> [<Algorithm2> ...] [--Protein_sequence <str=HHPCHHHPCHPHHCHPH> --Print_Possible_Algorithms <bool=False>]
+python3 fold_protein_by_algorithm.py <Algorithm1> [<Algorithm2> ...] [--Protein_sequence <str=HHPCHHHPCHPHHCHPH> --Print_Possible_Algorithms <bool=False>]
 ```
 
 New arguments:
@@ -103,7 +101,7 @@ New arguments:
 
 An example to run this is:
 ```
-python3 fold_by_algorithm.py HillClimb SimulatedAnnealing --Protein_sequence HHHHPPPPHPPPC
+python3 fold_protein_by_algorithm.py HillClimb SimulatedAnnealing --Protein_sequence HHHHPPPPHPPPC
 ```
 
 ## Experiments
@@ -141,7 +139,7 @@ The second experiment that has been set up is one that runs all the algorithms a
 
 How to run the run many times experiment:
 ```
-Usage: python3 run_many_times_experiment.py <Algorithm1> [<Algorithm2> ...] [--Run_experiment <bool=False> --Times <int=100> --Print_Possible_Algorithms <bool=False>]
+python3 run_many_times_experiment.py <Algorithm1> [<Algorithm2> ...] [--Run_experiment <bool=False> --Times <int=100> --Print_Possible_Algorithms <bool=False>]
 ```
 
 New arguments:
@@ -182,7 +180,7 @@ New arguments:
 
 An example to run this is:
 ```
-python3 run_many_times_experiment.py HillClimb SimulatedAnnealing --Run_experiment False --Times 500
+python3 iteration_experiment.py HillClimb SimulatedAnnealing --Run_experiment False --Times 500
 ```
 To gather data you need to switch `Run_experiment` to True.
 
