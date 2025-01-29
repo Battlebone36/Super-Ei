@@ -5,7 +5,7 @@ class MountainClimb(HillClimb):
     def best_move(self, max_iterations: int, store_iteration_stability: bool=False):
         """
         Find the best possible move at a certain configuration, but looks
-        into 3 moves.
+        into 2 moves.
         """
         # Loop over the randomized protein
         lowest_stability = self.protein.stability()
